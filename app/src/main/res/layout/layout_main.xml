@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:gravity="bottom"
+              android:layout_marginTop="?actionBarSize"
+              android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </FrameLayout>
+
+    <RadioGroup
+        android:id="@+id/rg_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:orientation="horizontal"
+        >
+
+        <RadioButton
+        android:id="@+id/rb_select"
+        style="@style/RadioButtonStyle"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/selector_drawable_radiobutton_select"/>
+        <RadioButton
+        style="@style/RadioButtonStyle"
+        android:id="@+id/rb_lessons"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/selector_drawable_radiobutton_lessons"
+        />
+
+        <RadioButton
+        android:id="@+id/rb_discover"
+        style="@style/RadioButtonStyle"
+        android:layout_height="wrap_content"
+        android:drawableTop="@drawable/selector_drawable_radiobutton_discover"
+         />
+
+    </RadioGroup>
+</LinearLayout>
