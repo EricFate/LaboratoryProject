@@ -8,10 +8,14 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -28,7 +32,6 @@ import butterknife.OnClick;
 import hl.iss.whu.edu.laboratoryproject.R;
 import hl.iss.whu.edu.laboratoryproject.adapter.VideoFragmentPagerAdapter;
 import hl.iss.whu.edu.laboratoryproject.ui.fragment.ChapterFragment;
-import hl.iss.whu.edu.laboratoryproject.ui.fragment.DiscoverFragment;
 import hl.iss.whu.edu.laboratoryproject.ui.fragment.DiscussFragment;
 import hl.iss.whu.edu.laboratoryproject.ui.fragment.LessonSelectionFragment;
 import hl.iss.whu.edu.laboratoryproject.ui.fragment.MyLessonsFragment;
@@ -58,10 +61,13 @@ public class VideoActivity extends AppCompatActivity {
     TextView tvTotal;
     @Bind(R.id.cl_video)
     CenterLayout clVideo;
+    @Bind(R.id.tv_video_buffer)
+    TextView tvVideoBuffer;
+    @Bind(R.id.tv_video_speed)
+    TextView tvVideoSpeed;
     private Handler mHandler = new Handler();
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private ArrayList<String> titles = new ArrayList<>();
-    private boolean isPlaying = true;
     private boolean isFullScreen = false;
     private boolean isControllerHidden = false;
     private SimpleDateFormat format = new SimpleDateFormat("mm:ss");
@@ -70,7 +76,7 @@ public class VideoActivity extends AppCompatActivity {
     private HideControllerRunnable mHideControllerRunnable = new HideControllerRunnable();
     private GestureDetector mGestureDetector;
     private Timer timer = new Timer();
-    private TimerTask task ;
+    private TimerTask task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +88,13 @@ public class VideoActivity extends AppCompatActivity {
         initVideoView();
         initData();
         startUpdate();
+    }
+
+    public void playVideo(String url) {
+        mVideoView.stopPlayback();
+        mVideoView.setVideoPath(url);
+        sbProgress.setMax((int) mVideoView.getDuration());
+        updateController();
     }
 
     private void startUpdate() {
@@ -96,20 +109,21 @@ public class VideoActivity extends AppCompatActivity {
                 });
             }
         };
-        timer.schedule(task,UPDATE_INTERVAL,UPDATE_INTERVAL);
+        timer.schedule(task, UPDATE_INTERVAL, UPDATE_INTERVAL);
     }
 
     private void initListener() {
         mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onDoubleTap(MotionEvent e) {
-                Log.e("doubleTap","confirm");
+                Log.e("doubleTap", "confirm");
                 toggleFullScreen();
                 return true;
             }
+
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
-                Log.e("singleclick","confirm");
+                Log.e("singleclick", "confirm");
                 toggleHideController();
                 return true;
             }
@@ -117,16 +131,47 @@ public class VideoActivity extends AppCompatActivity {
         clVideo.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Log.e("cl","touch");
+                Log.e("cl", "touch");
                 return mGestureDetector.onTouchEvent(event);
             }
         });
+        mVideoView.setOnInfoListener(new MediaPlayer.OnInfoListener() {
+            @Override
+            public boolean onInfo(MediaPlayer mp, int what, int extra) {
+                switch (what) {
+                    //开始缓冲
+                    case MediaPlayer.MEDIA_INFO_BUFFERING_START:
+                        tvVideoBuffer.setVisibility(View.VISIBLE);
+                        tvVideoSpeed.setVisibility(View.VISIBLE);
+                        mp.pause();
+                        break;
+                    //缓冲结束
+                    case MediaPlayer.MEDIA_INFO_BUFFERING_END:
+                        tvVideoBuffer.setVisibility(View.GONE);
+                        tvVideoSpeed.setVisibility(View.GONE);
+                        mp.start();
+                        break;
+                    case MediaPlayer.MEDIA_INFO_DOWNLOAD_RATE_CHANGED:
+                        tvVideoSpeed.setText("当前网速" + extra + "kb/s");
+                        break;
+                }
+                ibPlay.setImageResource(mVideoView.isPlaying() ? R.drawable.ic_pause_white_24dp : R.drawable.ic_play_arrow_white_24dp);
+                return true;
+            }
+        });
+        mVideoView.setOnBufferingUpdateListener(new MediaPlayer.OnBufferingUpdateListener() {
+            @Override
+            public void onBufferingUpdate(MediaPlayer mp, int percent) {
+                tvVideoBuffer.setText("已经缓冲"+percent+"%");
+            }
+        });
+
     }
 
     private void toggleHideController() {
         isControllerHidden = !isControllerHidden;
-        llControlBottom.setVisibility(isControllerHidden?View.GONE:View.VISIBLE);
-        if (!isControllerHidden){
+        llControlBottom.setVisibility(isControllerHidden ? View.GONE : View.VISIBLE);
+        if (!isControllerHidden) {
             planHideController();
         }
     }
@@ -136,13 +181,16 @@ public class VideoActivity extends AppCompatActivity {
 //        planHideController();
         sbProgress.setMax((int) mVideoView.getDuration());
         updateController();
+        ibPlay.setImageResource(mVideoView.isPlaying() ? R.drawable.ic_pause_white_24dp : R.drawable.ic_play_arrow_white_24dp);
         sbProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
             }
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
             }
+
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 mVideoView.seekTo(seekBar.getProgress());
@@ -166,16 +214,28 @@ public class VideoActivity extends AppCompatActivity {
     private void initVideoView() {
         //初始化VideoView
         final Intent intent = getIntent();
-
+        WindowManager windowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+        Display display = windowManager.getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+        final ViewGroup.LayoutParams params = clVideo.getLayoutParams();
+        params.width = metrics.widthPixels;
+        params.height = params.width * metrics.widthPixels / metrics.heightPixels;
+        clVideo.setLayoutParams(params);
         if (intent != null) {
             if (intent.getData() != null) {
                 mVideoView.setVideoURI(intent.getData());
             }
         }
+        mVideoView.setVideoPath("http://www.modrails.com/videos/passenger_nginx.mov");
         mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 initController();
+                ViewGroup.LayoutParams params1 = clVideo.getLayoutParams();
+                params1.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                params1.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+                clVideo.setLayoutParams(params1);
             }
         });
 
@@ -200,13 +260,12 @@ public class VideoActivity extends AppCompatActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ib_play:
-                if (isPlaying) {
+                if (mVideoView.isPlaying()) {
                     mVideoView.pause();
                 } else {
                     mVideoView.start();
                 }
-                isPlaying = !isPlaying;
-                ibPlay.setImageResource(isPlaying ? R.drawable.ic_pause_white_24dp : R.drawable.ic_play_arrow_white_24dp);
+                ibPlay.setImageResource(mVideoView.isPlaying() ? R.drawable.ic_pause_white_24dp : R.drawable.ic_play_arrow_white_24dp);
                 break;
             case R.id.ib_full:
                 toggleFullScreen();
@@ -217,9 +276,9 @@ public class VideoActivity extends AppCompatActivity {
 
     private void toggleFullScreen() {
         isFullScreen = !isFullScreen;
-        setRequestedOrientation(isFullScreen?ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE:ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        mVideoView.setVideoLayout(VideoView.VIDEO_LAYOUT_SCALE,0);
-        ibFull.setImageResource(isFullScreen?R.drawable.ic_fullscreen_exit_white_24dp:R.drawable.ic_fullscreen_white_24dp);
+        setRequestedOrientation(isFullScreen ? ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE : ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        mVideoView.setVideoLayout(VideoView.VIDEO_LAYOUT_SCALE, 0);
+        ibFull.setImageResource(isFullScreen ? R.drawable.ic_fullscreen_exit_white_24dp : R.drawable.ic_fullscreen_white_24dp);
     }
 
     private class HideControllerRunnable implements Runnable {

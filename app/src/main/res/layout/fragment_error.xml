@@ -16,4 +16,9 @@
         android:text="网络不可用"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/bt_retry"
+        android:text="重试"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

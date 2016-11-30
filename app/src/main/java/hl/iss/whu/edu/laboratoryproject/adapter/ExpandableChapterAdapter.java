@@ -66,7 +66,7 @@ public class ExpandableChapterAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         if (convertView ==null){
-         convertView = LayoutInflater.from(UiUtils.getContext()).inflate(R.layout.item_expandable_chapter_group, parent);
+         convertView = LayoutInflater.from(UiUtils.getContext()).inflate(R.layout.item_expandable_chapter_group, null);
         TextView title = ButterKnife.findById(convertView,R.id.tv_group_title);
         title.setText(data.get(groupPosition).getTitle());
         }
@@ -77,7 +77,7 @@ public class ExpandableChapterAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         if (convertView ==null) {
-            convertView = LayoutInflater.from(UiUtils.getContext()).inflate(R.layout.item_expandable_chapter_child, parent);
+            convertView = LayoutInflater.from(UiUtils.getContext()).inflate(R.layout.item_expandable_chapter_child, null);
             TextView title = ButterKnife.findById(convertView, R.id.tv_child_title);
             Chapter.Lesson lesson = data.get(groupPosition).getLessons().get(childPosition);
             title.setText(lesson.getTitle());
@@ -87,6 +87,6 @@ public class ExpandableChapterAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
+        return true;
     }
 }

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import hl.iss.whu.edu.laboratoryproject.R;
+import hl.iss.whu.edu.laboratoryproject.constant.Constant;
 import hl.iss.whu.edu.laboratoryproject.entity.Subject;
 import hl.iss.whu.edu.laboratoryproject.utils.UiUtils;
 
@@ -40,7 +41,9 @@ public class RecyclerLessonSelectAdapter extends BaseRecyclerViewAdapter<Subject
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Subject subject = data.get(position);
-        Glide.with(UiUtils.getContext()).load(R.drawable.bg)
+        Glide.with(UiUtils.getContext())
+                .load(Constant.SERVER_URL+subject.getImgURL())
+                .placeholder(R.drawable.bg)
                 .into(holder.ivLesson);
         holder.tvName.setText(subject.getName());
         holder.tvDuration.setText(subject.getDuration());

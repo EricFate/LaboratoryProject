@@ -23,10 +23,12 @@ import butterknife.ButterKnife;
 import hl.iss.whu.edu.laboratoryproject.R;
 import hl.iss.whu.edu.laboratoryproject.adapter.ExpandableChapterAdapter;
 import hl.iss.whu.edu.laboratoryproject.adapter.RecyclerMyLessonsAdapter;
+import hl.iss.whu.edu.laboratoryproject.constant.Constant;
 import hl.iss.whu.edu.laboratoryproject.entity.Chapter;
 import hl.iss.whu.edu.laboratoryproject.entity.Result;
 import hl.iss.whu.edu.laboratoryproject.listener.OnRecyclerViewItemClickListener;
 import hl.iss.whu.edu.laboratoryproject.ui.activity.LessonDetailActivity;
+import hl.iss.whu.edu.laboratoryproject.ui.activity.VideoActivity;
 import hl.iss.whu.edu.laboratoryproject.ui.view.LoadingPage;
 import hl.iss.whu.edu.laboratoryproject.utils.RetrofitUtils;
 import hl.iss.whu.edu.laboratoryproject.utils.UiUtils;
@@ -42,13 +44,25 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ChapterFragment extends BaseFragment<ArrayList<Chapter>> {
     private ExpandableListView elvChapter;
-    private LoadingPage mLoadingPage ;
-
+    private ExpandableChapterAdapter mAdapter;
 
 
     @Override
     public View onCreateSuccessPage() {
-        return null;
+        View rootView = UiUtils.inflate(R.layout.fragment_chapter);
+        elvChapter = ButterKnife.findById(rootView,R.id.elv_chapter);
+        mAdapter = new ExpandableChapterAdapter(data);
+        elvChapter.setAdapter(mAdapter);
+        elvChapter.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                Chapter.Lesson lesson = (Chapter.Lesson) mAdapter.getChild(groupPosition,childPosition);
+                ((VideoActivity) getActivity()).playVideo(Constant.SERVER_URL+lesson.getURL());
+                Toast.makeText(getActivity(),Constant.SERVER_URL+lesson.getURL(),Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        return rootView;
     }
 
     @Override

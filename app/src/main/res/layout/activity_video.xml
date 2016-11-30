@@ -1,86 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="hl.iss.whu.edu.laboratoryproject.ui.activity.VideoActivity">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <io.vov.vitamio.widget.CenterLayout
-        android:longClickable="true"
-        android:id="@+id/cl_video"
-        android:layout_width="wrap_content"
-        android:layout_height="250dp"
-        >
+        <io.vov.vitamio.widget.CenterLayout
+            android:id="@+id/cl_video"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:longClickable="true"
+            >
 
-        <io.vov.vitamio.widget.VideoView
-            android:id="@+id/vv_video"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            />
-    </io.vov.vitamio.widget.CenterLayout>
+            <io.vov.vitamio.widget.VideoView
+                android:id="@+id/vv_video"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+        </io.vov.vitamio.widget.CenterLayout>
+
         <LinearLayout
-            android:id="@+id/ll_control_bottom"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:gravity="center_vertical"
-            android:layout_alignBottom="@+id/cl_video"
-            android:background="@color/video_controller_background">
-            <ImageButton
-                android:id="@+id/ib_play"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_play_arrow_white_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_video_buffer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="3dp"/>
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/tv_video_speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_control_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_alignBottom="@+id/cl_video"
+            android:background="@color/video_controller_background"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/ib_play"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_play_arrow_white_24dp"/>
+
             <SeekBar
 
                 android:id="@+id/sb_progress"
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
             <TextView
                 android:id="@+id/tv_current"
-                android:text="00:00"
-                android:textSize="12sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:text="/"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/tv_total"
-                android:text="00:00"
-                android:textSize="12sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <ImageButton
-                android:id="@+id/ib_full"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_fullscreen_white_24dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="3dp"/>
+                android:text="00:00"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="/"
+                android:textColor="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/tv_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textColor="@android:color/white"
+                android:textSize="12sp"/>
+
+            <ImageButton
+                android:id="@+id/ib_full"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="3dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_fullscreen_white_24dp"/>
         </LinearLayout>
     </RelativeLayout>
-
-
 
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tl_video"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabMode="fixed"
-        app:tabGravity="fill">
+        app:tabGravity="fill"
+        app:tabMode="fixed">
     </android.support.design.widget.TabLayout>
+
     <android.support.v4.view.ViewPager
         android:id="@+id/vp_video"
         android:layout_width="wrap_content"

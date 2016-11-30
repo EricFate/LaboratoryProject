@@ -43,6 +43,10 @@ public class RecyclerChatAdapter extends BaseRecyclerViewAdapter<Chatter, Recycl
         holder.tvName.setText(chatter.getName());
         holder.tvWord.setText(chatter.getMessage());
     }
+    public void addChatter(Chatter chatter){
+        data.add(chatter);
+        notifyDataSetChanged();
+    }
 
     class ChatViewHolder extends RecyclerView.ViewHolder {
         ImageView image;

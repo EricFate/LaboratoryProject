@@ -4,8 +4,12 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 import hl.iss.whu.edu.laboratoryproject.R;
 import hl.iss.whu.edu.laboratoryproject.utils.UiUtils;
 
@@ -40,29 +44,41 @@ public abstract class LoadingPage extends FrameLayout {
         super(context, attrs, defStyleAttr);
         initView();
     }
+
     private void initView() {
         mLoadingPage = UiUtils.inflate(R.layout.fragment_loading);
         addView(mLoadingPage);
+
         mErrorPage = UiUtils.inflate(R.layout.fragment_error);
+        Button btRetry = ButterKnife.findById(mErrorPage,R.id.bt_retry);
+        btRetry.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(UiUtils.getContext(),"重试",Toast.LENGTH_SHORT).show();
+                loadData();
+                changeState(STATE_LOADING);
+            }
+        });
         addView(mErrorPage);
         mNodataPage = UiUtils.inflate(R.layout.fragment_nodata);
         addView(mNodataPage);
         showRightPage();
     }
 
-    public void changeState(int state){
+    public void changeState(int state) {
         this.currentState = state;
         showRightPage();
     }
+
     public void showRightPage() {
-        Log.e("Loading","step into the method");
+        Log.e("Loading", "step into the method");
         mLoadingPage.setVisibility((currentState == STATE_UNDO || currentState == STATE_LOADING) ? VISIBLE : GONE);
         mErrorPage.setVisibility(currentState == STATE_FAILED ? VISIBLE : GONE);
         mNodataPage.setVisibility(currentState == STATE_NO_DATA ? VISIBLE : GONE);
         loadSuccesPage();
         if (mSuccessPage != null) {
             mSuccessPage.setVisibility(currentState == STATE_SUCCESS ? VISIBLE : GONE);
-            Log.e("Loading","mSuccessPage:"+(mSuccessPage.getVisibility() == VISIBLE));
+            Log.e("Loading", "mSuccessPage:" + (mSuccessPage.getVisibility() == VISIBLE));
         }
     }
 
@@ -76,7 +92,7 @@ public abstract class LoadingPage extends FrameLayout {
     }
 
 
-//    public void loadData() {
+//    public void loadDataFromServer() {
 //        if (currentState != STATE_LOADING) {
 //            currentState = STATE_LOADING;
 //            Log.e("current", "" + currentState);
@@ -102,6 +118,7 @@ public abstract class LoadingPage extends FrameLayout {
 
     public abstract View onCreateSuccessPage();
 
+    protected abstract void loadData();
 //    public abstract ResultState onLoad();
 
     public enum ResultState {

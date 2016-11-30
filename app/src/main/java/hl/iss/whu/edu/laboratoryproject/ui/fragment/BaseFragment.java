@@ -3,13 +3,23 @@ package hl.iss.whu.edu.laboratoryproject.ui.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.lang.reflect.ParameterizedType;
+
+import hl.iss.whu.edu.laboratoryproject.constant.Constant;
 import hl.iss.whu.edu.laboratoryproject.ui.view.LoadingPage;
-import hl.iss.whu.edu.laboratoryproject.utils.RetrofitUtils;
 import hl.iss.whu.edu.laboratoryproject.utils.UiUtils;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
@@ -23,7 +33,10 @@ import io.reactivex.schedulers.Schedulers;
 
 public abstract class BaseFragment<T> extends Fragment {
     private LoadingPage mLoadingPage;
-    private  T data;
+    protected T data;
+    private String cachePath;
+    private File cacheFile;
+    private Gson gson = new Gson();
     public BaseFragment(){
     }
 
@@ -36,7 +49,53 @@ public abstract class BaseFragment<T> extends Fragment {
             public View onCreateSuccessPage() {
                 return BaseFragment.this.onCreateSuccessPage();
             }
+            @Override
+            protected void loadData() {
+                BaseFragment.this.loadDataFromServer();
+            }
         };
+        loadData();
+    }
+
+    public void loadData() {
+        cachePath = getContext().getCacheDir().getAbsolutePath();
+        cacheFile = new File(cachePath+File.separator+getClass().getSimpleName());
+        if (!cacheFile.exists())
+            loadDataFromServer();
+        else {
+            BufferedReader bufferedReader = null;
+            try {
+                bufferedReader = new BufferedReader(new FileReader(cacheFile));
+                String line = bufferedReader.readLine();
+                long lastTime = Long.parseLong(line);
+                if (System.currentTimeMillis()-lastTime< Constant.CACHE_DURATION){
+                    StringBuilder builder = new StringBuilder();
+                    while((line = bufferedReader.readLine())!=null){
+                        builder.append(line);
+                    }
+                    data = gson.fromJson(builder.toString(),((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
+                    mLoadingPage.changeState(LoadingPage.STATE_SUCCESS);
+                }else {
+                    cacheFile.delete();
+                    loadDataFromServer();
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }finally {
+                try {
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+    }
+
+    public void loadDataFromServer() {
+
         sendRequest().subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<T>() {
             @Override
             public void onSubscribe(Disposable d) {
@@ -58,11 +117,21 @@ public abstract class BaseFragment<T> extends Fragment {
 
             }
         });
-
     }
 
     private void handleResult(T value) {
         data = value;
+        PrintWriter writer = null;
+        try {
+            writer =new PrintWriter( cacheFile) ;
+            writer.println(System.currentTimeMillis());
+            writer.print(gson.toJson(value));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            writer.close();
+        }
+
         if (data == null)
             mLoadingPage.changeState(LoadingPage.STATE_NO_DATA);
         if (data!=null)

@@ -44,10 +44,6 @@ public class LessonSelectionFragment extends BaseFragment<ArrayList<Subject>> {
         //初始化RecyclerView
         RecyclerView recyclerView = ButterKnife.findById(view, R.id.recycler_cs);
         recyclerView.setLayoutManager(new LinearLayoutManager(UiUtils.getContext(),LinearLayoutManager.HORIZONTAL,false));
-        ArrayList<Subject> data = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            data.add(new Subject(i + "", i + "", i + "", i + ""));
-        }
         RecyclerLessonSelectAdapter adapter = new RecyclerLessonSelectAdapter(data);
         adapter.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener<Subject>() {
             @Override

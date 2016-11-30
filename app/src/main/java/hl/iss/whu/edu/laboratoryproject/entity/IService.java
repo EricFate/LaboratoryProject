@@ -39,6 +39,6 @@ public interface IService {
     Observable<ArrayList<Subject>> loadMyLessons();
     @GET("LoadDiscoverServlet")
     Observable<ArrayList<Discover>> loadDiscover();
-    @GET("LoadChapter")
+    @GET("LoadChapterServlet")
     Observable<ArrayList<Chapter>> loadChapter();
 }
