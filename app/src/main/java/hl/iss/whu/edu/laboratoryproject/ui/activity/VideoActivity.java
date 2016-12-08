@@ -33,8 +33,10 @@ import hl.iss.whu.edu.laboratoryproject.R;
 import hl.iss.whu.edu.laboratoryproject.adapter.VideoFragmentPagerAdapter;
 import hl.iss.whu.edu.laboratoryproject.ui.fragment.ChapterFragment;
 import hl.iss.whu.edu.laboratoryproject.ui.fragment.DiscussFragment;
+import hl.iss.whu.edu.laboratoryproject.ui.fragment.LessonDetailFragment;
 import hl.iss.whu.edu.laboratoryproject.ui.fragment.LessonSelectionFragment;
 import hl.iss.whu.edu.laboratoryproject.ui.fragment.MyLessonsFragment;
+import hl.iss.whu.edu.laboratoryproject.ui.fragment.QuestionFragment;
 import io.vov.vitamio.MediaPlayer;
 import io.vov.vitamio.Vitamio;
 import io.vov.vitamio.widget.CenterLayout;
@@ -77,7 +79,6 @@ public class VideoActivity extends AppCompatActivity {
     private GestureDetector mGestureDetector;
     private Timer timer = new Timer();
     private TimerTask task;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -243,13 +244,13 @@ public class VideoActivity extends AppCompatActivity {
 
     private void initData() {
         titles.add("课时");
+        titles.add("讨论");
         titles.add("详情");
         titles.add("问答");
-        titles.add("讨论");
         fragments.add(new ChapterFragment());
         fragments.add(new DiscussFragment());
-        fragments.add(new LessonSelectionFragment());
-        fragments.add(new MyLessonsFragment());
+        fragments.add(new LessonDetailFragment());
+        fragments.add(new QuestionFragment());
         //初始化ViewPager 和TabLayout
         mViewPager.setAdapter(new VideoFragmentPagerAdapter(getSupportFragmentManager(), fragments, titles));
         mTabLayout.setupWithViewPager(mViewPager);

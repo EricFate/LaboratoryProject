@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Process;
 
+import hl.iss.whu.edu.laboratoryproject.manager.SmackManager;
+
 /**
  * Created by fate on 2016/10/20.
  */
@@ -35,6 +37,11 @@ public class BaseApplication extends Application {
         return mainThreadId;
     }
 
-    ;
-
+    @Override
+    public void onTerminate() {
+        if(SmackManager.getConnection().isConnected()){
+            SmackManager.getConnection().disconnect();
+        }
+        super.onTerminate();
+    }
 }

@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
+import com.lcodecore.tkrefreshlayout.header.SinaRefreshView;
 import com.yalantis.pulltorefresh.library.PullToRefreshView;
 
 import java.util.ArrayList;
@@ -33,17 +35,30 @@ public class MyLessonsFragment extends BaseFragment<ArrayList<Subject>> {
     public View onCreateSuccessPage() {
         View view = UiUtils.inflate(R.layout.fragment_my_lessons);
         //初始化PullToRefreshView
-        final PullToRefreshView pullToRefreshView = ButterKnife.findById(view,R.id.ptrv_mylesson);
-        pullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
+        final TwinklingRefreshLayout pullToRefreshView = ButterKnife.findById(view,R.id.tkrv_mylesson);
+//        pullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                UiUtils.getHandler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        pullToRefreshView.setRefreshing(false);
+//                        Log.e("refreshing","false");
+//                    }
+//                },1000);
+//            }
+//        });
+        pullToRefreshView.setHeaderView(new SinaRefreshView(getActivity()));
+        pullToRefreshView.setEnableLoadmore(false);
+        pullToRefreshView.setOnRefreshListener(new TwinklingRefreshLayout.OnRefreshListener(){
             @Override
-            public void onRefresh() {
+            public void onRefresh(final TwinklingRefreshLayout refreshLayout) {
                 UiUtils.getHandler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        pullToRefreshView.setRefreshing(false);
-                        Log.e("refreshing","false");
+                       refreshLayout.finishRefreshing();
                     }
-                },1000);
+                },2000);
             }
         });
         //初始化RecyclerView

@@ -14,29 +14,26 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import hl.iss.whu.edu.laboratoryproject.R;
 import hl.iss.whu.edu.laboratoryproject.entity.Chapter;
+import hl.iss.whu.edu.laboratoryproject.ui.view.AnimatedExpandableListView;
 import hl.iss.whu.edu.laboratoryproject.utils.UiUtils;
 
 /**
  * Created by fate on 2016/11/26.
  */
 
-public class ExpandableChapterAdapter extends BaseExpandableListAdapter {
+public class ExpandableChapterAdapter extends AnimatedExpandableListView.AnimatedExpandableListAdapter {
     private ArrayList<Chapter> data;
 
     public ExpandableChapterAdapter(ArrayList<Chapter> data) {
         this.data = data;
     }
 
-
     @Override
     public int getGroupCount() {
         return data.size();
     }
 
-    @Override
-    public int getChildrenCount(int groupPosition) {
-        return data.get(groupPosition).getLessons().size();
-    }
+
 
     @Override
     public Object getGroup(int groupPosition) {
@@ -74,9 +71,25 @@ public class ExpandableChapterAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+//    @Override
+//    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+//        if (convertView ==null) {
+//            convertView = LayoutInflater.from(UiUtils.getContext()).inflate(R.layout.item_expandable_chapter_child, null);
+//            TextView title = ButterKnife.findById(convertView, R.id.tv_child_title);
+//            Chapter.Lesson lesson = data.get(groupPosition).getLessons().get(childPosition);
+//            title.setText(lesson.getTitle());
+//        }
+//        return convertView;
+//    }
+
     @Override
-    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        if (convertView ==null) {
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
+    }
+
+    @Override
+    public View getRealChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        if (convertView == null) {
             convertView = LayoutInflater.from(UiUtils.getContext()).inflate(R.layout.item_expandable_chapter_child, null);
             TextView title = ButterKnife.findById(convertView, R.id.tv_child_title);
             Chapter.Lesson lesson = data.get(groupPosition).getLessons().get(childPosition);
@@ -86,7 +99,7 @@ public class ExpandableChapterAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return true;
+    public int getRealChildrenCount(int groupPosition) {
+        return data.get(groupPosition).getLessons().size();
     }
 }

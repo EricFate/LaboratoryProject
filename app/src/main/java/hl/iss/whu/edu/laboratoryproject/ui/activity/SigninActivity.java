@@ -3,12 +3,19 @@ package hl.iss.whu.edu.laboratoryproject.ui.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.EditText;
+
+import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.XMPPException;
+
+import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -17,6 +24,7 @@ import hl.iss.whu.edu.laboratoryproject.R;
 import hl.iss.whu.edu.laboratoryproject.constant.Constant;
 import hl.iss.whu.edu.laboratoryproject.entity.IService;
 import hl.iss.whu.edu.laboratoryproject.entity.Result;
+import hl.iss.whu.edu.laboratoryproject.manager.SmackManager;
 import hl.iss.whu.edu.laboratoryproject.utils.RetrofitUtils;
 import hl.iss.whu.edu.laboratoryproject.utils.UserInfo;
 import io.reactivex.Observable;
@@ -77,7 +85,12 @@ public class SigninActivity extends AppCompatActivity {
                 if (value.getCode() == 0) {
                     UserInfo.username = username;
                     UserInfo.password = password;
+                    UserInfo.imageURL = value.getImageURL();
+                    UserInfo.nickname = value.getNickname();
+                    UserInfo.signiture = value.getSigniture();
+
                     storeInfo(username, password);
+                    new AsyncTaskSmackInit().execute();
                     Intent intent = new Intent(SigninActivity.this, MainActivity.class);
                     startActivity(intent);
                 } else {
@@ -108,5 +121,18 @@ public class SigninActivity extends AppCompatActivity {
         editor.putString("password", password);
         editor.putBoolean("remember", cbRemember.isChecked());
         editor.commit();
+    }
+
+    class AsyncTaskSmackInit extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                SmackManager.login(UserInfo.username,UserInfo.password);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
     }
 }

@@ -5,10 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.yalantis.pulltorefresh.library.PullToRefreshView
-        android:id="@+id/ptrv_mylesson"
+    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+        android:id="@+id/tkrv_mylesson"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         >
 
         <android.support.v7.widget.RecyclerView
@@ -21,5 +22,5 @@
             >
         </android.support.v7.widget.RecyclerView>
 
-    </com.yalantis.pulltorefresh.library.PullToRefreshView>
+    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
 </LinearLayout>

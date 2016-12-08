@@ -43,9 +43,15 @@ public class RecyclerChatAdapter extends BaseRecyclerViewAdapter<Chatter, Recycl
         holder.tvName.setText(chatter.getName());
         holder.tvWord.setText(chatter.getMessage());
     }
-    public void addChatter(Chatter chatter){
+
+    public void addChatter(Chatter chatter) {
         data.add(chatter);
-        notifyDataSetChanged();
+        UiUtils.runInMainThread(new Runnable() {
+            @Override
+            public void run() {
+                notifyDataSetChanged();
+            }
+        });
     }
 
     class ChatViewHolder extends RecyclerView.ViewHolder {

@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\animatedExpandableListView\\build\\intermediates\\res\\merged\\debug\\layout\\group_item.xml",
+        "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\animatedExpandableListView\\src\\main\\res\\layout\\group_item.xml"
+    },
+    {
+        "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\animatedExpandableListView\\build\\intermediates\\res\\merged\\debug\\layout\\list_item.xml",
+        "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\animatedExpandableListView\\src\\main\\res\\layout\\list_item.xml"
+    },
+    {
+        "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\animatedExpandableListView\\build\\intermediates\\res\\merged\\debug\\layout\\activity_main.xml",
+        "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\animatedExpandableListView\\src\\main\\res\\layout\\activity_main.xml"
+    }
+]

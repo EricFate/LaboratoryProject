@@ -25,21 +25,22 @@ public class RecyclerMyLessonsAdapter extends BaseRecyclerViewAdapter<String, Re
 
     @Override
     public ListViewHoder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(UiUtils.getContext()).inflate(R.layout.item_recycler_my_lessons, parent, false);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        View view = LayoutInflater.from(UiUtils.getContext()).inflate(R.layout.item_recycler_my_lessons, parent, false);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (RecyclerMyLessonsAdapter.this.mListener != null)
                     RecyclerMyLessonsAdapter.this.mListener.onItemClick(v, (String) v.getTag());
-                }
-            });
-            return new ListViewHoder(view);
+            }
+        });
+        return new ListViewHoder(view);
 
     }
 
     @Override
     public void onBindViewHolder(ListViewHoder holder, int position) {
-            holder.tv.setText(data.get(position ));
-            holder.itemView.setTag(data.get(position));
+        holder.tv.setText(data.get(position));
+        holder.itemView.setTag(data.get(position));
 
     }
 

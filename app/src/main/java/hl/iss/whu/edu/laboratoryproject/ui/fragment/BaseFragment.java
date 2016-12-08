@@ -109,6 +109,7 @@ public abstract class BaseFragment<T> extends Fragment {
 
             @Override
             public void onError(Throwable e) {
+                e.printStackTrace();
                 mLoadingPage.changeState(LoadingPage.STATE_FAILED);
             }
 

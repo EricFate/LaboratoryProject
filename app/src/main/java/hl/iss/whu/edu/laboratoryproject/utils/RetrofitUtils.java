@@ -23,9 +23,10 @@ public class RetrofitUtils {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client)
                 .build();
+        service = retrofit.create(IService.class);
     }
     private RetrofitUtils(){}
     public static IService getService(){
-        return retrofit.create(IService.class);
+        return service;
     }
 }

@@ -7,5 +7,7 @@ package hl.iss.whu.edu.laboratoryproject.utils;
 public class UserInfo {
     public static String username;
     public static String password;
-    public static String identity = "student";
+    public static String nickname;
+    public static String imageURL = "";
+    public static String signiture = "";
 }
