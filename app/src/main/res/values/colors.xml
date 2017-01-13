@@ -10,5 +10,5 @@
     <color name="main_unselected_grey">#9E9E9E</color>
     <color name="radio_blue_normal">#a3ceff</color>
     <color name="video_controller_background">#75000000</color>
-
+    <color name="light_grey">#f4f4f4</color>
 </resources>

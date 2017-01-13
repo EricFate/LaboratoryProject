@@ -42,6 +42,12 @@ public class User {
         this.signiture = signiture;
     }
 
+    public User(String nickname, String username, String imageURL) {
+        this.nickname = nickname;
+        this.username = username;
+        this.imageURL = imageURL;
+    }
+
     public String getUsername() {
         return username;
     }

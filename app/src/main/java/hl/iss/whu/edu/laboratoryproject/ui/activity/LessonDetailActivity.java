@@ -17,16 +17,11 @@ public class LessonDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lesson_detail);
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_lesson_detail);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_downward_grey_600_24dp);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
     }
 
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
+
 
     @OnClick(R.id.bt_start_learning)
     public void onClick() {

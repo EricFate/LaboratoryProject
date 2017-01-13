@@ -1,5 +1,7 @@
 package hl.iss.whu.edu.laboratoryproject.entity;
 
+import org.jxmpp.jid.BareJid;
+
 import java.io.Serializable;
 
 /**
@@ -9,21 +11,22 @@ import java.io.Serializable;
 public class Chatter implements Serializable {
     private String message;
     private String time;
-    private String imageURL;
+    private byte[] image;
     private String name;
     private int state;
     private String signiture;
-    private String jid;
+    private BareJid jid;
 
-    public Chatter(String name, String message, String imageURL, String time) {
+    public Chatter(String name, String message, byte[] image, String time,BareJid jid) {
         this.name = name;
         this.message = message;
-        this.imageURL = imageURL;
+        this.image = image;
         this.time = time;
+        this.jid = jid;
     }
 
-    public Chatter(int state, String name, String imageURL, String signiture, String jid) {
-        this.imageURL = imageURL;
+    public Chatter(int state, String name, byte[] image, String signiture, BareJid jid) {
+        this.image = image;
         this.name = name;
         this.state = state;
         this.signiture = signiture;
@@ -47,12 +50,12 @@ public class Chatter implements Serializable {
         this.message = message;
     }
 
-    public String getImageURL() {
-        return imageURL;
+    public byte[] getImage() {
+        return image;
     }
 
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public String getTime() {
@@ -79,11 +82,11 @@ public class Chatter implements Serializable {
         this.signiture = signiture;
     }
 
-    public String getJid() {
+    public BareJid getJid() {
         return jid;
     }
 
-    public void setJid(String jid) {
+    public void setJid(BareJid jid) {
         this.jid = jid;
     }
 }

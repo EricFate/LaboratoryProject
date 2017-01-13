@@ -17,6 +17,7 @@ import hl.iss.whu.edu.laboratoryproject.entity.Chatter;
 import hl.iss.whu.edu.laboratoryproject.entity.Group;
 import hl.iss.whu.edu.laboratoryproject.glide.GlideRoundTransform;
 import hl.iss.whu.edu.laboratoryproject.ui.view.AnimatedExpandableListView;
+import hl.iss.whu.edu.laboratoryproject.utils.ImageFactory;
 import hl.iss.whu.edu.laboratoryproject.utils.UiUtils;
 
 /**
@@ -36,7 +37,6 @@ public class ExpandableContactAdapter extends AnimatedExpandableListView.Animate
     }
 
 
-
     @Override
     public Object getGroup(int groupPosition) {
         return data.get(groupPosition);
@@ -44,7 +44,10 @@ public class ExpandableContactAdapter extends AnimatedExpandableListView.Animate
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return data.get(groupPosition).getContacts().get(childPosition);
+        int presenceNumber = data.get(groupPosition).getPresence().size();
+        if (childPosition < presenceNumber)
+            return data.get(groupPosition).getPresence().get(childPosition);
+        else return data.get(groupPosition).getAbsence().get(childPosition - presenceNumber);
     }
 
     @Override
@@ -64,12 +67,20 @@ public class ExpandableContactAdapter extends AnimatedExpandableListView.Animate
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        if (convertView ==null){
-         convertView = LayoutInflater.from(UiUtils.getContext()).inflate(R.layout.item_expandable_contact_group, null);
-        TextView name = ButterKnife.findById(convertView,R.id.tv_group_name);
-        name.setText(data.get(groupPosition).getName());
+        GroupViewHoldder viewHoldder ;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(UiUtils.getContext()).inflate(R.layout.item_expandable_contact_group, null);
+            viewHoldder = new GroupViewHoldder();
+            viewHoldder.name = ButterKnife.findById(convertView, R.id.tv_group_name);
+            viewHoldder.number = ButterKnife.findById(convertView, R.id.tv_contacts_number);
+            convertView.setTag(viewHoldder);
         }
-
+        else {
+            viewHoldder = (GroupViewHoldder) convertView.getTag();
+        }
+        Group group = data.get(groupPosition);
+        viewHoldder.name.setText(group.getName());
+        viewHoldder.number.setText(group.getPresence().size() + "/" + getRealChildrenCount(groupPosition));
         return convertView;
     }
 
@@ -91,29 +102,48 @@ public class ExpandableContactAdapter extends AnimatedExpandableListView.Animate
 
     @Override
     public View getRealChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        ChildViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(UiUtils.getContext()).inflate(R.layout.item_expandable_contact_child, null);
-            TextView name = ButterKnife.findById(convertView, R.id.tv_contact_name);
-            TextView signiture = ButterKnife.findById(convertView, R.id.tv_contact_signiture);
-            ImageView image = ButterKnife.findById(convertView,R.id.iv_contact_image);
-            TextView number = ButterKnife.findById(convertView,R.id.tv_contacts_number);
-            Chatter chatter = data.get(groupPosition).getContacts().get(childPosition);
-            name.setText(chatter.getName());
-            signiture.setText(chatter.getSigniture());
-            Glide.with(UiUtils.getContext())
-                    .load(Constant.SERVER_URL+chatter.getImageURL())
-                    .placeholder(R.drawable.ic_account_circle_blue_600_24dp)
-                    .transform(new GlideRoundTransform(UiUtils.getContext()))
-                    .into(image);
-            ButterKnife.findById(convertView,R.id.ll_presence).setVisibility(chatter.getState()==0?View.VISIBLE:View.GONE);
-            ButterKnife.findById(convertView,R.id.ll_absence).setVisibility(chatter.getState()==1?View.VISIBLE:View.GONE);
 
+            convertView = LayoutInflater.from(UiUtils.getContext()).inflate(R.layout.item_expandable_contact_child, null);
+            viewHolder = new ChildViewHolder();
+            viewHolder.name = ButterKnife.findById(convertView, R.id.tv_contact_name);
+            viewHolder.signiture = ButterKnife.findById(convertView, R.id.tv_contact_signiture);
+            viewHolder.image = ButterKnife.findById(convertView, R.id.iv_contact_image);
+            convertView.setTag(viewHolder);
+        }else {
+            viewHolder = (ChildViewHolder) convertView.getTag();
         }
+        Chatter chatter;
+        int presenceNumber = data.get(groupPosition).getPresence().size();
+        if (childPosition < presenceNumber)
+            chatter = data.get(groupPosition).getPresence().get(childPosition);
+        else chatter = data.get(groupPosition).getAbsence().get(childPosition - presenceNumber);
+        viewHolder.name.setText(chatter.getName());
+        viewHolder.signiture.setText(chatter.getSigniture());
+        Glide.with(UiUtils.getContext())
+                .load(chatter.getImage())
+                .dontAnimate()
+                .placeholder(R.drawable.ic_account_circle_blue_600_24dp)
+                .into(viewHolder.image);
+        ButterKnife.findById(convertView, R.id.ll_presence).setVisibility(chatter.getState() == 0 ? View.VISIBLE : View.GONE);
+        ButterKnife.findById(convertView, R.id.ll_absence).setVisibility(chatter.getState() == 1 ? View.VISIBLE : View.GONE);
         return convertView;
     }
 
     @Override
     public int getRealChildrenCount(int groupPosition) {
-        return data.get(groupPosition).getContacts().size();
+        return data.get(groupPosition).getPresence().size() + data.get(groupPosition).getAbsence().size();
+    }
+
+    static class ChildViewHolder {
+        TextView name;
+        TextView signiture;
+        ImageView image;
+    }
+    static class GroupViewHoldder {
+        TextView name;
+        TextView number;
+
     }
 }

@@ -37,8 +37,8 @@ public class ChapterFragment extends BaseFragment<ArrayList<Chapter>> {
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Chapter.Lesson lesson = (Chapter.Lesson) mAdapter.getChild(groupPosition,childPosition);
                 ((VideoActivity) getActivity()).playVideo(Constant.SERVER_URL+lesson.getURL());
-                Toast.makeText(getActivity(),Constant.SERVER_URL+lesson.getURL(),Toast.LENGTH_SHORT).show();
-                aelvChapter.collapseGroupWithAnimation(groupPosition);
+//                Toast.makeText(getActivity(),Constant.SERVER_URL+lesson.getURL(),Toast.LENGTH_SHORT).show();
+//                aelvChapter.collapseGroupWithAnimation(groupPosition);
                 return true;
             }
         });

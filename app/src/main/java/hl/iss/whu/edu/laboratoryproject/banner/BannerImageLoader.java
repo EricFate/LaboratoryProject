@@ -13,6 +13,7 @@ import hl.iss.whu.edu.laboratoryproject.utils.UiUtils;
  */
 
 public class BannerImageLoader extends ImageLoader {
+
     @Override
     public void displayImage(Context context, Object path, ImageView imageView) {
         Glide.with(context).load((Integer)path).into(imageView);

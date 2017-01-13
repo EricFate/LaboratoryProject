@@ -1,70 +1,81 @@
 package hl.iss.whu.edu.laboratoryproject.adapter;
 
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import hl.iss.whu.edu.laboratoryproject.R;
-import hl.iss.whu.edu.laboratoryproject.constant.Constant;
+import hl.iss.whu.edu.laboratoryproject.entity.Catagory;
 import hl.iss.whu.edu.laboratoryproject.entity.Subject;
+import hl.iss.whu.edu.laboratoryproject.listener.OnRecyclerViewItemClickListener;
+import hl.iss.whu.edu.laboratoryproject.manager.FullyLinearLayoutManager;
 import hl.iss.whu.edu.laboratoryproject.utils.UiUtils;
 
 /**
  * Created by fate on 2016/11/13.
  */
 
-public class RecyclerLessonSelectAdapter extends BaseRecyclerViewAdapter<Subject,RecyclerLessonSelectAdapter.MyViewHolder> {
+public class RecyclerLessonSelectAdapter extends BaseRecyclerViewAdapter<Catagory,RecyclerLessonSelectAdapter.ViewHolder> {
 
-    public RecyclerLessonSelectAdapter(ArrayList<Subject> data) {
+    private OnRecyclerViewItemClickListener<Subject> onSubjectClickListener;
+    public RecyclerLessonSelectAdapter(ArrayList<Catagory> data) {
         super(data);
     }
 
+//    @Override
+//    public int getItemViewType(int position) {
+//        return position%2;
+//    }
+
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(UiUtils.getContext()).inflate(R.layout.item_recycler_lesson_selection,parent,false);
-        view.setOnClickListener(new View.OnClickListener() {
+//        view.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mListener.onItemClick(v, (Subject) v.getTag());
+//            }
+//        });
+        return new ViewHolder(view);
+    }
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        Catagory catagory = data.get(position);
+
+        holder.tvTitle.setText(catagory.getTitle());
+        RecyclerView recyclerSubject = holder.recyclerSubject;
+        RecyclerSubjectAdapter adapter = new RecyclerSubjectAdapter(catagory.getSubjects());
+        recyclerSubject.setLayoutManager(new FullyLinearLayoutManager(UiUtils.getContext(), LinearLayoutManager.HORIZONTAL,false));
+        recyclerSubject.setAdapter(adapter);
+        adapter.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener<Subject>() {
             @Override
-            public void onClick(View v) {
-                mListener.onItemClick(v, (Subject) v.getTag());
+            public void onItemClick(View v, Subject data) {
+                if (onSubjectClickListener !=null)
+                    onSubjectClickListener.onItemClick(v,data);
             }
         });
-        return new MyViewHolder(view);
+//        holder.itemView.setTag(data.get(position));
     }
-    @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        Subject subject = data.get(position);
-        Glide.with(UiUtils.getContext())
-                .load(Constant.SERVER_URL+subject.getImgURL())
-                .placeholder(R.drawable.bg)
-                .into(holder.ivLesson);
-        holder.tvName.setText(subject.getName());
-        holder.tvDuration.setText(subject.getDuration());
-        holder.tvNumber.setText(subject.getNumber());
-        holder.itemView.setTag(data.get(position));
+    public void setOnSubjectClickListener(OnRecyclerViewItemClickListener<Subject> onSubjectClickListener){
+        this.onSubjectClickListener = onSubjectClickListener;
     }
 
-     static class MyViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivLesson;
-        TextView tvName;
-        TextView tvDuration;
-        TextView tvNumber;
+     static class ViewHolder extends RecyclerView.ViewHolder {
+        RecyclerView recyclerSubject;
+        TextView tvTitle;
+
          View itemView;
-        public MyViewHolder(View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
-            ivLesson = ButterKnife.findById(itemView, R.id.iv_item_lesson_seletion);
-            tvName = ButterKnife.findById(itemView, R.id.tv_item_selection_lesson_name);
-            tvDuration = ButterKnife.findById(itemView, R.id.tv_item_selection_lesson_duration);
-            tvNumber = ButterKnife.findById(itemView, R.id.tv_item_selection_lesson_numbers);
-
+            tvTitle = ButterKnife.findById(itemView,R.id.tv_title);
+            recyclerSubject = ButterKnife.findById(itemView,R.id.recycler_subject);
         }
     }
 }

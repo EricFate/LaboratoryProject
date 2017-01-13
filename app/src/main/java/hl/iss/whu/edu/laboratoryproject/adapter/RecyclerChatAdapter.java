@@ -35,13 +35,14 @@ public class RecyclerChatAdapter extends BaseRecyclerViewAdapter<Chatter, Recycl
     @Override
     public void onBindViewHolder(ChatViewHolder holder, int position) {
         Chatter chatter = data.get(position);
-        Glide.with(UiUtils.getContext())
-                .load(chatter.getImageURL())
-                .placeholder(R.drawable.ic_account_circle_blue_600_24dp)
-                .transform(new GlideRoundTransform(UiUtils.getContext()))
-                .into(holder.image);
+//        Glide.with(UiUtils.getContext())
+////                .load(chatter.getImage())
+//                .load(chatter.getImage())
+//                .placeholder(R.drawable.ic_account_circle_blue_600_24dp)
+//                .into(holder.image);
         holder.tvName.setText(chatter.getName());
         holder.tvWord.setText(chatter.getMessage());
+        holder.tvTime.setText(chatter.getTime());
     }
 
     public void addChatter(Chatter chatter) {
@@ -55,15 +56,16 @@ public class RecyclerChatAdapter extends BaseRecyclerViewAdapter<Chatter, Recycl
     }
 
     class ChatViewHolder extends RecyclerView.ViewHolder {
-        ImageView image;
+//        ImageView image;
         TextView tvName;
         TextView tvWord;
-
+        TextView tvTime;
         public ChatViewHolder(View itemView) {
             super(itemView);
-            image = ButterKnife.findById(itemView, R.id.iv_chat_image);
+//            image = ButterKnife.findById(itemView, R.id.iv_chat_image);
             tvName = ButterKnife.findById(itemView, R.id.tv_chat_name);
             tvWord = ButterKnife.findById(itemView, R.id.tv_chat_word);
+            tvTime= ButterKnife.findById(itemView, R.id.tv_chat_time);
         }
     }
 }

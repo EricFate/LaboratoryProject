@@ -5,18 +5,25 @@
               android:gravity="center_horizontal"
               android:orientation="horizontal">
 
-    <ImageView
-        android:src="@drawable/ic_account_circle_blue_600_24dp"
-        android:id="@+id/iv_chat_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"/>
+    <!--<ImageView-->
+        <!--android:visibility="gone"-->
+        <!--android:src="@drawable/ic_account_circle_blue_600_24dp"-->
+        <!--android:id="@+id/iv_chat_image"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="30dp"-->
+        <!--android:layout_margin="10dp"/>-->
 
     <LinearLayout
+        android:layout_margin="10dp"
         android:orientation="vertical"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
         <TextView
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
@@ -26,6 +33,17 @@
             android:id="@+id/tv_chat_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:textSize="10sp"
+            android:textColor="@android:color/black"
+            android:text="时间"
+            android:id="@+id/tv_chat_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        </LinearLayout>
         <TextView
             android:textSize="15sp"
             android:textColor="@android:color/black"

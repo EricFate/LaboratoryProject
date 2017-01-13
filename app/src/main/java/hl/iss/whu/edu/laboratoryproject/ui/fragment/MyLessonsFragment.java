@@ -64,16 +64,16 @@ public class MyLessonsFragment extends BaseFragment<ArrayList<Subject>> {
         //初始化RecyclerView
         RecyclerView recyclerView = ButterKnife.findById(view, R.id.recycler_my_lesson);
         recyclerView.setLayoutManager(new LinearLayoutManager(UiUtils.getContext()));
-        ArrayList<String> data = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            data.add(i + "");
-        }
+//        ArrayList<String> data = new ArrayList<>();
+//        for (int i = 0; i < 20; i++) {
+//            data.add(i + "");
+//        }
         RecyclerMyLessonsAdapter adapter = new RecyclerMyLessonsAdapter(data);
-        adapter.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener<String>() {
+        adapter.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener<Subject>() {
             @Override
-            public void onItemClick(View v, String data) {
+            public void onItemClick(View v, Subject data) {
                 Intent intent = new Intent(getActivity(), LessonDetailActivity.class);
-                Toast.makeText(UiUtils.getContext(), data, Toast.LENGTH_SHORT).show();
+                Toast.makeText(UiUtils.getContext(), data.getName(), Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }
         });

@@ -20,11 +20,12 @@
         android:id="@+id/rg_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
+        android:background="@drawable/shape_background_radio"
         android:orientation="horizontal"
         >
 
         <RadioButton
+
         android:id="@+id/rb_select"
         style="@style/RadioButtonStyle"
         android:layout_height="wrap_content"

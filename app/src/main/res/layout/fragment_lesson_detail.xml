@@ -26,9 +26,11 @@
 
             <TextView
                 style="@style/TextViewContent"
+                android:textColor="@android:color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"/>
+                android:text="@string/lesson_detail"
+                android:textSize="16sp"/>
 
 
         </LinearLayout>
@@ -103,6 +105,7 @@
                         android:layout_height="wrap_content"/>
 
                     <RatingBar
+                        android:rating="4.5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
                 </LinearLayout>
@@ -129,10 +132,12 @@
                 />
 
             <TextView
+                android:textColor="@android:color/black"
                 style="@style/TextViewContent"
+                android:text="@string/lesson_knowledge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"/>
+                android:textSize="16sp"/>
         </LinearLayout>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

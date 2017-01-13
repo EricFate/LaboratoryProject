@@ -14,10 +14,10 @@
     android:gravity="center"
     tools:context="hl.iss.whu.edu.laboratoryproject.ui.activity.SigninActivity">
     <ImageView
-        android:layout_width="180dp"
-        android:layout_height="180dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_account_circle_blue_600_24dp"/>
+        android:src="@drawable/logo"/>
 
  <android.support.design.widget.TextInputLayout
      app:hintTextAppearance="@style/TextInputLayoutHintStyle"

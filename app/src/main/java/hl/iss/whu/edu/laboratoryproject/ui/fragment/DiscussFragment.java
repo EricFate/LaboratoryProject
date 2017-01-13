@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +25,17 @@ import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jivesoftware.smackx.muc.MultiUserChat;
 import org.jivesoftware.smackx.muc.MultiUserChatManager;
+import org.jivesoftware.smackx.vcardtemp.VCardManager;
+import org.jivesoftware.smackx.vcardtemp.packet.VCard;
+import org.jxmpp.jid.Jid;
 import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.jid.parts.Resourcepart;
 
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -75,7 +81,7 @@ public class DiscussFragment extends Fragment {
     private void joinChatRoom(String name) throws Exception {
         MultiUserChatManager multiUserChatManager = MultiUserChatManager.getInstanceFor(SmackManager.getConnection());
         chat = multiUserChatManager.getMultiUserChat (JidCreate.entityBareFrom(name + Constant.SMACK_CONFERENCE +SmackManager.getConnection().getServiceName()) );
-        Resourcepart nickname = Resourcepart.from("命运13号");
+        Resourcepart nickname = Resourcepart.from(SmackManager.getVCard().getNickName());
         chat.join(nickname);
     }
 
@@ -140,7 +146,17 @@ public class DiscussFragment extends Fragment {
                 chat.addMessageListener(new MessageListener() {
                     @Override
                     public void processMessage(Message message) {
-                        Chatter chatter = new Chatter(message.getFrom().asFullJidIfPossible().getResourcepart().toString(), message.getBody(), "","");
+                        Jid jid = message.getFrom();
+//                        Log.e(getClass().getName(), "processMessage: "+jid.toString() );
+
+                        byte[] avatar = new byte[0];
+//                        try {
+//                            VCard vCard = VCardManager.getInstanceFor(SmackManager.getConnection()).loadVCard(jid.asEntityBareJidIfPossible());
+//                            avatar = vCard.getAvatar();
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+                        Chatter chatter = new Chatter(jid.asFullJidIfPossible().getResourcepart().toString(), message.getBody(), avatar,getDate(),jid.asBareJid());
                         mAdapter.addChatter(chatter);
                     }
                 });
@@ -148,6 +164,10 @@ public class DiscussFragment extends Fragment {
                 Toast.makeText(getActivity(), "加入群组失败", Toast.LENGTH_SHORT).show();
                 btSend.setEnabled(false);
             }
+        }
+        private String getDate() {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            return format.format(new Date());
         }
     }
 }

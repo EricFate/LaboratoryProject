@@ -12,9 +12,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.jivesoftware.smack.AbstractXMPPConnection;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smackx.iqregister.AccountManager;
+import org.jivesoftware.smackx.vcardtemp.VCardManager;
+import org.jivesoftware.smackx.vcardtemp.packet.VCard;
+import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.jid.parts.Localpart;
 import org.jxmpp.stringprep.XmppStringprepException;
 
@@ -69,7 +73,7 @@ public class SignupActivity extends AppCompatActivity {
     public void onClick() {
         final String username = etAccount.getText().toString();
         final String password = etPassword.getText().toString();
-        String nickname = etNickname.getText().toString();
+        final String nickname = etNickname.getText().toString();
         String email = etEmail.getText().toString();
         String number = etNumber.getText().toString();
         String realname = etRealname.getText().toString();
@@ -102,7 +106,7 @@ public class SignupActivity extends AppCompatActivity {
             public void onNext(Result value) {
                 dialog.dismiss();
                 if (value.getCode() == 0) {
-                    new SmackSignupAsyncTask(username,password).execute();
+                    new SmackSignupAsyncTask(username,password,nickname).execute();
 //                    Intent intent = new Intent(SignupActivity.this, SigninActivity.class);
 //                    startActivity(intent);
                 } else {
@@ -133,20 +137,30 @@ public class SignupActivity extends AppCompatActivity {
     class SmackSignupAsyncTask extends AsyncTask <Void,Void,Boolean>{
         private String username;
         private String password;
+        private String nickname;
 
-        public SmackSignupAsyncTask(String username, String password) {
+        public SmackSignupAsyncTask(String username, String password, String nickname) {
             this.username = username;
             this.password = password;
+            this.nickname = nickname;
         }
+
 
         @Override
         protected Boolean doInBackground(Void... params) {
             try {
-                AccountManager manager = AccountManager.getInstance(SmackManager.getConnection());
+                AbstractXMPPConnection connection = SmackManager.getConnection();
+                if (!connection.isConnected())connection.connect();
+                AccountManager manager = AccountManager.getInstance(connection);
                 manager.sensitiveOperationOverInsecureConnection(true);
                 manager.createAccount(Localpart.from(username),password);
+                connection.login(username,password);
+                VCardManager cardManager = VCardManager.getInstanceFor(connection);
+                VCard vCard = cardManager.loadVCard();
+                vCard.setNickName(nickname);
+                cardManager.saveVCard(vCard);
+                connection.disconnect();
             } catch (Exception e) {
-
                 e.printStackTrace();
                 return false;
             }

@@ -28,7 +28,7 @@ public class QuestionFragment extends BaseFragment<ArrayList <Question>> {
         RecyclerView recyclerView = ButterKnife.findById(view,R.id.recycler_question);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         RecyclerQuestionAdapter adapter = new RecyclerQuestionAdapter(data);
-        Toast.makeText(getActivity(),new Gson().toJson(data),Toast.LENGTH_LONG).show();
+//        Toast.makeText(getActivity(),new Gson().toJson(data),Toast.LENGTH_LONG).show();
         recyclerView.setAdapter(adapter);
         return view;
     }

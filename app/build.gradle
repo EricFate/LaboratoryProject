@@ -53,4 +53,5 @@ dependencies {
     compile project(':library')
     compile 'org.igniterealtime.smack:smack-tcp:4.2.0-beta2'
     compile 'org.igniterealtime.smack:smack-android-extensions:4.2.0-beta2'
+    compile 'com.ms-square:expandableTextView:0.1.4'
 }

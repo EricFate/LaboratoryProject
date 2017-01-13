@@ -1,9 +1,17 @@
-package hl.iss.whu.edu.laboratoryproject.entity;
+package hl.iss.whu.edu.laboratoryproject.service;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
 
+import hl.iss.whu.edu.laboratoryproject.entity.Catagory;
+import hl.iss.whu.edu.laboratoryproject.entity.Chapter;
+import hl.iss.whu.edu.laboratoryproject.entity.Discover;
+import hl.iss.whu.edu.laboratoryproject.entity.Group;
+import hl.iss.whu.edu.laboratoryproject.entity.Question;
+import hl.iss.whu.edu.laboratoryproject.entity.Result;
+import hl.iss.whu.edu.laboratoryproject.entity.Subject;
+import hl.iss.whu.edu.laboratoryproject.entity.SubjectDetail;
 import hl.iss.whu.edu.laboratoryproject.utils.UserInfo;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
@@ -42,7 +50,7 @@ public interface IService {
     Observable<Result> uploadImage(@Part("fileName") String description , @Part("file\";filename=\"1.jpg") RequestBody file);
 
     @GET("LoadAllLessonServlet")
-    Observable<ArrayList<Subject>> loadAllLessons();
+    Observable<ArrayList<Catagory>> loadAllLessons();
 
     @GET("LoadMyLessonServlet")
     Observable<ArrayList<Subject>> loadMyLessons();
@@ -55,4 +63,7 @@ public interface IService {
 
     @GET("LoadQuestionsServlet")
     Observable<ArrayList<Question>> loadQuestion();
+
+    @GET("GetContactsServlet")
+    Observable<ArrayList<Group>> getContacts();
 }

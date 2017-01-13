@@ -1,12 +1,8 @@
 package hl.iss.whu.edu.laboratoryproject.adapter;
 
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListAdapter;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -32,7 +28,6 @@ public class ExpandableChapterAdapter extends AnimatedExpandableListView.Animate
     public int getGroupCount() {
         return data.size();
     }
-
 
 
     @Override
@@ -62,25 +57,19 @@ public class ExpandableChapterAdapter extends AnimatedExpandableListView.Animate
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        if (convertView ==null){
-         convertView = LayoutInflater.from(UiUtils.getContext()).inflate(R.layout.item_expandable_chapter_group, null);
-        TextView title = ButterKnife.findById(convertView,R.id.tv_group_title);
-        title.setText(data.get(groupPosition).getTitle());
+        ViewHolder holder = null;
+        if (convertView == null) {
+            convertView = LayoutInflater.from(UiUtils.getContext()).inflate(R.layout.item_expandable_chapter_group, null);
+            holder = new ViewHolder();
+            holder.tvTitle = ButterKnife.findById(convertView, R.id.tv_group_title);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
-
+        holder.tvTitle.setText(data.get(groupPosition).getTitle());
         return convertView;
     }
 
-//    @Override
-//    public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-//        if (convertView ==null) {
-//            convertView = LayoutInflater.from(UiUtils.getContext()).inflate(R.layout.item_expandable_chapter_child, null);
-//            TextView title = ButterKnife.findById(convertView, R.id.tv_child_title);
-//            Chapter.Lesson lesson = data.get(groupPosition).getLessons().get(childPosition);
-//            title.setText(lesson.getTitle());
-//        }
-//        return convertView;
-//    }
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
@@ -89,12 +78,18 @@ public class ExpandableChapterAdapter extends AnimatedExpandableListView.Animate
 
     @Override
     public View getRealChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
+        ViewHolder viewHolder = null;
         if (convertView == null) {
             convertView = LayoutInflater.from(UiUtils.getContext()).inflate(R.layout.item_expandable_chapter_child, null);
-            TextView title = ButterKnife.findById(convertView, R.id.tv_child_title);
-            Chapter.Lesson lesson = data.get(groupPosition).getLessons().get(childPosition);
-            title.setText(lesson.getTitle());
+            viewHolder = new ViewHolder();
+            viewHolder.tvTitle = ButterKnife.findById(convertView, R.id.tv_child_title);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
+
+        Chapter.Lesson lesson = data.get(groupPosition).getLessons().get(childPosition);
+        viewHolder.tvTitle.setText(lesson.getTitle());
         return convertView;
     }
 
@@ -102,4 +97,10 @@ public class ExpandableChapterAdapter extends AnimatedExpandableListView.Animate
     public int getRealChildrenCount(int groupPosition) {
         return data.get(groupPosition).getLessons().size();
     }
+
+    static class ViewHolder {
+        TextView tvTitle;
+    }
+
+
 }

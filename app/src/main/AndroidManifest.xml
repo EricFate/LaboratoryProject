@@ -52,6 +52,7 @@
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
+
         </activity>
         <activity android:name=".ui.activity.SettingActivity">
         </activity>
@@ -67,9 +68,14 @@
             android:label="@string/title_activity_contact"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".ui.activity.ChatActivity"
-                  android:label="@style/AppTheme.NoActionBar"
-            />
+        <activity
+            android:name=".ui.activity.ChatActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ui.activity.QuestionActivity"
+            android:label="@string/title_activity_question"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

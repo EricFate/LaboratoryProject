@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.daimajia.swipe.SwipeLayout;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import hl.iss.whu.edu.laboratoryproject.R;
 import hl.iss.whu.edu.laboratoryproject.entity.Chatter;
+import hl.iss.whu.edu.laboratoryproject.utils.ImageFactory;
 import hl.iss.whu.edu.laboratoryproject.utils.UiUtils;
 
 /**
@@ -58,10 +60,15 @@ public class RecyclerMessageAdapter extends BaseRecyclerViewAdapter<Chatter,Recy
         });
         holder.slMessage.setShowMode(SwipeLayout.ShowMode.PullOut);
         holder.slMessage.addDrag(SwipeLayout.DragEdge.Left,holder.tvDelete);
-
+        Chatter chatter = data.get(position);
+        holder.tvName.setText(chatter.getName());
+        holder.tvContent.setText(chatter.getMessage());
+        holder.tvTime.setText(chatter.getTime());
+        Glide.with(UiUtils.getContext()).load(ImageFactory.getId(position)).into(holder.ivImage);
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder{
+        TextView tvTime;
         View itemView;
         TextView tvName;
         TextView tvContent;
@@ -72,6 +79,7 @@ public class RecyclerMessageAdapter extends BaseRecyclerViewAdapter<Chatter,Recy
         public MyViewHolder(View itemView) {
             super(itemView);
             this.itemView= itemView;
+            tvTime = ButterKnife.findById(itemView,R.id.tv_time);
             tvName = ButterKnife.findById(itemView, R.id.tv_message_name);
             tvContent = ButterKnife.findById(itemView, R.id.tv_message_content);
             tvDelete = ButterKnife.findById(itemView, R.id.tv_delete);

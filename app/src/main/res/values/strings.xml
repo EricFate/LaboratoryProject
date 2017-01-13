@@ -79,6 +79,11 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
-    <string name="title_activity_message">MessageActivity</string>
-    <string name="title_activity_contact">ContactActivity</string>
+    <string name="title_activity_message">消息</string>
+    <string name="title_activity_contact">联系人</string>
+    <string name="title_activity_question">QuestionActivity</string>
+    <string name="question_answer1">高中数学的难不在于知识点，而在于由知识点衍生变化出的各种复杂的解题技巧。那些说学了大学数学高中数学就简单了的，碰到复杂的高中数学题照样歇菜。因为大学重概念和理解，高中重解题方法和技巧。</string>
+    <string name="question_answer2">总结起来就是一句话：难而无用 题目有些真挺难的，但我们到底学了什么东西呢，几乎没有。 没有为后续的学习起到很好的推动作用</string>
+    <string name="lesson_detail">高中语文是一门博大精深的学科，要想学好语文，学习兴趣、良好的学习习惯等都是很重要的。它是最重要的交际工具，是人类文化的重要组成部分。是工具性与人文性的统一，是语文课程的基本特点。</string>
+    <string name="lesson_knowledge">1．小说三要素：A人物 B情节 C环境    2．议论文三要素：A论点 B论据 C论证    3．比喻三要素：A本体 B喻体 C喻词     4．记叙文六要素（五W+H）：何时when 何地where 何人who 何因why 何过how 何果what </string>
 </resources>

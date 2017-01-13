@@ -1,21 +1,49 @@
 package hl.iss.whu.edu.laboratoryproject.ui.activity;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.StanzaListener;
+import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.chat.Chat;
+import org.jivesoftware.smack.chat.ChatManager;
+import org.jivesoftware.smack.chat.ChatManagerListener;
+import org.jivesoftware.smack.chat.ChatMessageListener;
+import org.jivesoftware.smack.filter.StanzaFilter;
+import org.jivesoftware.smack.filter.StanzaTypeFilter;
+import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smack.packet.Presence;
+import org.jivesoftware.smack.packet.Stanza;
+import org.jivesoftware.smack.roster.Roster;
+import org.jivesoftware.smackx.vcardtemp.VCardManager;
+import org.jivesoftware.smackx.vcardtemp.packet.VCard;
+import org.jxmpp.jid.EntityJid;
+import org.jxmpp.jid.Jid;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import hl.iss.whu.edu.laboratoryproject.R;
 import hl.iss.whu.edu.laboratoryproject.adapter.ChatAdapter;
 import hl.iss.whu.edu.laboratoryproject.entity.ChatInformation;
+import hl.iss.whu.edu.laboratoryproject.entity.Chatter;
+import hl.iss.whu.edu.laboratoryproject.manager.SmackManager;
+import hl.iss.whu.edu.laboratoryproject.utils.UiUtils;
 
 
 /**
@@ -23,20 +51,69 @@ import hl.iss.whu.edu.laboratoryproject.entity.ChatInformation;
  */
 public class ChatActivity extends AppCompatActivity implements OnClickListener {
 
+    @Bind(R.id.tv_name)
+    TextView tvName;
+    @Bind(R.id.tv_state)
+    TextView tvState;
     private Button mBtnSend;// 发送btn
     //private Button mBtnBack;// 返回btn
     private EditText mEditTextContent;
     private ListView mListView;
     private ChatAdapter mAdapter;// 消息视图的Adapter
-    private List<ChatInformation> mDataArrays = new ArrayList<ChatInformation>();// 消息对象数组
+    private List<ChatInformation> mDataArrays = new ArrayList<>();// 消息对象数组
+    private Chat mChat;
+    private Jid to;
+    private String nickname;
+    private Handler updateStateHandler = new Handler() {
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            if (msg.what == 1) {
+                new UpdateStateAsyncTask().execute();
+                sendEmptyMessageDelayed(1, 5000);
+            }
+        }
+    };
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chatting_main);
+        ButterKnife.bind(this);
         initView();// 初始化view
         initData();// 初始化数据
         mListView.setSelection(mAdapter.getCount() - 1);
+        Chatter chatter = (Chatter) getIntent().getSerializableExtra("chatter");
+//        tvState.setText(chatter.getState() == 0 ? "在线" : "离线");
+        to = chatter.getJid();
+        nickname = chatter.getName();
+        tvName.setText(nickname);
+        new InitChatAsyncTask().execute(to.asEntityJidIfPossible());
+        updateStateHandler.sendEmptyMessage(1);
+//        init();
     }
+
+    @Override
+    protected void onDestroy() {
+        updateStateHandler.removeMessages(1);
+        super.onDestroy();
+    }
+    //    private void init() {
+//        SmackManager.getConnection().addSyncStanzaListener(new StanzaListener() {
+//            @Override
+//            public void processPacket(Stanza packet) throws SmackException.NotConnectedException, InterruptedException {
+//                Message message = (Message) packet;
+//                final String time = getDate();
+//                final String content = message.getBody();
+//                final boolean isCom = true;
+//                Log.e("message", "processMessage: " + content);
+//                UiUtils.runInMainThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        mAdapter.add(new ChatInformation(nickname, time, content, isCom));
+//                    }
+//                });
+//            }
+//        }, new StanzaTypeFilter(Message.class));
+//    }
 
     /**
      * 初始化view
@@ -44,42 +121,42 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
     public void initView() {
         mListView = (ListView) findViewById(R.id.listview);
         mBtnSend = (Button) findViewById(R.id.btn_send);
-            mListView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        mListView.setOverScrollMode(View.OVER_SCROLL_NEVER);
         mBtnSend.setOnClickListener(this);
         //mBtnBack = (Button) findViewById(R.id.btn_back);
         //mBtnBack.setOnClickListener(this);
         mEditTextContent = (EditText) findViewById(R.id.et_sendmessage);
     }
 
-    private String[] msgArray = new String[]{"老师在么？", "在的", "上一次课的有个地方我不明白", "说吧，现在正好有空"
-            , "为什么...", "因为...","那为什么...","这样...", "噢噢，这样啊，谢谢老师。", "不客气哈，好好理解就好了","恩，老师再见","恩"};
-
-    private String[] dataArray = new String[]{"2016-12-08 18:00:02",
-            "2016-12-08 18:10:22", "2016-12-08 18:11:24",
-            "2016-12-08 18:20:23", "2016-12-08 18:30:31",
-            "2016-12-08 18:35:37", "2016-12-08 18:40:13",
-            "2016-12-08 18:50:26", "2016-12-08 18:52:57",
-            "2016-12-08 18:55:11", "2016-12-08 18:56:45",
-            "2016-12-08 18:57:33",};
-    private final static int COUNT = 12;// 初始化数组总数
+//    private String[] msgArray = new String[]{"老师在么？", "在的", "上一次课的有个地方我不明白", "说吧，现在正好有空"
+//            , "为什么...", "因为...", "那为什么...", "这样...", "噢噢，这样啊，谢谢老师。", "不客气哈，好好理解就好了", "恩，老师再见", "恩"};
+//
+//    private String[] dataArray = new String[]{"2016-12-08 18:00:02",
+//            "2016-12-08 18:10:22", "2016-12-08 18:11:24",
+//            "2016-12-08 18:20:23", "2016-12-08 18:30:31",
+//            "2016-12-08 18:35:37", "2016-12-08 18:40:13",
+//            "2016-12-08 18:50:26", "2016-12-08 18:52:57",
+//            "2016-12-08 18:55:11", "2016-12-08 18:56:45",
+//            "2016-12-08 18:57:33",};
+//    private final static int COUNT = 12;// 初始化数组总数
 
     /**
      * 模拟加载消息历史，实际开发可以从数据库中读出
      */
     public void initData() {
-        for (int i = 0; i < COUNT; i++) {
-            ChatInformation entity = new ChatInformation();
-            entity.setDate(dataArray[i]);
-            if (i % 2 == 0) {
-                entity.setName("学生");
-                entity.setMsgType(true);// 收到的消息
-            } else {
-                entity.setName("老师");
-                entity.setMsgType(false);// 自己发送的消息
-            }
-            entity.setMessage(msgArray[i]);
-            mDataArrays.add(entity);
-        }
+//        for (int i = 0; i < COUNT; i++) {
+//            ChatInformation entity = new ChatInformation();
+//            entity.setDate(dataArray[i]);
+//            if (i % 2 == 0) {
+//                entity.setName("我");
+//                entity.setMsgType(false);// 收到的消息
+//            } else {
+//                entity.setName("老师");
+//                entity.setMsgType(true);// 自己发送的消息
+//            }
+//            entity.setMessage(msgArray[i]);
+//            mDataArrays.add(entity);
+//        }
 
         mAdapter = new ChatAdapter(this, mDataArrays);
         mListView.setAdapter(mAdapter);
@@ -104,14 +181,21 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
         String contString = mEditTextContent.getText().toString();
         if (contString.length() > 0) {
             ChatInformation entity = new ChatInformation();
-            entity.setName("老师");
+            VCard vCard = SmackManager.getVCard();
+            entity.setImage(vCard.getAvatar());
+            entity.setName(vCard.getNickName());
             entity.setDate(getDate());
             entity.setMessage(contString);
             entity.setMsgType(false);
-
-            mDataArrays.add(entity);
-            mAdapter.notifyDataSetChanged();// 通知ListView，数据已发生改变
-
+            mAdapter.add(entity);
+            // 通知ListView，数据已发生改变
+            Message message = new Message(to, contString);
+            try {
+                mChat.sendMessage(message);
+            } catch (Exception e) {
+                new AlertDialog.Builder(this).setMessage("发送失败" + e).show();
+                e.printStackTrace();
+            }
             mEditTextContent.setText("");// 清空编辑框数据
 
             mListView.setSelection(mListView.getCount() - 1);// 发送一条消息时，ListView显示选择最后一项
@@ -126,5 +210,67 @@ public class ChatActivity extends AppCompatActivity implements OnClickListener {
     private String getDate() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         return format.format(new Date());
+    }
+
+
+    class InitChatAsyncTask extends AsyncTask<EntityJid, Void, Void> {
+
+        @Override
+        protected Void doInBackground(EntityJid... params) {
+            ChatManager chatManager = ChatManager.getInstanceFor(SmackManager.getConnection());
+            byte[] image = new byte[0];
+            try {
+                VCard vCard = VCardManager.getInstanceFor(SmackManager.getConnection()).loadVCard(to.asEntityBareJidIfPossible());
+                image = vCard.getAvatar();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            final byte[] finalImage = image;
+            final ChatMessageListener listener = new ChatMessageListener() {
+                @Override
+                public void processMessage(Chat chat, Message message) {
+                    final String content = message.getBody();
+                    if (content != null) {
+                        final String time = getDate();
+                        final boolean isCom = true;
+                        Log.e("message", "processMessage: " + content);
+                        UiUtils.runInMainThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mAdapter.add(new ChatInformation(nickname, time, content, isCom, finalImage));
+                                mListView.setSelection(mListView.getCount() - 1);
+                            }
+                        });
+                    }
+                }
+            };
+            mChat = chatManager.createChat(params[0]);
+
+
+            chatManager.addChatListener(new ChatManagerListener() {
+                @Override
+                public void chatCreated(Chat chat, boolean createdLocally) {
+                    chat.addMessageListener(listener);
+                    Log.e("messagelistener", "doInBackground: " + chat.getListeners().size());
+                }
+            });
+            Log.e("messagelistener", "doInBackground: " + mChat.getListeners().size());
+            return null;
+        }
+    }
+
+    class UpdateStateAsyncTask extends AsyncTask<Void, Void, Integer> {
+
+        @Override
+        protected Integer doInBackground(Void... params) {
+
+            Presence presence = Roster.getInstanceFor(SmackManager.getConnection()).getPresence(to.asBareJid());
+            return presence.isAvailable() ? 0 : 1;
+        }
+
+        @Override
+        protected void onPostExecute(Integer integer) {
+            tvState.setText(integer == 0 ? "在线" : "离线");
+        }
     }
 }

@@ -26,12 +26,13 @@
         android:layout_marginTop="5dp" >
 
         <ImageView
+            android:scaleType="centerCrop"
             android:id="@+id/iv_userhead"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:background="@drawable/ic_account_circle_blue_600_24dp"
+            android:background="@drawable/image2"
             android:focusable="false" />
 
         <TextView
@@ -58,7 +59,7 @@
             android:layout_toRightOf="@id/tv_chatcontent"
             android:gravity="center"
             android:textColor="#818181"
-            android:textSize="15sp" />
+            android:textSize="12sp" />
     </RelativeLayout>
 
 </LinearLayout>

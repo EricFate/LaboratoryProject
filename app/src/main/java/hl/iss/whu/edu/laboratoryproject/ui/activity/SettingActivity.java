@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -15,6 +16,9 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
+import org.jivesoftware.smackx.vcardtemp.VCardManager;
+import org.jivesoftware.smackx.vcardtemp.packet.VCard;
+
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -25,18 +29,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import hl.iss.whu.edu.laboratoryproject.R;
 import hl.iss.whu.edu.laboratoryproject.constant.Constant;
-import hl.iss.whu.edu.laboratoryproject.entity.Result;
 import hl.iss.whu.edu.laboratoryproject.glide.GlideRoundTransform;
-import hl.iss.whu.edu.laboratoryproject.utils.RetrofitUtils;
-import hl.iss.whu.edu.laboratoryproject.utils.UserInfo;
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-import io.vov.vitamio.utils.IOUtils;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
+import hl.iss.whu.edu.laboratoryproject.manager.SmackManager;
 
 public class SettingActivity extends AppCompatActivity {
 
@@ -44,6 +38,8 @@ public class SettingActivity extends AppCompatActivity {
     ImageView ivSettingImage;
     @Bind(R.id.et_setting_signiture)
     EditText etSettingSigniture;
+    @Bind(R.id.et_setting_nickname)
+    EditText etSettingNickname;
     private String[] permissions = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -55,18 +51,20 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         ButterKnife.bind(this);
-        Glide.with(this).load(Constant.SERVER_URL+ UserInfo.imageURL)
-                .transform(new GlideRoundTransform(this,35))
+        Glide.with(this).load(SmackManager.getVCard().getAvatar())
+                .transform(new GlideRoundTransform(this, 35))
                 .into(ivSettingImage);
-        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             askForPermissions();
         }
     }
+
     @TargetApi(Build.VERSION_CODES.M)
-    private void askForPermissions(){
-        requestPermissions(permissions,REQUEST_EXTERNAL_STORAGE);
+    private void askForPermissions() {
+        requestPermissions(permissions, REQUEST_EXTERNAL_STORAGE);
     }
-    @OnClick({R.id.tr_change_image, R.id.bt_change_signiture})
+
+    @OnClick({R.id.tr_change_image, R.id.bt_change_signiture,R.id.bt_change_nickname})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tr_change_image:
@@ -79,82 +77,88 @@ public class SettingActivity extends AppCompatActivity {
                 startActivityForResult(intent, 1);
                 break;
             case R.id.bt_change_signiture:
-                requestChangeSigniture();
+//                requestChangeSigniture();
+                new ChangeSignitureAsycTask().execute(etSettingSigniture.getText().toString());
+                break;
+            case R.id.bt_change_nickname:
+                new ChangeNicknameAsycTask().execute(etSettingNickname.getText().toString());
                 break;
         }
     }
 
-    private void requestChangeSigniture() {
-        String signiture = etSettingSigniture.getText().toString();
-        Observable<Result> observable = RetrofitUtils.getService().changeSigniture(UserInfo.username, signiture);
-        observable.subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Result>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-
-            @Override
-            public void onNext(Result value) {
-                if (value.getCode() == 0)
-                    new AlertDialog.Builder(SettingActivity.this).setMessage("更改成功").show();
-                else
-                    new AlertDialog.Builder(SettingActivity.this).setMessage("更改失败").show();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                e.printStackTrace();
-                new AlertDialog.Builder(SettingActivity.this).setMessage("更改失败:"+e).show();
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
-    }
+//    private void requestChangeSigniture() {
+//        String signiture = etSettingSigniture.getText().toString();
+//        Observable<Result> observable = RetrofitUtils.getService().changeSigniture(UserInfo.username, signiture);
+//        observable.subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Result>() {
+//            @Override
+//            public void onSubscribe(Disposable d) {
+//
+//            }
+//
+//            @Override
+//            public void onNext(Result value) {
+//                if (value.getCode() == 0)
+//                    new AlertDialog.Builder(SettingActivity.this).setMessage("更改成功").show();
+//                else
+//                    new AlertDialog.Builder(SettingActivity.this).setMessage("更改失败").show();
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//                e.printStackTrace();
+//                new AlertDialog.Builder(SettingActivity.this).setMessage("更改失败:" + e).show();
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//
+//            }
+//        });
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-                Log.e("result",resultCode+"");
-        if (resultCode == RESULT_OK){
+        Log.e("result", resultCode + "");
+        if (resultCode == RESULT_OK) {
             ContentResolver resolver = getContentResolver();
             try {
-                Log.e("result",data.getData().toString());
+//                Log.e("result",data.getData().toString());
+
                 InputStream inputStream = resolver.openInputStream(data.getData());
                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
                 byte[] buffer = new byte[1024];
                 int len;
-                while ( (len =inputStream.read(buffer))!=-1){
-                    outputStream.write(buffer,0,len);
+                while ((len = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, len);
                 }
-                Log.e("result",outputStream.toString());
-                RequestBody body = RequestBody.create(MediaType.parse("1.jpg"), outputStream.toByteArray());
-                Observable<Result> observable = RetrofitUtils.getService().uploadImage(UserInfo.username, body);
-                observable.subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Result>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+                new UploadImageAsycTask().execute(outputStream.toByteArray());
+//                RequestBody body = RequestBody.create(MediaType.parse("1.jpg"), outputStream.toByteArray());
 
-                    }
-
-                    @Override
-                    public void onNext(Result value) {
-                        if (value.getCode() == 0)
-                        new AlertDialog.Builder(SettingActivity.this).setMessage("上传成功").show();
-                        else
-                        new AlertDialog.Builder(SettingActivity.this).setMessage("上传失败").show();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        new AlertDialog.Builder(SettingActivity.this).setMessage("上传失败:"+e).show();
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
+//                Observable<Result> observable = RetrofitUtils.getService().uploadImage(UserInfo.username, body);
+//                observable.subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Result>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(Result value) {
+//                        if (value.getCode() == 0)
+//                        new AlertDialog.Builder(SettingActivity.this).setMessage("上传成功").show();
+//                        else
+//                        new AlertDialog.Builder(SettingActivity.this).setMessage("上传失败").show();
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        new AlertDialog.Builder(SettingActivity.this).setMessage("上传失败:"+e).show();
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -162,5 +166,93 @@ public class SettingActivity extends AppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+
+    class UploadImageAsycTask extends AsyncTask<byte[], Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(byte[]... params) {
+            try {
+                VCardManager manager = VCardManager.getInstanceFor(SmackManager.getConnection());
+                VCard card = manager.loadVCard();
+                card.setAvatar(params[0]);
+                manager.saveVCard(card);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(SettingActivity.this);
+            if (aBoolean) {
+                builder.setMessage("上传成功");
+            } else {
+                builder.setMessage("上传失败");
+            }
+            builder.show();
+        }
+    }
+
+    class ChangeSignitureAsycTask extends AsyncTask<String, Void, Boolean> {
+
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            try {
+                VCardManager manager = VCardManager.getInstanceFor(SmackManager.getConnection());
+                VCard card = manager.loadVCard();
+                card.setField(Constant.VCARD_SIGNITURE_FIELD, params[0]);
+                manager.saveVCard(card);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(SettingActivity.this);
+            if (aBoolean) {
+                builder.setMessage("修改成功");
+            } else {
+                builder.setMessage("修改失败");
+            }
+            builder.show();
+        }
+    }
+    class ChangeNicknameAsycTask extends AsyncTask<String, Void, Boolean> {
+
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            try {
+                VCardManager manager = VCardManager.getInstanceFor(SmackManager.getConnection());
+                VCard card = manager.loadVCard();
+                card.setNickName(params[0]);
+                manager.saveVCard(card);
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(SettingActivity.this);
+            if (aBoolean) {
+                builder.setMessage("修改成功");
+            } else {
+                builder.setMessage("修改失败");
+            }
+            builder.show();
+        }
     }
 }

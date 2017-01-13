@@ -4,21 +4,27 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
 import hl.iss.whu.edu.laboratoryproject.R;
+import hl.iss.whu.edu.laboratoryproject.constant.Constant;
+import hl.iss.whu.edu.laboratoryproject.entity.Subject;
 import hl.iss.whu.edu.laboratoryproject.utils.UiUtils;
 
 /**
  * Created by fate on 2016/10/29.
  */
 
-public class RecyclerMyLessonsAdapter extends BaseRecyclerViewAdapter<String, RecyclerMyLessonsAdapter.ListViewHoder> {
+public class RecyclerMyLessonsAdapter extends BaseRecyclerViewAdapter<Subject, RecyclerMyLessonsAdapter.ListViewHoder> {
 
 
-    public RecyclerMyLessonsAdapter(ArrayList<String> data) {
+    public RecyclerMyLessonsAdapter(ArrayList<Subject> data) {
         super(data);
     }
 
@@ -30,7 +36,7 @@ public class RecyclerMyLessonsAdapter extends BaseRecyclerViewAdapter<String, Re
             @Override
             public void onClick(View v) {
                 if (RecyclerMyLessonsAdapter.this.mListener != null)
-                    RecyclerMyLessonsAdapter.this.mListener.onItemClick(v, (String) v.getTag());
+                    RecyclerMyLessonsAdapter.this.mListener.onItemClick(v, (Subject) v.getTag());
             }
         });
         return new ListViewHoder(view);
@@ -39,19 +45,32 @@ public class RecyclerMyLessonsAdapter extends BaseRecyclerViewAdapter<String, Re
 
     @Override
     public void onBindViewHolder(ListViewHoder holder, int position) {
-        holder.tv.setText(data.get(position));
-        holder.itemView.setTag(data.get(position));
+        Subject subject = data.get(position);
+        holder.itemView.setTag(subject);
+        holder.tvName.setText(subject.getName());
+        holder.tvDuration.setText(subject.getDuration());
+        holder.tvTeacher.setText(subject.getTeacher());
+        Glide.with(UiUtils.getContext())
+                .load(Constant.SERVER_URL+subject.getImgURL())
+                .placeholder(R.drawable.ic_account_circle_blue_600_24dp)
+                .into(holder.ivImage);
 
     }
 
     static class ListViewHoder extends RecyclerView.ViewHolder {
-        TextView tv;
+        TextView tvName;
         View itemView;
-
+        TextView tvTeacher;
+        TextView tvDuration;
+        ImageView ivImage;
         public ListViewHoder(View itemView) {
             super(itemView);
             this.itemView = itemView;
-            tv = (TextView) itemView.findViewById(R.id.tv_class_name);
+            tvName = ButterKnife.findById(itemView,R.id.tv_class_name);
+            tvDuration = ButterKnife.findById(itemView,R.id.tv_class_kownledge);
+            tvTeacher = ButterKnife.findById(itemView,R.id.tv_class_teacher);
+            ivImage = ButterKnife.findById(itemView,R.id.iv_class);
+
         }
     }
 

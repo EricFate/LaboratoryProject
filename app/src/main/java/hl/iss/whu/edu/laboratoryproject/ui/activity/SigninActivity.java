@@ -8,21 +8,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.CheckBox;
 import android.widget.EditText;
-
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.XMPPException;
-
-import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import hl.iss.whu.edu.laboratoryproject.R;
 import hl.iss.whu.edu.laboratoryproject.constant.Constant;
-import hl.iss.whu.edu.laboratoryproject.entity.IService;
+import hl.iss.whu.edu.laboratoryproject.service.IService;
 import hl.iss.whu.edu.laboratoryproject.entity.Result;
 import hl.iss.whu.edu.laboratoryproject.manager.SmackManager;
 import hl.iss.whu.edu.laboratoryproject.utils.RetrofitUtils;
@@ -32,7 +26,6 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.http.Part;
 
 public class SigninActivity extends AppCompatActivity {
     @Bind(R.id.et_login_account)
@@ -79,20 +72,16 @@ public class SigninActivity extends AppCompatActivity {
             @Override
             public void onSubscribe(Disposable d) {
             }
+
             @Override
             public void onNext(Result value) {
-                dialog.dismiss();
                 if (value.getCode() == 0) {
                     UserInfo.username = username;
                     UserInfo.password = password;
-                    UserInfo.imageURL = value.getImageURL();
                     UserInfo.nickname = value.getNickname();
-                    UserInfo.signiture = value.getSigniture();
 
                     storeInfo(username, password);
-                    new AsyncTaskSmackInit().execute();
-                    Intent intent = new Intent(SigninActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    new AsyncTaskSmackInit(dialog).execute();
                 } else {
                     new AlertDialog.Builder(SigninActivity.this)
                             .setMessage("登录失败:" + value.getMessage())
@@ -104,10 +93,12 @@ public class SigninActivity extends AppCompatActivity {
                             }).create().show();
                 }
             }
+
             @Override
             public void onError(Throwable e) {
                 dialog.setMessage("错误:" + e.toString());
             }
+
             @Override
             public void onComplete() {
             }
@@ -123,16 +114,41 @@ public class SigninActivity extends AppCompatActivity {
         editor.commit();
     }
 
-    class AsyncTaskSmackInit extends AsyncTask<Void,Void,Void>{
+    class AsyncTaskSmackInit extends AsyncTask<Void, Void, Boolean> {
+        private AlertDialog mAlertDialog;
+
+        public AsyncTaskSmackInit(AlertDialog alertDialog) {
+            mAlertDialog = alertDialog;
+        }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Boolean doInBackground(Void... params) {
             try {
-                SmackManager.login(UserInfo.username,UserInfo.password);
+                SmackManager.login(UserInfo.username, UserInfo.password);
+                return true;
             } catch (Exception e) {
+
                 e.printStackTrace();
+                return false;
             }
-            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            mAlertDialog.dismiss();
+            if (aBoolean) {
+                Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+                startActivity(intent);
+            }else {
+                new AlertDialog.Builder(SigninActivity.this)
+                        .setMessage("登录失败")
+                        .setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        }).create().show();
+            }
         }
     }
 }

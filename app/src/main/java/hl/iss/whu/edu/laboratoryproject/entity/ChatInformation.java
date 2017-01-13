@@ -11,6 +11,15 @@ public class ChatInformation {
 	private String date;//消息日期
 	private String message;//消息内容
 	private boolean isComMeg = true;// 是否为收到的消息
+	private byte[] image;
+
+	public ChatInformation(String name, String date, String message, boolean isComMeg, byte[] image) {
+		this.name = name;
+		this.date = date;
+		this.message = message;
+		this.isComMeg = isComMeg;
+		this.image = image;
+	}
 
 	public String getName() {
 		return name;
@@ -47,12 +56,21 @@ public class ChatInformation {
 	public ChatInformation() {
 	}
 
-	public ChatInformation(String name, String date, String text, boolean isComMsg) {
-		super();
-		this.name = name;
-		this.date = date;
-		this.message = text;
-		this.isComMeg = isComMsg;
+
+
+	public boolean isComMeg() {
+		return isComMeg;
 	}
 
+	public void setComMeg(boolean comMeg) {
+		isComMeg = comMeg;
+	}
+
+	public byte[] getImage() {
+		return image;
+	}
+
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
 }

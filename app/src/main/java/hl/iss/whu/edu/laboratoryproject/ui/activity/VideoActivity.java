@@ -282,6 +282,12 @@ public class VideoActivity extends AppCompatActivity {
         ibFull.setImageResource(isFullScreen ? R.drawable.ic_fullscreen_exit_white_24dp : R.drawable.ic_fullscreen_white_24dp);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (isFullScreen)toggleFullScreen();
+        else super.onBackPressed();
+    }
+
     private class HideControllerRunnable implements Runnable {
 
         @Override

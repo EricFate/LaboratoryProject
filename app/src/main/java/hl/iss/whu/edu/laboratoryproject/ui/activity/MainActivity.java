@@ -1,6 +1,8 @@
 package hl.iss.whu.edu.laboratoryproject.ui.activity;
 
+import android.app.Application;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -22,11 +24,19 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.chat.ChatManager;
+import org.jivesoftware.smackx.vcardtemp.VCardManager;
+import org.jivesoftware.smackx.vcardtemp.packet.VCard;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import hl.iss.whu.edu.laboratoryproject.BaseApplication;
 import hl.iss.whu.edu.laboratoryproject.R;
 import hl.iss.whu.edu.laboratoryproject.constant.Constant;
 import hl.iss.whu.edu.laboratoryproject.glide.GlideRoundTransform;
+import hl.iss.whu.edu.laboratoryproject.manager.SmackManager;
 import hl.iss.whu.edu.laboratoryproject.ui.fragment.BaseFragment;
 import hl.iss.whu.edu.laboratoryproject.utils.FragmentFactory;
 import hl.iss.whu.edu.laboratoryproject.utils.UserInfo;
@@ -42,6 +52,8 @@ public class MainActivity extends AppCompatActivity
     private ImageView image;
     FragmentManager mFragmentManager;
     private String[] test = {"aaa", "bbb", "ccc"};
+    private TextView tvsigniture;
+    private TextView tvName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,6 +62,13 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
         initSearchView();
         setup();
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (SmackManager.getConnection().isConnected())
+            SmackManager.getConnection().disconnect();
+        super.onDestroy();
     }
 
     private void initSearchView() {
@@ -100,14 +119,17 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         View header = navigationView.getHeaderView(0);
         image = ButterKnife.findById(header, R.id.iv_drawer_image);
-        TextView tvName = ButterKnife.findById(header, R.id.tv_drawer_name);
-        TextView tvsigniture = ButterKnife.findById(header, R.id.tv_drawer_signiture);
-        tvName.setText(UserInfo.nickname);
-        tvsigniture.setText(UserInfo.signiture);
-        Log.e("url", UserInfo.imageURL + "");
-        Glide.with(this).load(Constant.SERVER_URL + UserInfo.imageURL)
+        tvName = ButterKnife.findById(header, R.id.tv_drawer_name);
+        tvsigniture = ButterKnife.findById(header, R.id.tv_drawer_signiture);
+
+        VCard card = SmackManager.getVCard();
+        Glide.with(this).load(card.getAvatar())
                 .transform(new GlideRoundTransform(this))
                 .into(image);
+        tvName.setText(card.getNickName());
+        tvsigniture.setText(card.getField(Constant.VCARD_SIGNITURE_FIELD));
+//        new LoadImageAsycTask().execute();
+
     }
 
 
@@ -165,5 +187,30 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    class LoadImageAsycTask extends AsyncTask<Void, Void, VCard> {
+
+        @Override
+        protected VCard doInBackground(Void... params) {
+            VCard vCard = null;
+            try {
+                vCard = VCardManager.getInstanceFor(SmackManager.getConnection()).loadVCard();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return vCard;
+        }
+
+        @Override
+        protected void onPostExecute(VCard card) {
+            super.onPostExecute(card);
+            Glide.with(MainActivity.this).load(card.getAvatar())
+                    .transform(new GlideRoundTransform(MainActivity.this))
+                    .into(image);
+            tvName.setText(card.getNickName());
+            tvsigniture.setText(card.getField(Constant.VCARD_SIGNITURE_FIELD));
+        }
     }
 }

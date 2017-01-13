@@ -8,12 +8,15 @@ import java.util.ArrayList;
 
 public class Group {
     private String name;
-    private ArrayList<Chatter> chatters;
+    private ArrayList<Chatter> presence;
+    private ArrayList<Chatter> absence;
 
-    public Group(String name, ArrayList<Chatter> chatters) {
+    public Group(String name, ArrayList<Chatter> presence, ArrayList<Chatter> absence) {
         this.name = name;
-        this.chatters = chatters;
+        this.presence = presence;
+        this.absence = absence;
     }
+
 
     public String getName() {
         return name;
@@ -23,11 +26,19 @@ public class Group {
         this.name = name;
     }
 
-    public ArrayList<Chatter> getContacts() {
-        return chatters;
+    public ArrayList<Chatter> getPresence() {
+        return presence;
     }
 
-    public void setChatters(ArrayList<Chatter> chatters) {
-        this.chatters = chatters;
+    public void setPresence(ArrayList<Chatter> presence) {
+        this.presence = presence;
+    }
+
+    public ArrayList<Chatter> getAbsence() {
+        return absence;
+    }
+
+    public void setAbsence(ArrayList<Chatter> absence) {
+        this.absence = absence;
     }
 }

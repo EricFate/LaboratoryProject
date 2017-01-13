@@ -3,7 +3,7 @@ package hl.iss.whu.edu.laboratoryproject.utils;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import hl.iss.whu.edu.laboratoryproject.constant.Constant;
-import hl.iss.whu.edu.laboratoryproject.entity.IService;
+import hl.iss.whu.edu.laboratoryproject.service.IService;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

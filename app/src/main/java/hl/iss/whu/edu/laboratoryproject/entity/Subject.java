@@ -9,12 +9,21 @@ public class Subject {
     private String number;
     private String duration;
     private String imgURL;
+    private String teacher;
 
     public Subject(String name, String number, String duration, String imgURL) {
         this.name = name;
         this.number = number;
         this.duration = duration;
         this.imgURL = imgURL;
+    }
+
+    public Subject(String name, String number, String duration, String imgURL, String teacher) {
+        this.name = name;
+        this.number = number;
+        this.duration = duration;
+        this.imgURL = imgURL;
+        this.teacher = teacher;
     }
 
 
@@ -48,5 +57,13 @@ public class Subject {
 
     public void setImgURL(String imgURL) {
         this.imgURL = imgURL;
+    }
+
+    public String getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
     }
 }
