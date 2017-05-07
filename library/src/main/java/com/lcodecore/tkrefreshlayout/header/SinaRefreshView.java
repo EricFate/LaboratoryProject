@@ -2,6 +2,7 @@ package com.lcodecore.tkrefreshlayout.header;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
+import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lcodecore.tkrefreshlayout.IHeaderView;
+import com.lcodecore.tkrefreshlayout.OnAnimEndListener;
 import com.lcodecore.tkrefreshlayout.R;
 
 /**
@@ -35,7 +37,7 @@ public class SinaRefreshView extends FrameLayout implements IHeaderView {
         init();
     }
 
-    private void init(){
+    private void init() {
         View rootView = View.inflate(getContext(), R.layout.view_sinaheader, null);
         refreshArrow = (ImageView) rootView.findViewById(R.id.iv_arrow);
         refreshTextView = (TextView) rootView.findViewById(R.id.tv);
@@ -45,6 +47,10 @@ public class SinaRefreshView extends FrameLayout implements IHeaderView {
 
     public void setArrowResource(@DrawableRes int resId) {
         refreshArrow.setImageResource(resId);
+    }
+
+    public void setTextColor(@ColorInt int color) {
+        refreshTextView.setTextColor(color);
     }
 
     public void setPullDownStr(String pullDownStr1) {
@@ -92,11 +98,18 @@ public class SinaRefreshView extends FrameLayout implements IHeaderView {
         refreshTextView.setText(refreshingStr);
         refreshArrow.setVisibility(GONE);
         loadingView.setVisibility(VISIBLE);
-        ((AnimationDrawable)loadingView.getDrawable()).start();
+        ((AnimationDrawable) loadingView.getDrawable()).start();
     }
 
     @Override
-    public void onFinish() {
+    public void onFinish(OnAnimEndListener listener) {
+        listener.onAnimEnd();
+    }
 
+    @Override
+    public void reset() {
+        refreshArrow.setVisibility(VISIBLE);
+        loadingView.setVisibility(GONE);
+        refreshTextView.setText(pullDownStr);
     }
 }

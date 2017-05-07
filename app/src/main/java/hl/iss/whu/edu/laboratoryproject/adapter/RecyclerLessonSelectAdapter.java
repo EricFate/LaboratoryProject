@@ -11,8 +11,8 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import hl.iss.whu.edu.laboratoryproject.R;
-import hl.iss.whu.edu.laboratoryproject.entity.Catagory;
-import hl.iss.whu.edu.laboratoryproject.entity.Subject;
+import hl.iss.whu.edu.laboratoryproject.entity.Major;
+import hl.iss.whu.edu.laboratoryproject.entity.Course;
 import hl.iss.whu.edu.laboratoryproject.listener.OnRecyclerViewItemClickListener;
 import hl.iss.whu.edu.laboratoryproject.manager.FullyLinearLayoutManager;
 import hl.iss.whu.edu.laboratoryproject.utils.UiUtils;
@@ -21,10 +21,10 @@ import hl.iss.whu.edu.laboratoryproject.utils.UiUtils;
  * Created by fate on 2016/11/13.
  */
 
-public class RecyclerLessonSelectAdapter extends BaseRecyclerViewAdapter<Catagory,RecyclerLessonSelectAdapter.ViewHolder> {
+public class RecyclerLessonSelectAdapter extends BaseRecyclerViewAdapter<Major,RecyclerLessonSelectAdapter.ViewHolder> {
 
-    private OnRecyclerViewItemClickListener<Subject> onSubjectClickListener;
-    public RecyclerLessonSelectAdapter(ArrayList<Catagory> data) {
+    private OnRecyclerViewItemClickListener<Course> onSubjectClickListener;
+    public RecyclerLessonSelectAdapter(ArrayList<Major> data) {
         super(data);
     }
 
@@ -39,30 +39,30 @@ public class RecyclerLessonSelectAdapter extends BaseRecyclerViewAdapter<Catagor
 //        view.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                mListener.onItemClick(v, (Subject) v.getTag());
+//                mListener.onItemClick(v, (Course) v.getTag());
 //            }
 //        });
         return new ViewHolder(view);
     }
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Catagory catagory = data.get(position);
+        Major major = data.get(position);
 
-        holder.tvTitle.setText(catagory.getTitle());
+        holder.tvTitle.setText(major.getTitle());
         RecyclerView recyclerSubject = holder.recyclerSubject;
-        RecyclerSubjectAdapter adapter = new RecyclerSubjectAdapter(catagory.getSubjects());
+        RecyclerSubjectAdapter adapter = new RecyclerSubjectAdapter(major.getCourses());
         recyclerSubject.setLayoutManager(new FullyLinearLayoutManager(UiUtils.getContext(), LinearLayoutManager.HORIZONTAL,false));
         recyclerSubject.setAdapter(adapter);
-        adapter.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener<Subject>() {
+        adapter.setOnRecyclerViewItemClickListener(new OnRecyclerViewItemClickListener<Course>() {
             @Override
-            public void onItemClick(View v, Subject data) {
+            public void onItemClick(View v, Course data) {
                 if (onSubjectClickListener !=null)
                     onSubjectClickListener.onItemClick(v,data);
             }
         });
 //        holder.itemView.setTag(data.get(position));
     }
-    public void setOnSubjectClickListener(OnRecyclerViewItemClickListener<Subject> onSubjectClickListener){
+    public void setOnSubjectClickListener(OnRecyclerViewItemClickListener<Course> onSubjectClickListener){
         this.onSubjectClickListener = onSubjectClickListener;
     }
 

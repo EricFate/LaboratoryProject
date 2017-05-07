@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="classes" >
-        <item>卓一</item>
-        <item>卓二</item>
+    <string-array name="grades">
+        <item>一年级</item>
+        <item>二年级</item>
+        <item>三年级</item>
+        <item>四年级</item>
+        <item>五年级</item>
+        <item>六年级</item>
+    </string-array>
+    <string-array name="subjects">
+        <item>语文</item>
+        <item>数学</item>
+        <item>英语</item>
+    </string-array>
+    <string-array name="gender" >
+        <item>男</item>
+        <item>女</item>
     </string-array>
     <string-array name="schools" >
         <item>武汉大学</item>
         <item>华中师范大学</item>
-    </string-array>
-    <string-array name="regions" >
-        <item>湖北</item>
-        <item>江苏</item>
     </string-array>
 </resources>

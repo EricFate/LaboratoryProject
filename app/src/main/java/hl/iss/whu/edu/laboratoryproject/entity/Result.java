@@ -7,11 +7,51 @@ package hl.iss.whu.edu.laboratoryproject.entity;
 public class Result {
     private int code;
     private String message;
+
+
+    private int id;
     private String username;
-    private String password;
     private String nickname;
     private String imageURL;
     private String signiture;
+    private String grade;
+    private boolean isLearning;
+
+    private int count;
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public boolean isLearning() {
+        return isLearning;
+    }
+
+    public void setLearning(boolean learning) {
+        isLearning = learning;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    private String token;
 
 
     public Result(int code, String message) {
@@ -19,14 +59,23 @@ public class Result {
         this.message = message;
     }
 
-    public Result(int code, String message, String username, String password, String nickname, String imageURL, String signiture) {
+    public Result(int code, String message, String username, String nickname, String imageURL, String signiture) {
         this.code = code;
         this.message = message;
         this.username = username;
-        this.password = password;
         this.nickname = nickname;
         this.imageURL = imageURL;
         this.signiture = signiture;
+    }
+
+    public Result() {
+    }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
 
@@ -54,13 +103,6 @@ public class Result {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getNickname() {
         return nickname;

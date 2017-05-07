@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import hl.iss.whu.edu.laboratoryproject.R;
 import hl.iss.whu.edu.laboratoryproject.entity.Chapter;
+import hl.iss.whu.edu.laboratoryproject.entity.Lesson;
 import hl.iss.whu.edu.laboratoryproject.ui.view.AnimatedExpandableListView;
 import hl.iss.whu.edu.laboratoryproject.utils.UiUtils;
 
@@ -18,6 +19,16 @@ import hl.iss.whu.edu.laboratoryproject.utils.UiUtils;
  */
 
 public class ExpandableChapterAdapter extends AnimatedExpandableListView.AnimatedExpandableListAdapter {
+    public void setData(ArrayList<Chapter> data) {
+        this.data = data;
+        UiUtils.runInMainThread(new Runnable() {
+            @Override
+            public void run() {
+                notifyDataSetChanged();
+            }
+        });
+    }
+
     private ArrayList<Chapter> data;
 
     public ExpandableChapterAdapter(ArrayList<Chapter> data) {
@@ -66,7 +77,7 @@ public class ExpandableChapterAdapter extends AnimatedExpandableListView.Animate
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.tvTitle.setText(data.get(groupPosition).getTitle());
+        holder.tvTitle.setText(data.get(groupPosition).getChapterName());
         return convertView;
     }
 
@@ -88,8 +99,8 @@ public class ExpandableChapterAdapter extends AnimatedExpandableListView.Animate
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        Chapter.Lesson lesson = data.get(groupPosition).getLessons().get(childPosition);
-        viewHolder.tvTitle.setText(lesson.getTitle());
+        Lesson lesson = data.get(groupPosition).getLessons().get(childPosition);
+        viewHolder.tvTitle.setText(lesson.getLessonName());
         return convertView;
     }
 

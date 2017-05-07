@@ -11,6 +11,7 @@ import hl.iss.whu.edu.laboratoryproject.R;
 import hl.iss.whu.edu.laboratoryproject.adapter.ExpandableChapterAdapter;
 import hl.iss.whu.edu.laboratoryproject.constant.Constant;
 import hl.iss.whu.edu.laboratoryproject.entity.Chapter;
+import hl.iss.whu.edu.laboratoryproject.entity.Lesson;
 import hl.iss.whu.edu.laboratoryproject.ui.activity.VideoActivity;
 import hl.iss.whu.edu.laboratoryproject.ui.view.AnimatedExpandableListView;
 import hl.iss.whu.edu.laboratoryproject.utils.RetrofitUtils;
@@ -35,10 +36,10 @@ public class ChapterFragment extends BaseFragment<ArrayList<Chapter>> {
         aelvChapter.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
-                Chapter.Lesson lesson = (Chapter.Lesson) mAdapter.getChild(groupPosition,childPosition);
-                ((VideoActivity) getActivity()).playVideo(Constant.SERVER_URL+lesson.getURL());
-//                Toast.makeText(getActivity(),Constant.SERVER_URL+lesson.getURL(),Toast.LENGTH_SHORT).show();
-//                aelvChapter.collapseGroupWithAnimation(groupPosition);
+                Lesson lesson = (Lesson) mAdapter.getChild(groupPosition,childPosition);
+                VideoActivity activity = (VideoActivity) getActivity();
+                activity.playVideo(Constant.SERVER_URL+lesson.getVideoURL());
+                activity.setLid(lesson.getId());
                 return true;
             }
         });
@@ -47,6 +48,7 @@ public class ChapterFragment extends BaseFragment<ArrayList<Chapter>> {
 
     @Override
     public Observable<ArrayList<Chapter>> sendRequest() {
-        return RetrofitUtils.getService().loadChapter();
+        int cid = getActivity().getIntent().getIntExtra("cid", 0);
+        return RetrofitUtils.getService().loadChapter(cid);
     }
 }

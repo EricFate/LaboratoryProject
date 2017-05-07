@@ -10,6 +10,7 @@
     tools:context="hl.iss.whu.edu.laboratoryproject.ui.activity.LessonDetailActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/apl_title"
         android:layout_width="match_parent"
         android:layout_height="256dp"
         android:fitsSystemWindows="true"
@@ -47,18 +48,33 @@
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
+    <include layout="@layout/fragment_error"/>
+    <include layout="@layout/fragment_loading"/>
 
-    <include layout="@layout/fragment_lesson_detail"/>
+    <include layout="@layout/fragment_course_detail"/>
     <LinearLayout
+        android:id="@+id/ll_button_group"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom">
         <Button
+            android:id="@+id/bt_exercise"
+            android:visibility="gone"
+            android:background="@android:color/holo_green_light"
+            android:text="习题"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"/>
+        <Button
             android:id="@+id/bt_start_learning"
             android:background="@android:color/holo_red_light"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:text="开始学习"
             android:textColor="@android:color/white"/>
     </LinearLayout>
+
+
 </android.support.design.widget.CoordinatorLayout>

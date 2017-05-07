@@ -6,14 +6,14 @@
             android:id="@+id/nav_question"
             android:icon="@drawable/ic_menu_camera"
             android:title="我的提问"/>
+        <!--<item-->
+            <!--android:id="@+id/nav_focus"-->
+            <!--android:icon="@drawable/ic_menu_gallery"-->
+            <!--android:title="我的关注"/>-->
         <item
-            android:id="@+id/nav_focus"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="我的关注"/>
-        <item
-            android:id="@+id/nav_note"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="我的笔记"/>
+            android:id="@+id/nav_exercise"
+            android:icon="@android:drawable/ic_menu_slideshow"
+            android:title="日常练习"/>
         <item
             android:id="@+id/nav_answer"
             android:icon="@android:drawable/ic_menu_agenda"
@@ -26,6 +26,10 @@
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_menu_manage"
             android:title="个人设置"/>
+        <item
+            android:id="@+id/nav_class"
+            android:icon="@android:drawable/ic_menu_today"
+            android:title="我的班级"/>
     </group>
 
     <item android:title="社交">

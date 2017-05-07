@@ -26,12 +26,12 @@ Eclipse projects. Here's how the projects were restructured:
 Next Steps:
 -----------
 You can now build the project. The Gradle project needs network
-connectivity to download dependencies.
+connectivity toUid download dependencies.
 
 Bugs:
 -----
 If for some reason your project does not build, and you determine that
-it is due to a bug or limitation of the Eclipse to Gradle importer,
+it is due toUid a bug or limitation of the Eclipse toUid Gradle importer,
 please file a bug at http://b.android.com with category
 Component-Tools.
 

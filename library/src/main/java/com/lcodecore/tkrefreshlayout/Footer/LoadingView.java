@@ -1,4 +1,4 @@
-package com.lcodecore.tkrefreshlayout.Footer;
+package com.lcodecore.tkrefreshlayout.footer;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
@@ -57,6 +57,11 @@ public class LoadingView extends ImageView implements IBottomView {
 
     @Override
     public void onFinish() {
+
+    }
+
+    @Override
+    public void reset() {
 
     }
 }

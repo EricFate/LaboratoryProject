@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="用户名"
+            android:text="用户名（必填）"
             />
 
         <EditText
@@ -35,18 +35,34 @@
             android:id="@+id/et_nickname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="请输入昵称"/>
+            android:hint="不填则与用户名相同"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="密码"
+            android:text="密码（必填）"
             />
 
         <EditText
+            android:maxLength="15"
             style="@style/EditTextTheme"
             android:id="@+id/et_password"
+            android:inputType="textPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入密码"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="确认密码（必填）"
+            />
+
+        <EditText
+            android:maxLength="15"
+            style="@style/EditTextTheme"
+            android:id="@+id/et_confirm"
             android:inputType="textPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,18 +74,39 @@
             android:layout_marginTop="10dp"
             android:text="所在地区"
             />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="40dp">
 
         <Spinner
-            android:id="@+id/spinner_location"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/regions"/>
+            style="@android:style/Widget.Holo.Light.Spinner"
+            android:id="@+id/spinner_province"
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            />
+        <Spinner
+            style="@android:style/Widget.Holo.Light.Spinner"
+            android:id="@+id/spinner_city"
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            />
+        <Spinner
+            style="@android:style/Widget.Holo.Light.Spinner"
+            android:id="@+id/spinner_area"
+            android:layout_weight="4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            />
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="姓名"
+            android:text="姓名（必填）"
             />
 
         <EditText
@@ -83,14 +120,41 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:text="班级"
+            android:text="年级"
             />
 
         <Spinner
-            android:id="@+id/spinner_class"
+            style="@style/Base.Widget.AppCompat.Spinner"
+            android:id="@+id/spinner_grade"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:entries="@array/classes"/>
+            android:entries="@array/grades"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="班级"
+            />
+
+        <EditText
+            android:id="@+id/et_class"
+            style="@style/EditTextTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入班级"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="性别"
+            />
+
+        <Spinner
+            style="@style/Base.Widget.AppCompat.Spinner"
+            android:id="@+id/spinner_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/gender"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -104,7 +168,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:entries="@array/schools"/>
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

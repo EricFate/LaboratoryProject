@@ -7,21 +7,13 @@ import java.util.ArrayList;
  */
 
 public class Chapter {
-    private String title;
+   private int id;
+   private String chapterName;
+   private String lessonNumber;
+   private String finishLessonNumber;
+   private String knowledgePoint;
+   private String description;
     private ArrayList<Lesson> lessons;
-
-    public Chapter(String title, ArrayList<Lesson> lessons) {
-        this.title = title;
-        this.lessons = lessons;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public ArrayList<Lesson> getLessons() {
         return lessons;
@@ -31,29 +23,52 @@ public class Chapter {
         this.lessons = lessons;
     }
 
-    public static class Lesson{
-        private String title;
-        private String URL;
+    public int getId() {
+        return id;
+    }
 
-        public Lesson(String title, String URL) {
-            this.title = title;
-            this.URL = URL;
-        }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-        public String getTitle() {
-            return title;
-        }
 
-        public void setTitle(String title) {
-            this.title = title;
-        }
+    public String getChapterName() {
+        return chapterName;
+    }
 
-        public String getURL() {
-            return URL;
-        }
+    public void setChapterName(String chapterName) {
+        this.chapterName = chapterName;
+    }
 
-        public void setURL(String URL) {
-            this.URL = URL;
-        }
+    public String getLessonNumber() {
+        return lessonNumber;
+    }
+
+    public void setLessonNumber(String lessonNumber) {
+        this.lessonNumber = lessonNumber;
+    }
+
+    public String getFinishLessonNumber() {
+        return finishLessonNumber;
+    }
+
+    public void setFinishLessonNumber(String finishLessonNumber) {
+        this.finishLessonNumber = finishLessonNumber;
+    }
+
+    public String getKnowledgePoint() {
+        return knowledgePoint;
+    }
+
+    public void setKnowledgePoint(String knowledgePoint) {
+        this.knowledgePoint = knowledgePoint;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

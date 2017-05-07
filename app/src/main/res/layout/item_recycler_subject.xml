@@ -18,8 +18,8 @@
 
         <ImageView
             android:id="@+id/iv_item_lesson_seletion"
-            android:layout_width="200dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="80dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_menu_gallery"/>
 
@@ -33,7 +33,7 @@
             android:singleLine="true"
             android:text="数据结构与算法"
             android:textColor="@android:color/black"
-            android:textSize="20sp"
+            android:textSize="16sp"
             />
 
         <TextView
@@ -45,7 +45,7 @@
             android:singleLine="true"
             android:text="15个课时"
             android:textColor="@android:color/darker_gray"
-            android:textSize="16sp"
+            android:textSize="14sp"
             />
 
         <TextView
@@ -58,7 +58,7 @@
             android:singleLine="true"
             android:text="159000人学习"
             android:textColor="@android:color/darker_gray"
-            android:textSize="15sp"
+            android:textSize="14sp"
             />
 
 

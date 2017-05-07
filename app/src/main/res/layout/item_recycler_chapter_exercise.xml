@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:background="@drawable/selector_general_button"
+    android:padding="10dp">
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="登高"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"/>
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="@style/ProgressBarHorizontal"
+                android:layout_width="80dp"
+                android:progress="11"
+                android:max="100"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:background="@color/light_grey"
+                />
+            <TextView
+                android:id="@+id/tv_complete"
+                android:textColor="@android:color/black"
+                android:text="10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:text="/"
+                android:textColor="@android:color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:textColor="@android:color/black"
+                android:id="@+id/tv_total"
+                android:text="100"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/tv_accuracy"
+                android:layout_marginLeft="50dp"
+                android:textColor="@android:color/holo_red_dark"
+                android:text="正确率:90%"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_keyboard_arrow_right_grey_800_24dp"/>
+</LinearLayout>

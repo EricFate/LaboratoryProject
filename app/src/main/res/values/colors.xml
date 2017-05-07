@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#475fe2</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#6200ea</color>
-    <color name="textInputLayoutColor">#000000</color>
-    <color name="button_blue_pressed">#FF006A8E</color>
+    <color name="colorPrimary">#61ac63</color>
+    <color name="colorPrimaryDark">#559657</color>
+    <color name="colorAccent">#0ea912</color>
     <color name="button_white_pressed">#8b8b8b</color>
     <color name="button_white">#FFF2F2F2</color>
     <color name="main_unselected_grey">#9E9E9E</color>
-    <color name="radio_blue_normal">#a3ceff</color>
     <color name="video_controller_background">#75000000</color>
-    <color name="light_grey">#f4f4f4</color>
+    <color name="light_grey">#f1f1f1</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

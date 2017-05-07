@@ -1,94 +1,115 @@
 package hl.iss.whu.edu.laboratoryproject.ui.activity;
 
-import android.Manifest;
-import android.annotation.TargetApi;
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
-
-import org.jivesoftware.smackx.vcardtemp.VCardManager;
-import org.jivesoftware.smackx.vcardtemp.packet.VCard;
-
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import hl.iss.whu.edu.laboratoryproject.R;
 import hl.iss.whu.edu.laboratoryproject.constant.Constant;
-import hl.iss.whu.edu.laboratoryproject.glide.GlideRoundTransform;
-import hl.iss.whu.edu.laboratoryproject.manager.SmackManager;
+import hl.iss.whu.edu.laboratoryproject.service.IService;
+import hl.iss.whu.edu.laboratoryproject.utils.RetrofitUtils;
 
 public class SettingActivity extends AppCompatActivity {
 
-    @Bind(R.id.iv_setting_image)
-    ImageView ivSettingImage;
-    @Bind(R.id.et_setting_signiture)
-    EditText etSettingSigniture;
-    @Bind(R.id.et_setting_nickname)
-    EditText etSettingNickname;
-    private String[] permissions = {
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+
+
+    private IService mService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
         ButterKnife.bind(this);
-        Glide.with(this).load(SmackManager.getVCard().getAvatar())
-                .transform(new GlideRoundTransform(this, 35))
-                .into(ivSettingImage);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            askForPermissions();
-        }
+        mService = RetrofitUtils.getService();
+        Toolbar toolbar = ButterKnife.findById(this,R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
-    private void askForPermissions() {
-        requestPermissions(permissions, REQUEST_EXTERNAL_STORAGE);
-    }
 
-    @OnClick({R.id.tr_change_image, R.id.bt_change_signiture,R.id.bt_change_nickname})
+    @OnClick({R.id.more_page_info, R.id.bt_logout})
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tr_change_image:
-                Intent intent = new Intent();
-                /* 开启Pictures画面Type设定为image */
-                intent.setType("image/*");
-                /* 使用Intent.ACTION_GET_CONTENT这个Action */
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                /* 取得相片后返回本画面 */
-                startActivityForResult(intent, 1);
+            case R.id.more_page_info:
+                Intent intent = new Intent(this, InfoSettingActivity.class);
+                startActivityForResult(intent, Constant.REQURST_SETTING);
                 break;
-            case R.id.bt_change_signiture:
-//                requestChangeSigniture();
-                new ChangeSignitureAsycTask().execute(etSettingSigniture.getText().toString());
+            case R.id.bt_logout:
+                Intent intentLogout = new Intent(this, SigninActivity.class);
+                intentLogout.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intentLogout);
                 break;
-            case R.id.bt_change_nickname:
-                new ChangeNicknameAsycTask().execute(etSettingNickname.getText().toString());
-                break;
+
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constant.REQURST_SETTING && resultCode == RESULT_OK)
+            setResult(RESULT_OK);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    //    @OnClick({R.id.tr_change_image, R.id.bt_change_signiture, R.id.bt_change_nickname})
+//    public void onClick(View view) {
+//        switch (view.getId()) {
+//            case R.id.tr_change_image:
+//
+//                showChoosePicDialog();
+//                break;
+//            case R.id.bt_change_signiture:
+//                requestChangeSigniture();
+//                break;
+//            case R.id.bt_change_nickname:
+//                requestChangeNickname();
+//                break;
+//        }
+//    }
+
+//    private void requestChangeNickname() {
+//        final String nickname = etSettingNickname.getText().toString();
+//        mService.changeInfo(UserInfo.uid, nickname, Constant.Info.NICKNAME)
+//                .subscribeOn(Schedulers.newThread())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Consumer<Result>() {
+//                    @Override
+//                    public void accept(Result result) throws Exception {
+//                        if (result.getCode() == 0) {
+//                            new AlertDialog.Builder(SettingActivity.this).setMessage("更改成功").show();
+//                            UserInfo.nickname = nickname;
+//                            setResult(RESULT_OK);
+//                        }
+//                        else
+//                            new AlertDialog.Builder(SettingActivity.this).setMessage("更改失败").show();
+//                    }
+//                }, new Consumer<Throwable>() {
+//                    @Override
+//                    public void accept(Throwable throwable) throws Exception {
+//                        new AlertDialog.Builder(SettingActivity.this).setMessage("更改失败:" + throwable).show();
+//                    }
+//                });
+//    }
+//
 //    private void requestChangeSigniture() {
-//        String signiture = etSettingSigniture.getText().toString();
-//        Observable<Result> observable = RetrofitUtils.getService().changeSigniture(UserInfo.username, signiture);
+//        final String signiture = etSettingSigniture.getText().toString();
+//        Observable<Result> observable = mService.changeInfo(UserInfo.uid, signiture, Constant.Info.SIGNATURE);
 //        observable.subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Result>() {
 //            @Override
 //            public void onSubscribe(Disposable d) {
@@ -97,15 +118,17 @@ public class SettingActivity extends AppCompatActivity {
 //
 //            @Override
 //            public void onNext(Result value) {
-//                if (value.getCode() == 0)
+//                if (value.getCode() == 0) {
+//
 //                    new AlertDialog.Builder(SettingActivity.this).setMessage("更改成功").show();
-//                else
+//                    UserInfo.signiture = signiture;
+//                    setResult(RESULT_OK);
+//                }else
 //                    new AlertDialog.Builder(SettingActivity.this).setMessage("更改失败").show();
 //            }
 //
 //            @Override
 //            public void onError(Throwable e) {
-//                e.printStackTrace();
 //                new AlertDialog.Builder(SettingActivity.this).setMessage("更改失败:" + e).show();
 //            }
 //
@@ -116,143 +139,5 @@ public class SettingActivity extends AppCompatActivity {
 //        });
 //    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.e("result", resultCode + "");
-        if (resultCode == RESULT_OK) {
-            ContentResolver resolver = getContentResolver();
-            try {
-//                Log.e("result",data.getData().toString());
 
-                InputStream inputStream = resolver.openInputStream(data.getData());
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                byte[] buffer = new byte[1024];
-                int len;
-                while ((len = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, len);
-                }
-                new UploadImageAsycTask().execute(outputStream.toByteArray());
-//                RequestBody body = RequestBody.create(MediaType.parse("1.jpg"), outputStream.toByteArray());
-
-//                Observable<Result> observable = RetrofitUtils.getService().uploadImage(UserInfo.username, body);
-//                observable.subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<Result>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onNext(Result value) {
-//                        if (value.getCode() == 0)
-//                        new AlertDialog.Builder(SettingActivity.this).setMessage("上传成功").show();
-//                        else
-//                        new AlertDialog.Builder(SettingActivity.this).setMessage("上传失败").show();
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        new AlertDialog.Builder(SettingActivity.this).setMessage("上传失败:"+e).show();
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//
-//                    }
-//                });
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-
-
-    class UploadImageAsycTask extends AsyncTask<byte[], Void, Boolean> {
-
-        @Override
-        protected Boolean doInBackground(byte[]... params) {
-            try {
-                VCardManager manager = VCardManager.getInstanceFor(SmackManager.getConnection());
-                VCard card = manager.loadVCard();
-                card.setAvatar(params[0]);
-                manager.saveVCard(card);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(SettingActivity.this);
-            if (aBoolean) {
-                builder.setMessage("上传成功");
-            } else {
-                builder.setMessage("上传失败");
-            }
-            builder.show();
-        }
-    }
-
-    class ChangeSignitureAsycTask extends AsyncTask<String, Void, Boolean> {
-
-
-        @Override
-        protected Boolean doInBackground(String... params) {
-            try {
-                VCardManager manager = VCardManager.getInstanceFor(SmackManager.getConnection());
-                VCard card = manager.loadVCard();
-                card.setField(Constant.VCARD_SIGNITURE_FIELD, params[0]);
-                manager.saveVCard(card);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(SettingActivity.this);
-            if (aBoolean) {
-                builder.setMessage("修改成功");
-            } else {
-                builder.setMessage("修改失败");
-            }
-            builder.show();
-        }
-    }
-    class ChangeNicknameAsycTask extends AsyncTask<String, Void, Boolean> {
-
-
-        @Override
-        protected Boolean doInBackground(String... params) {
-            try {
-                VCardManager manager = VCardManager.getInstanceFor(SmackManager.getConnection());
-                VCard card = manager.loadVCard();
-                card.setNickName(params[0]);
-                manager.saveVCard(card);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(SettingActivity.this);
-            if (aBoolean) {
-                builder.setMessage("修改成功");
-            } else {
-                builder.setMessage("修改失败");
-            }
-            builder.show();
-        }
-    }
 }

@@ -4,21 +4,17 @@ package hl.iss.whu.edu.laboratoryproject.entity;
  * Created by fate on 2016/12/2.
  */
 public class Teacher {
-    private  String name;
+    private int id;
+
+
+    private String realname;
     private String imageURL;
 
     public Teacher(String name, String imageURL) {
-        this.name = name;
+        this.realname = name;
         this.imageURL = imageURL;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getImageURL() {
         return imageURL;
@@ -26,5 +22,20 @@ public class Teacher {
 
     public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
+    }
+    public String getRealname() {
+        return realname;
+    }
+
+    public void setRealname(String realname) {
+        this.realname = realname;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

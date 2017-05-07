@@ -14,17 +14,11 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_message"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </android.support.v7.widget.RecyclerView>
-    <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="10dp"
-        android:id="@+id/recycler_stanza"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </android.support.v7.widget.RecyclerView>
-
+        <fragment
+            android:id="@+id/conversationlist"
+            android:name="io.rong.imkit.fragment.ConversationListFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

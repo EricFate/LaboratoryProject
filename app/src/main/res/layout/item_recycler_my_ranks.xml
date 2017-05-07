@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:padding="@dimen/activity_vertical_margin"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="课程名称"
+            android:textColor="@android:color/black"
+            android:id="@+id/tv_course_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+        <RatingBar
+            style="?android:attr/ratingBarStyleSmall"
+            android:progressTint="@android:color/holo_orange_light"
+            android:isIndicator="true"
+            android:id="@+id/rating_rank"
+            android:stepSize="0.1"
+            android:rating="4.5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <ImageButton
+        android:id="@+id/ib_delete"
+        android:layout_alignParentEnd="true"
+        android:background="@android:color/transparent"
+        android:src="@drawable/ic_delete_black_24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    </RelativeLayout>
+    <TextView
+        android:layout_marginTop="5dp"
+        android:textColor="@android:color/black"
+        android:id="@+id/tv_rank_content"
+        android:inputType="textMultiLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_time"
+            android:text="时间"
+            android:gravity="end"
+            android:textColor="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    <View
+        android:layout_marginTop="5dp"
+        android:background="@drawable/drawable_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+</LinearLayout>

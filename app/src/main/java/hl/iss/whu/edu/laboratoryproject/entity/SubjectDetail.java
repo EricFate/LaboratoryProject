@@ -10,15 +10,25 @@ public class SubjectDetail {
     private String name;
     private String description;
     private Teacher teacher;
-    private ArrayList<Rank> ranks;
-    private double avgRank;
+    private String knowledge;
 
-    public SubjectDetail(String name, String description, Teacher teacher, ArrayList<Rank> ranks, double avgRank) {
+
+    private ArrayList<Rank> ranks;
+    private float avgRank;
+
+    public SubjectDetail(String name, String description, Teacher teacher, ArrayList<Rank> ranks, float avgRank) {
         this.name = name;
         this.description = description;
         this.teacher = teacher;
         this.ranks = ranks;
         this.avgRank = avgRank;
+    }
+    public String getKnowledge() {
+        return knowledge;
+    }
+
+    public void setKnowledge(String knowledge) {
+        this.knowledge = knowledge;
     }
 
 
@@ -54,11 +64,11 @@ public class SubjectDetail {
         this.ranks = ranks;
     }
 
-    public double getAvgRank() {
+    public float getAvgRank() {
         return avgRank;
     }
 
-    public void setAvgRank(double avgRank) {
+    public void setAvgRank(float avgRank) {
         this.avgRank = avgRank;
     }
 }

@@ -4,67 +4,125 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.Random;
 
 import butterknife.ButterKnife;
 import hl.iss.whu.edu.laboratoryproject.R;
-import hl.iss.whu.edu.laboratoryproject.entity.Discover;
+import hl.iss.whu.edu.laboratoryproject.constant.Constant;
+import hl.iss.whu.edu.laboratoryproject.entity.Issue;
+import hl.iss.whu.edu.laboratoryproject.entity.Student;
+import hl.iss.whu.edu.laboratoryproject.glide.GlideCircleTransform;
+import hl.iss.whu.edu.laboratoryproject.listener.OnUserInfoClickListener;
 import hl.iss.whu.edu.laboratoryproject.utils.UiUtils;
 
 /**
  * Created by fate on 2016/12/9.
  */
 
-public class RecyclerDiscoverAdapter extends BaseRecyclerViewAdapter<Discover,RecyclerDiscoverAdapter.MyViewHolder> {
+public class RecyclerDiscoverAdapter extends BaseRecyclerViewAdapter<Issue, RecyclerDiscoverAdapter.MyViewHolder> {
 
 
-    public RecyclerDiscoverAdapter(ArrayList<Discover> data) {
+    private OnAnswerClickListener onAnswerClickListener;
+
+    public void setOnUserInfoClickListener(OnUserInfoClickListener onUserInfoClickListener) {
+        mOnUserInfoClickListener = onUserInfoClickListener;
+    }
+
+    private OnUserInfoClickListener mOnUserInfoClickListener;
+    public RecyclerDiscoverAdapter(ArrayList<Issue> data) {
         super(data);
     }
+
+    public void setOnAnswerClickListener(OnAnswerClickListener onAnswerClickListener) {
+        this.onAnswerClickListener = onAnswerClickListener;
+    }
+
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(UiUtils.getContext()).inflate(R.layout.item_recycler_dicover, parent, false);
-
         return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.tvTitle.setText(data.get(position).getTitle());
-        holder.tvDetail.setText(data.get(position).getDetail());
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
+        final Issue issue = data.get(position);
+        holder.tvTitle.setText(issue.getTitle());
+        holder.tvDetail.setText(issue.getContent());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mListener!=null)
-                mListener.onItemClick(v, (Discover) v.getTag());
+                if (mListener != null)
+                    mListener.onItemClick(v, (Issue) v.getTag());
             }
         });
-        holder.tvNumber.setText(new Random().nextInt(6)+"人回答");
-        holder.itemView.setTag(data.get(position));
+        if (issue.isAnonymous()) {
+            holder.tvName.setText("匿名提问");
+            Glide.with(UiUtils.getContext())
+                    .load(R.drawable.ic_account_circle_blue_600_24dp)
+                    .transform(new GlideCircleTransform(UiUtils.getContext()))
+                    .into(holder.ivImage);
+        }else {
+            final Student student = issue.getUser();
+            holder.tvName.setText(student.getNickname());
+            Glide.with(UiUtils.getContext()).load(Constant.SERVER_URL+ student.getImageURL()).placeholder(R.drawable.ic_account_circle_blue_600_24dp)
+                    .transform(new GlideCircleTransform(UiUtils.getContext()))
+                    .into(holder.ivImage);
+            holder.llAsker.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnUserInfoClickListener!=null)
+                        mOnUserInfoClickListener.onUserInfoClickListener("s"+ student.getId());
+                }
+            });
+        }
+
+        holder.tvNumber.setText(issue.getAnswerNumber()+"人回答");
+        holder.itemView.setTag(issue);
+        holder.ibAnswer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onAnswerClickListener != null)
+                    onAnswerClickListener.onAnswerClick(issue.getId());
+            }
+        });
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder{
+
+
+
+
+    public interface OnAnswerClickListener {
+        void onAnswerClick(int iid);
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle;
         ExpandableTextView tvDetail;
         TextView tvNumber;
         ImageView ibShare;
+        ImageView ibAnswer;
         View itemView;
+        ImageView ivImage;
+        TextView tvName;
+        LinearLayout llAsker;
         public MyViewHolder(View itemView) {
             super(itemView);
+            tvName = ButterKnife.findById(itemView,R.id.tv_name);
+            ivImage = ButterKnife.findById(itemView,R.id.iv_image);
             tvTitle = ButterKnife.findById(itemView, R.id.tv_title);
             tvDetail = ButterKnife.findById(itemView, R.id.etv_question_content);
             tvNumber = ButterKnife.findById(itemView, R.id.tv_discover_number);
-            ibShare = ButterKnife.findById(itemView,R.id.ib_share);
+            ibShare = ButterKnife.findById(itemView, R.id.ib_share);
+            ibAnswer = ButterKnife.findById(itemView, R.id.ib_answer);
+            llAsker = ButterKnife.findById(itemView,R.id.ll_asker);
             this.itemView = itemView;
         }
     }

@@ -24,6 +24,11 @@
     tools:context="hl.iss.whu.edu.laboratoryproject.ui.activity.QuestionActivity"
     tools:showIn="@layout/activity_question">
     <include layout="@layout/item_recycler_dicover"/>
+    <LinearLayout
+        android:id="@+id/root"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <TextView
         android:layout_margin="10dp"
         android:text="全部回答"
@@ -31,6 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <android.support.v7.widget.RecyclerView
+
         android:overScrollMode="never"
         android:id="@+id/recycler_answer"
         android:background="@color/light_grey"
@@ -39,5 +45,7 @@
         >
 
     </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
 </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

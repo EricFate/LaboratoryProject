@@ -13,22 +13,38 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import hl.iss.whu.edu.laboratoryproject.R;
 import hl.iss.whu.edu.laboratoryproject.constant.Constant;
-import hl.iss.whu.edu.laboratoryproject.entity.Chatter;
-import hl.iss.whu.edu.laboratoryproject.entity.Group;
+import hl.iss.whu.edu.laboratoryproject.entity.Roster;
+import hl.iss.whu.edu.laboratoryproject.entity.RosterGroup;
 import hl.iss.whu.edu.laboratoryproject.glide.GlideRoundTransform;
 import hl.iss.whu.edu.laboratoryproject.ui.view.AnimatedExpandableListView;
-import hl.iss.whu.edu.laboratoryproject.utils.ImageFactory;
 import hl.iss.whu.edu.laboratoryproject.utils.UiUtils;
+import hl.iss.whu.edu.laboratoryproject.utils.UserInfo;
 
 /**
  * Created by fate on 2016/11/26.
  */
 
 public class ExpandableContactAdapter extends AnimatedExpandableListView.AnimatedExpandableListAdapter {
-    private ArrayList<Group> data;
-
-    public ExpandableContactAdapter(ArrayList<Group> data) {
+    public void setData(ArrayList<RosterGroup> data) {
         this.data = data;
+        UiUtils.runInMainThread(new Runnable() {
+            @Override
+            public void run() {
+                notifyDataSetChanged();
+            }
+        });
+    }
+
+    private ArrayList<RosterGroup> data;
+
+    public ExpandableContactAdapter(ArrayList<RosterGroup> data) {
+        this.data = data;
+        UiUtils.runInMainThread(new Runnable() {
+            @Override
+            public void run() {
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -44,10 +60,7 @@ public class ExpandableContactAdapter extends AnimatedExpandableListView.Animate
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        int presenceNumber = data.get(groupPosition).getPresence().size();
-        if (childPosition < presenceNumber)
-            return data.get(groupPosition).getPresence().get(childPosition);
-        else return data.get(groupPosition).getAbsence().get(childPosition - presenceNumber);
+        return data.get(groupPosition).getRosters().get(childPosition);
     }
 
     @Override
@@ -67,20 +80,19 @@ public class ExpandableContactAdapter extends AnimatedExpandableListView.Animate
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        GroupViewHoldder viewHoldder ;
+        GroupViewHoldder viewHoldder;
         if (convertView == null) {
             convertView = LayoutInflater.from(UiUtils.getContext()).inflate(R.layout.item_expandable_contact_group, null);
             viewHoldder = new GroupViewHoldder();
             viewHoldder.name = ButterKnife.findById(convertView, R.id.tv_group_name);
             viewHoldder.number = ButterKnife.findById(convertView, R.id.tv_contacts_number);
             convertView.setTag(viewHoldder);
-        }
-        else {
+        } else {
             viewHoldder = (GroupViewHoldder) convertView.getTag();
         }
-        Group group = data.get(groupPosition);
+        RosterGroup group = data.get(groupPosition);
         viewHoldder.name.setText(group.getName());
-        viewHoldder.number.setText(group.getPresence().size() + "/" + getRealChildrenCount(groupPosition));
+        viewHoldder.number.setText(getRealChildrenCount(groupPosition)+"");
         return convertView;
     }
 
@@ -110,37 +122,46 @@ public class ExpandableContactAdapter extends AnimatedExpandableListView.Animate
             viewHolder.name = ButterKnife.findById(convertView, R.id.tv_contact_name);
             viewHolder.signiture = ButterKnife.findById(convertView, R.id.tv_contact_signiture);
             viewHolder.image = ButterKnife.findById(convertView, R.id.iv_contact_image);
+            viewHolder.identity = ButterKnife.findById(convertView, R.id.tv_identity);
             convertView.setTag(viewHolder);
-        }else {
+        } else {
             viewHolder = (ChildViewHolder) convertView.getTag();
         }
-        Chatter chatter;
-        int presenceNumber = data.get(groupPosition).getPresence().size();
-        if (childPosition < presenceNumber)
-            chatter = data.get(groupPosition).getPresence().get(childPosition);
-        else chatter = data.get(groupPosition).getAbsence().get(childPosition - presenceNumber);
-        viewHolder.name.setText(chatter.getName());
-        viewHolder.signiture.setText(chatter.getSigniture());
+        Roster roster = data.get(groupPosition).getRosters().get(childPosition);
+        viewHolder.name.setText(roster.getRemark());
+        viewHolder.signiture.setText(roster.getSignature());
         Glide.with(UiUtils.getContext())
-                .load(chatter.getImage())
+                .load(Constant.SERVER_URL + roster.getImageURL())
                 .dontAnimate()
+                .transform(new GlideRoundTransform(UiUtils.getContext(),Constant.IMAGE_RADIUS))
                 .placeholder(R.drawable.ic_account_circle_blue_600_24dp)
                 .into(viewHolder.image);
-        ButterKnife.findById(convertView, R.id.ll_presence).setVisibility(chatter.getState() == 0 ? View.VISIBLE : View.GONE);
-        ButterKnife.findById(convertView, R.id.ll_absence).setVisibility(chatter.getState() == 1 ? View.VISIBLE : View.GONE);
+        String uid = roster.getUid();
+        viewHolder.identity.setText(UserInfo.getIdentity(uid));
+//        Chatter chatter;
+//        int presenceNumber = data.get(groupPosition).getPresence().size();
+//        if (childPosition < presenceNumber)
+//            chatter = data.get(groupPosition).getPresence().get(childPosition);
+//        else chatter = data.get(groupPosition).getAbsence().get(childPosition - presenceNumber);
+//        ButterKnife.findById(convertView, R.id.ll_presence).setVisibility(chatter.getState() == 0 ? View.VISIBLE : View.GONE);
+//        ButterKnife.findById(convertView, R.id.ll_absence).setVisibility(chatter.getState() == 1 ? View.VISIBLE : View.GONE);
         return convertView;
     }
 
+
+
     @Override
     public int getRealChildrenCount(int groupPosition) {
-        return data.get(groupPosition).getPresence().size() + data.get(groupPosition).getAbsence().size();
+        return data.get(groupPosition).getRosters().size();
     }
 
     static class ChildViewHolder {
         TextView name;
         TextView signiture;
         ImageView image;
+        TextView identity;
     }
+
     static class GroupViewHoldder {
         TextView name;
         TextView number;

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:padding="10dp"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="60dp">
+
+
+        <Spinner
+            style="@android:style/Widget.Holo.Light.Spinner"
+            android:id="@+id/spinner_province"
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            />
+        <Spinner
+            style="@android:style/Widget.Holo.Light.Spinner"
+            android:id="@+id/spinner_city"
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            />
+        <Spinner
+            style="@android:style/Widget.Holo.Light.Spinner"
+            android:id="@+id/spinner_area"
+            android:layout_weight="4"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            />
+</LinearLayout>

@@ -1,29 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    xmlns:tools="http://schemas.android.com/tools"
-                    tools:context="hl.iss.whu.edu.laboratoryproject.ui.activity.SettingActivity"
-                    xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout
-        android:gravity="center"
-        android:orientation="vertical"
-        android:id="@+id/ll_title"
-        android:background="@color/Blue"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="hl.iss.whu.edu.laboratoryproject.ui.activity.SettingActivity">
+
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
         <TextView
-            android:textSize="26sp"
             android:textColor="@android:color/white"
-            android:text="设置"
+            android:textSize="20sp"
+            android:layout_gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:text="设置"/>
+        </android.support.v7.widget.Toolbar>
+    </android.support.design.widget.AppBarLayout>
 
 
 <android.support.v4.widget.NestedScrollView
     android:layout_below="@id/ll_title"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 <LinearLayout
 
     android:layout_width="match_parent"
@@ -86,23 +97,24 @@
             </TableRow>
 
             <TableRow
-                android:id="@+id/more_page_row2"
+                android:layout_marginTop="-1dp"
+                android:id="@+id/more_page_info"
                 android:layout_width="fill_parent"
                 android:layout_marginLeft="2.0dip"
                 android:layout_marginRight="2.0dip"
-                android:background="@drawable/more_itemmiddle_press"
+                android:background="@drawable/selector_middlebutton_background"
                 android:paddingBottom="16.0dip"
                 android:paddingTop="16.0dip" >
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:drawableLeft="@drawable/ic_favorite_grey_600_24dp"
+                    android:drawableLeft="@drawable/ic_assignment_grey_600_24dp"
                     android:drawablePadding="10.0dip"
                     android:gravity="center_vertical"
                     android:includeFontPadding="false"
                     android:paddingLeft="17.0dip"
-                    android:text="个人爱好"
+                    android:text="个人信息"
                     android:textColor="#ff333333"
                     android:textSize="16.0sp" />
 
@@ -116,6 +128,7 @@
             </TableRow>
 
             <TableRow
+                android:layout_marginTop="-1dp"
                 android:id="@+id/more_page_row3"
                 android:layout_width="fill_parent"
                 android:layout_marginLeft="2.0dip"
@@ -201,6 +214,7 @@
             </TableRow>
 
             <TableRow
+                android:layout_marginTop="-1dp"
                 android:id="@+id/more_page_row5"
                 android:layout_width="fill_parent"
                 android:layout_marginLeft="2.0dip"
@@ -231,6 +245,7 @@
             </TableRow>
 
             <TableRow
+                android:layout_marginTop="-1dp"
                 android:id="@+id/more_page_row6"
                 android:layout_width="fill_parent"
                 android:layout_marginLeft="2.0dip"
@@ -261,6 +276,7 @@
             </TableRow>
 
             <TableRow
+                android:layout_marginTop="-1dp"
                 android:id="@+id/more_page_row7"
                 android:layout_width="fill_parent"
                 android:layout_marginLeft="2.0dip"
@@ -291,137 +307,151 @@
             </TableRow>
         </TableLayout>
     </LinearLayout>
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10.0dip"
-        android:layout_marginTop="10.0dip"
-        android:gravity="center_vertical"
-        android:paddingLeft="4.0dip"
-        android:text="个性设置"
-        android:textColor="#ff888888"
-        android:textSize="16.0sp" />
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TableLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:stretchColumns="0"
-            android:divider="@drawable/divider_setting"
-            android:showDividers="middle"
+    <!--<TextView-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="10.0dip"-->
+        <!--android:layout_marginTop="10.0dip"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:paddingLeft="4.0dip"-->
+        <!--android:text="个性设置"-->
+        <!--android:textColor="#ff888888"-->
+        <!--android:textSize="16.0sp" />-->
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+        <!--<TableLayout-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:stretchColumns="0"-->
+            <!--android:divider="@drawable/divider_setting"-->
+            <!--android:showDividers="middle"-->
 
-            >
-            <TableRow
-                android:id="@+id/tr_change_image"
-                android:layout_width="fill_parent"
-                android:layout_marginLeft="2.0dip"
-                android:layout_marginRight="2.0dip"
-                android:background="@drawable/more_itemtop_press"
-                android:paddingBottom="16.0dip"
-                android:paddingTop="16.0dip"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:drawableLeft="@drawable/ic_face_grey_600_24dp"
-                    android:drawablePadding="10.0dip"
-                    android:gravity="center_vertical"
-                    android:includeFontPadding="false"
-                    android:paddingLeft="17.0dip"
-                    android:text="修改头像"
-                    android:textColor="#ff333333"
-                    android:textSize="16.0sp"/>
-                <ImageView
-                    android:layout_marginRight="10dp"
-                    android:id="@+id/iv_setting_image"
-                    android:layout_height="35dp"
-                    android:layout_width="35dp"
-                    android:scaleType="fitXY"
-                    android:src="@android:drawable/ic_delete"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                           android:layout_height="fill_parent"
-                           android:layout_gravity="right"
-                           android:gravity="center_vertical"
-                           android:paddingRight="20.0dip"
-                           android:src="@drawable/ic_keyboard_arrow_right_grey_800_24dp"/>
+            <!--&gt;-->
+            <!--<TableRow-->
+                <!--android:id="@+id/tr_change_image"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_marginLeft="2.0dip"-->
+                <!--android:layout_marginRight="2.0dip"-->
+                <!--android:background="@drawable/more_itemtop_press"-->
+                <!--android:paddingBottom="16.0dip"-->
+                <!--android:paddingTop="16.0dip"-->
+                <!--&gt;-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="fill_parent"-->
+                    <!--android:drawableLeft="@drawable/ic_face_grey_600_24dp"-->
+                    <!--android:drawablePadding="10.0dip"-->
+                    <!--android:gravity="center_vertical"-->
+                    <!--android:includeFontPadding="false"-->
+                    <!--android:paddingLeft="17.0dip"-->
+                    <!--android:text="修改头像"-->
+                    <!--android:textColor="#ff333333"-->
+                    <!--android:textSize="16.0sp"/>-->
+                <!--<ImageView-->
+                    <!--android:layout_marginRight="10dp"-->
+                    <!--android:id="@+id/iv_setting_image"-->
+                    <!--android:layout_height="35dp"-->
+                    <!--android:layout_width="35dp"-->
+                    <!--android:scaleType="fitXY"-->
+                    <!--android:src="@android:drawable/ic_delete"/>-->
+                <!--<ImageView-->
+                    <!--android:layout_width="wrap_content"-->
+                           <!--android:layout_height="fill_parent"-->
+                           <!--android:layout_gravity="right"-->
+                           <!--android:gravity="center_vertical"-->
+                           <!--android:paddingRight="20.0dip"-->
+                           <!--android:src="@drawable/ic_keyboard_arrow_right_grey_800_24dp"/>-->
 
-            </TableRow>
-            <TableRow
-                android:layout_width="fill_parent"
-                android:layout_marginLeft="2.0dip"
-                android:layout_marginRight="2.0dip"
-                android:background="@drawable/more_itembottom_press"
-                android:paddingBottom="16.0dip"
-                android:paddingTop="16.0dip"
-                >
-                <LinearLayout android:layout_span="3"
-                              android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:drawableLeft="@drawable/ic_assignment_grey_600_24dp"
-                        android:drawablePadding="10.0dip"
-                        android:gravity="center_vertical"
-                        android:includeFontPadding="false"
-                        android:paddingLeft="17.0dip"
-                        android:text="更改昵称"
-                        android:textColor="#ff333333"
-                        android:textSize="16.0sp"/>
-                    <EditText
-                        android:id="@+id/et_setting_nickname"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                    />
-                    <Button
-                        android:id="@+id/bt_change_nickname"
-                        android:layout_gravity="right"
-                        android:text="提交"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"/>
-                </LinearLayout>
-            </TableRow>
-            <TableRow
-                android:layout_width="fill_parent"
-                android:layout_marginLeft="2.0dip"
-                android:layout_marginRight="2.0dip"
-                android:background="@drawable/more_itembottom_press"
-                android:paddingBottom="16.0dip"
-                android:paddingTop="16.0dip"
-                >
-                <LinearLayout android:layout_span="3"
-                    android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="fill_parent"
-                    android:drawableLeft="@drawable/ic_assignment_grey_600_24dp"
-                    android:drawablePadding="10.0dip"
-                    android:gravity="center_vertical"
-                    android:includeFontPadding="false"
-                    android:paddingLeft="17.0dip"
-                    android:text="更改签名"
-                    android:textColor="#ff333333"
-                    android:textSize="16.0sp"/>
-                    <EditText
-                        android:id="@+id/et_setting_signiture"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textMultiLine"
-                        android:lines="4"/>
-                <Button
-                    android:id="@+id/bt_change_signiture"
-                    android:layout_gravity="right"
-                    android:text="提交"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"/>
-                </LinearLayout>
-            </TableRow>
-        </TableLayout>
-    </LinearLayout>
-
+            <!--</TableRow>-->
+            <!--<TableRow-->
+                <!--android:layout_marginTop="-1dp"-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_marginLeft="2.0dip"-->
+                <!--android:layout_marginRight="2.0dip"-->
+                <!--android:background="@drawable/more_itemmiddle_press"-->
+                <!--android:paddingBottom="16.0dip"-->
+                <!--android:paddingTop="16.0dip"-->
+                <!--&gt;-->
+                <!--<LinearLayout android:layout_span="3"-->
+                              <!--android:orientation="vertical">-->
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="fill_parent"-->
+                        <!--android:drawableLeft="@drawable/ic_assignment_grey_600_24dp"-->
+                        <!--android:drawablePadding="10.0dip"-->
+                        <!--android:gravity="center_vertical"-->
+                        <!--android:includeFontPadding="false"-->
+                        <!--android:paddingLeft="17.0dip"-->
+                        <!--android:text="更改昵称"-->
+                        <!--android:textColor="#ff333333"-->
+                        <!--android:textSize="16.0sp"/>-->
+                    <!--<EditText-->
+                        <!--android:layout_marginLeft="10dp"-->
+                        <!--android:layout_marginRight="10dp"-->
+                        <!--android:id="@+id/et_setting_nickname"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                    <!--/>-->
+                    <!--<Button-->
+                    <!--android:layout_marginRight="5dp"-->
+                        <!--android:id="@+id/bt_change_nickname"-->
+                        <!--android:layout_gravity="right"-->
+                        <!--android:text="提交"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_width="wrap_content"/>-->
+                <!--</LinearLayout>-->
+            <!--</TableRow>-->
+            <!--<TableRow-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_marginLeft="2.0dip"-->
+                <!--android:layout_marginRight="2.0dip"-->
+                <!--android:background="@drawable/more_itembottom_press"-->
+                <!--android:paddingBottom="16.0dip"-->
+                <!--android:paddingTop="16.0dip"-->
+                <!--&gt;-->
+                <!--<LinearLayout android:layout_span="3"-->
+                    <!--android:orientation="vertical">-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="fill_parent"-->
+                    <!--android:drawableLeft="@drawable/ic_assignment_grey_600_24dp"-->
+                    <!--android:drawablePadding="10.0dip"-->
+                    <!--android:gravity="center_vertical"-->
+                    <!--android:includeFontPadding="false"-->
+                    <!--android:paddingLeft="17.0dip"-->
+                    <!--android:text="更改签名"-->
+                    <!--android:textColor="#ff333333"-->
+                    <!--android:textSize="16.0sp"/>-->
+                    <!--<EditText-->
+                        <!--android:layout_marginLeft="10dp"-->
+                        <!--android:layout_marginRight="10dp"-->
+                        <!--android:id="@+id/et_setting_signiture"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:inputType="textMultiLine"-->
+                        <!--android:lines="4"/>-->
+                <!--<Button-->
+                    <!--android:layout_marginRight="5dp"-->
+                    <!--android:id="@+id/bt_change_signiture"-->
+                    <!--android:layout_gravity="right"-->
+                    <!--android:text="提交"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_width="wrap_content"/>-->
+                <!--</LinearLayout>-->
+            <!--</TableRow>-->
+        <!--</TableLayout>-->
+    <!--</LinearLayout>-->
 </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
-</RelativeLayout>
+    <Button
+        android:layout_marginTop="10dp"
+        android:layout_gravity="bottom"
+        style="@android:style/Widget.Button"
+        android:text="退出当前用户"
+        android:id="@+id/bt_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    </android.support.design.widget.CoordinatorLayout>

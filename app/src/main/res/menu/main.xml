@@ -7,11 +7,11 @@
         android:orderInCategory="100"
         android:title="消息"
         app:showAsAction="always"/>
-    <item
-        android:id="@+id/action_search"
-        android:icon="@drawable/ic_search_white_24dp"
-        android:orderInCategory="90"
-        android:title="搜索"
-        app:showAsAction="always"/>
+    <!--<item-->
+        <!--android:id="@+id/action_search"-->
+        <!--android:icon="@drawable/ic_search_white_24dp"-->
+        <!--android:orderInCategory="90"-->
+        <!--android:title="搜索"-->
+        <!--app:showAsAction="always"/>-->
 
 </menu>

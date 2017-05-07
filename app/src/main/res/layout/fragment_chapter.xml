@@ -7,7 +7,7 @@
 
     <hl.iss.whu.edu.laboratoryproject.ui.view.AnimatedExpandableListView
         android:id="@+id/aelv_chapter"
-
+        android:groupIndicator="@drawable/selector_group_indicator"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

@@ -25,6 +25,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.AbsListView;
@@ -42,6 +43,7 @@ public class ScrollingUtil {
 
     /**
      * 用来判断是否可以下拉
+     * 手指在屏幕上该方法才有效
      */
     public static boolean canChildScrollUp(View mChildView) {
         if (mChildView == null) {
@@ -82,6 +84,20 @@ public class ScrollingUtil {
 
     public static boolean isScrollViewOrWebViewToTop(View view) {
         return view != null && view.getScrollY() == 0;
+    }
+
+    public static boolean isViewToTop(View view,int mTouchSlop){
+        if (view instanceof AbsListView) return isAbsListViewToTop((AbsListView) view);
+        if (view instanceof RecyclerView) return isRecyclerViewToTop((RecyclerView) view);
+        return  (view != null && Math.abs(view.getScrollY()) <= 2 * mTouchSlop);
+    }
+
+    public static boolean isViewToBottom(View view,int mTouchSlop){
+        if (view instanceof AbsListView) return isAbsListViewToBottom((AbsListView) view);
+        if (view instanceof RecyclerView) return isRecyclerViewToBottom((RecyclerView) view);
+        if (view instanceof WebView) return isWebViewToBottom((WebView) view,mTouchSlop);
+        if (view instanceof ViewGroup) return isViewGroupToBottom((ViewGroup) view);
+        return false;
     }
 
     public static boolean isAbsListViewToTop(AbsListView absListView) {
@@ -166,8 +182,13 @@ public class ScrollingUtil {
     }
 
 
-    public static boolean isWebViewToBottom(WebView webView) {
-        return webView != null && webView.getContentHeight() * webView.getScale() == (webView.getScrollY() + webView.getMeasuredHeight());
+    public static boolean isWebViewToBottom(WebView webview,int mTouchSlop) {
+        return webview != null && ((webview.getContentHeight() * webview.getScale() - (webview.getHeight() + webview.getScrollY())) <= 2 * mTouchSlop);
+    }
+
+    public static boolean isViewGroupToBottom(ViewGroup viewGroup){
+        View subChildView = viewGroup.getChildAt(0);
+        return (subChildView != null && subChildView.getMeasuredHeight() <= viewGroup.getScrollY() + viewGroup.getHeight());
     }
 
     public static boolean isScrollViewToBottom(ScrollView scrollView) {
@@ -228,9 +249,9 @@ public class ScrollingUtil {
     }
 
     public static void scrollAViewBy(View view, int height) {
-        if (view instanceof RecyclerView) ((RecyclerView) view).smoothScrollBy(0, height);
+        if (view instanceof RecyclerView) ((RecyclerView) view).scrollBy(0, height);
         else if (view instanceof ScrollView) ((ScrollView) view).smoothScrollBy(0, height);
-        else if (view instanceof AbsListView) ((AbsListView) view).smoothScrollBy(height, 150);
+        else if (view instanceof AbsListView) ((AbsListView) view).smoothScrollBy(height, 0);
         else {
             try {
                 Method method = view.getClass().getDeclaredMethod("smoothScrollBy", Integer.class, Integer.class);
@@ -277,6 +298,12 @@ public class ScrollingUtil {
                 });
             }
         }
+    }
+
+    public static void scrollToBottom(View view){
+        if (view instanceof RecyclerView) scrollToBottom((RecyclerView) view);
+        if (view instanceof AbsListView) scrollToBottom((AbsListView) view);
+        if (view instanceof ScrollView) scrollToBottom((ScrollView) view);
     }
 
 

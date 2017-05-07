@@ -1,6 +1,5 @@
 package hl.iss.whu.edu.laboratoryproject.entity;
 
-import org.jxmpp.jid.BareJid;
 
 import java.io.Serializable;
 
@@ -15,23 +14,6 @@ public class Chatter implements Serializable {
     private String name;
     private int state;
     private String signiture;
-    private BareJid jid;
-
-    public Chatter(String name, String message, byte[] image, String time,BareJid jid) {
-        this.name = name;
-        this.message = message;
-        this.image = image;
-        this.time = time;
-        this.jid = jid;
-    }
-
-    public Chatter(int state, String name, byte[] image, String signiture, BareJid jid) {
-        this.image = image;
-        this.name = name;
-        this.state = state;
-        this.signiture = signiture;
-        this.jid = jid;
-    }
 
 
     public String getName() {
@@ -82,11 +64,4 @@ public class Chatter implements Serializable {
         this.signiture = signiture;
     }
 
-    public BareJid getJid() {
-        return jid;
-    }
-
-    public void setJid(BareJid jid) {
-        this.jid = jid;
-    }
 }

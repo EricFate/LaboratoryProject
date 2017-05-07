@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+<include layout="@layout/fragment_please_select"/>
 <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/ns_main"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <LinearLayout
@@ -21,10 +29,11 @@
                 style="@style/TextViewTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="课程介绍"
+                android:text="课时介绍"
                 />
 
             <TextView
+                android:id="@+id/tv_description"
                 style="@style/TextViewContent"
                 android:textColor="@android:color/black"
                 android:layout_width="match_parent"
@@ -35,88 +44,101 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shape_background_my_lessons_button"
-            android:orientation="vertical">
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@drawable/shape_background_my_lessons_button"-->
+            <!--android:orientation="horizontal"-->
+            <!--android:padding="5dp"-->
+            <!--android:gravity="center_vertical">-->
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            <!--<ImageView-->
 
-            <TextView
-                style="@style/TextViewContent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"/>
+                <!--android:id="@+id/iv_teacher_image"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"/>-->
 
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/shape_background_my_lessons_button"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                >
-
-                <TextView
-                    style="@style/TextViewTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="学生评价"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_margin="8dp"
-                    android:text="查看全部评价"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="18sp"
-                    />
-
-            </RelativeLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                    <RatingBar
-                        android:rating="4.5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
+            <!--<TextView-->
+                <!--android:id="@+id/tv_teacher_info"-->
+                <!--style="@style/TextViewContent"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textSize="18sp"/>-->
 
 
-        </LinearLayout>
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+                    <!--android:id="@+id/ll_rank"-->
+                    <!--android:clickable="true"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:background="@drawable/shape_background_my_lessons_button"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<RelativeLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:gravity="center_vertical"-->
+                <!--&gt;-->
+
+                <!--<TextView-->
+                    <!--style="@style/TextViewTitle"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="学生评价"-->
+                    <!--/>-->
+
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_alignParentRight="true"-->
+                    <!--android:layout_margin="8dp"-->
+                    <!--android:text="查看全部评价"-->
+                    <!--android:textColor="@color/colorPrimary"-->
+                    <!--android:textSize="18sp"-->
+                    <!--/>-->
+            <!--</RelativeLayout>-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="20dp"-->
+                <!--android:orientation="vertical">-->
+
+                <!--<LinearLayout-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal">-->
+
+                    <!--<ImageView-->
+                        <!--android:id="@+id/iv_ranker_image"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"/>-->
+
+                    <!--<TextView-->
+                        <!--android:id="@+id/iv_ranker_name"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"/>-->
+
+                    <!--<RatingBar-->
+                        <!--style="?android:attr/ratingBarStyleSmall"-->
+                        <!--android:progressTint="@android:color/holo_orange_light"-->
+                        <!--android:isIndicator="true"-->
+                        <!--android:id="@+id/rating_rank"-->
+                        <!--android:stepSize="0.1"-->
+                        <!--android:rating="4.5"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"/>-->
+                <!--</LinearLayout>-->
+
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"/>-->
+            <!--</LinearLayout>-->
+
+
+        <!--</LinearLayout>-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -130,14 +152,15 @@
                 android:layout_height="wrap_content"
                 android:text="知识点"
                 />
-
             <TextView
-                android:textColor="@android:color/black"
+                android:id="@+id/tv_knowledge"
                 style="@style/TextViewContent"
-                android:text="@string/lesson_knowledge"
+                android:textColor="@android:color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/lesson_detail"
                 android:textSize="16sp"/>
         </LinearLayout>
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>
+</FrameLayout>

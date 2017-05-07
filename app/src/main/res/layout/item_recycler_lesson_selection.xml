@@ -12,7 +12,7 @@
     android:layout_height="wrap_content"
     android:text="高中数学"
     android:textColor="@android:color/black"
-    android:textSize="20sp"/>
+    android:textSize="16sp"/>
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_subject"
         android:layout_width="match_parent"

@@ -14,17 +14,17 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import hl.iss.whu.edu.laboratoryproject.R;
 import hl.iss.whu.edu.laboratoryproject.constant.Constant;
-import hl.iss.whu.edu.laboratoryproject.entity.Subject;
+import hl.iss.whu.edu.laboratoryproject.entity.Course;
 import hl.iss.whu.edu.laboratoryproject.utils.UiUtils;
 
 /**
  * Created by fate on 2016/11/13.
  */
 
-public class RecyclerSubjectAdapter extends BaseRecyclerViewAdapter<Subject,RecyclerSubjectAdapter.ViewHolder> {
+public class RecyclerSubjectAdapter extends BaseRecyclerViewAdapter<Course,RecyclerSubjectAdapter.ViewHolder> {
 
 
-    public RecyclerSubjectAdapter(ArrayList<Subject> data) {
+    public RecyclerSubjectAdapter(ArrayList<Course> data) {
         super(data);
     }
 
@@ -39,22 +39,22 @@ public class RecyclerSubjectAdapter extends BaseRecyclerViewAdapter<Subject,Recy
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.onItemClick(v, (Subject) v.getTag());
+                mListener.onItemClick(v, (Course) v.getTag());
             }
         });
         return new ViewHolder(view);
     }
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Subject subject = data.get(position);
+        Course course = data.get(position);
         Glide.with(UiUtils.getContext())
-                .load(Constant.SERVER_URL+subject.getImgURL())
+                .load(Constant.SERVER_URL+ course.getCoverURL())
                 .placeholder(R.drawable.bg)
                 .dontTransform()
                 .into(holder.ivLesson);
-        holder.tvName.setText(subject.getName());
-        holder.tvDuration.setText(subject.getDuration());
-        holder.tvNumber.setText(subject.getNumber());
+        holder.tvName.setText(course.getName());
+        holder.tvDuration.setText(course.getChapterNumber()+"个章节");
+        holder.tvNumber.setText(course.getFocusNumber()+"人关注");
         holder.itemView.setTag(data.get(position));
     }
 

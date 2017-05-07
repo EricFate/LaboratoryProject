@@ -32,7 +32,7 @@ import io.reactivex.schedulers.Schedulers;
  */
 
 public abstract class BaseFragment<T> extends Fragment {
-    private LoadingPage mLoadingPage;
+    protected LoadingPage mLoadingPage;
     protected T data;
     private String cachePath;
     private File cacheFile;
@@ -83,7 +83,11 @@ public abstract class BaseFragment<T> extends Fragment {
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-            }finally {
+            }catch (Exception e){
+                e.printStackTrace();
+                loadDataFromServer();
+            }
+            finally {
                 try {
                     bufferedReader.close();
                 } catch (IOException e) {

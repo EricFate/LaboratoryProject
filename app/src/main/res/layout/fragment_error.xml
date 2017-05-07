@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:visibility="gone"
+    android:id="@+id/ll_error"
+    xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
@@ -7,18 +10,21 @@
 
     <ImageView
         android:layout_width="140dp"
-        android:layout_height="140dp"
+        android:layout_height="130dp"
         android:scaleType="fitXY"
-        android:src="@drawable/ic_signal_wifi_off_grey_500_48dp"/>
+        android:src="@drawable/ic_not_network"/>
     <TextView
-        android:textColor="@color/main_unselected_grey"
+        android:layout_marginTop="5dp"
+        android:textColor="@color/colorPrimary"
         android:textSize="20sp"
         android:text="网络不可用"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <Button
+        android:layout_marginTop="5dp"
         android:id="@+id/bt_retry"
         android:text="重试"
+        style="@android:style/Widget.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 </LinearLayout>

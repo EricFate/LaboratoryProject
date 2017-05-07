@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 
+import com.lcodecore.tkrefreshlayout.OnAnimEndListener;
 import com.lcodecore.tkrefreshlayout.R;
 import com.lcodecore.tkrefreshlayout.IHeaderView;
 import com.lcodecore.tkrefreshlayout.utils.DensityUtil;
@@ -48,7 +49,7 @@ public class GoogleDotView extends View implements IHeaderView {
     ValueAnimator animator1, animator2;
 
     private void init() {
-        r = DensityUtil.dp2px(getContext(),4);
+        r = DensityUtil.dp2px(getContext(), 4);
 
         mPath = new Paint();
         mPath.setAntiAlias(true);
@@ -166,6 +167,13 @@ public class GoogleDotView extends View implements IHeaderView {
     }
 
     @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        if (animator1 != null) animator1.cancel();
+        if (animator2 != null) animator2.cancel();
+    }
+
+    @Override
     public View getView() {
         return this;
     }
@@ -179,7 +187,7 @@ public class GoogleDotView extends View implements IHeaderView {
             animator1.cancel();
             invalidate();
         }
-        if (animator2.isRunning()) animator1.cancel();
+        if (animator2.isRunning()) animator2.cancel();
     }
 
     @Override
@@ -192,7 +200,7 @@ public class GoogleDotView extends View implements IHeaderView {
                 animator1.cancel();
                 invalidate();
             }
-            if (animator2.isRunning()) animator1.cancel();
+            if (animator2.isRunning()) animator2.cancel();
         }
     }
 
@@ -205,7 +213,15 @@ public class GoogleDotView extends View implements IHeaderView {
     }
 
     @Override
-    public void onFinish() {
+    public void onFinish(OnAnimEndListener listener) {
+        listener.onAnimEnd();
+    }
 
+    @Override
+    public void reset() {
+        animating = false;
+        if (animator1.isRunning()) animator1.cancel();
+        if (animator2.isRunning()) animator2.cancel();
+        invalidate();
     }
 }
