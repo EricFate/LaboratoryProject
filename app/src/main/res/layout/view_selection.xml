@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/option_root"
+    android:background="@drawable/selector_general_button"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="5dp">
+
+
+    <TextView
+        android:id="@+id/option_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/option_circle"
+        android:gravity="center"
+        android:text="A"
+        android:textColor="@color/colorPrimary"/>
+
+    <TextView
+        android:id="@+id/option_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:inputType="textMultiLine"
+        android:maxLines="5"
+        android:minLines="1"
+        android:text="选项"
+        android:background="@android:color/transparent"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"/>
+</LinearLayout>

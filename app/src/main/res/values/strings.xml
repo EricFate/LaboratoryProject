@@ -32,5 +32,6 @@
     <string name="title_activity_class_member">班级成员</string>
     <string name="title_activity_groups">我的群组</string>
     <string name="title_activity_exercise">习题</string>
+    <string name="title_activity_notice">公告</string>
 
 </resources>

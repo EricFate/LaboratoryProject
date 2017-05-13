@@ -7,8 +7,6 @@ package hl.iss.whu.edu.laboratoryproject.entity;
 public class Exercise {
     private int id;
     private int answer;
-    private int tendency;
-    private int type;
     private String title;
     private String optionA;
     private String optionB;
@@ -16,9 +14,9 @@ public class Exercise {
     private String optionD;
     private String analysis;
     private String number;
-    private int accuracy;
     private double difficulty;
-
+    private int correct;
+    private int total;
     public int getId() {
         return id;
     }
@@ -35,21 +33,7 @@ public class Exercise {
         this.answer = answer;
     }
 
-    public int getTendency() {
-        return tendency;
-    }
 
-    public void setTendency(int tendency) {
-        this.tendency = tendency;
-    }
-
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
 
     public String getTitle() {
         return title;
@@ -107,13 +91,6 @@ public class Exercise {
         this.number = number;
     }
 
-    public int getAccuracy() {
-        return accuracy;
-    }
-
-    public void setAccuracy(int accuracy) {
-        this.accuracy = accuracy;
-    }
 
     public double getDifficulty() {
         return difficulty;
@@ -121,5 +98,21 @@ public class Exercise {
 
     public void setDifficulty(double difficulty) {
         this.difficulty = difficulty;
+    }
+
+    public int getCorrect() {
+        return correct;
+    }
+
+    public void setCorrect(int correct) {
+        this.correct = correct;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
     }
 }

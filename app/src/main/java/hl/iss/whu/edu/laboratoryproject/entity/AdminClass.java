@@ -17,7 +17,34 @@ public class AdminClass {
     private String imageURL;
     private ArrayList<Student> students;
     private ArrayList<CollegeStudent> collegeStudents;
-    private ArrayList<Course> course;
+    private ArrayList<Course> courses;
+    private ChatGroup chatGroup;
+    private Teacher teacher;
+
+    public ArrayList<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(ArrayList<Course> courses) {
+        this.courses = courses;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+    public ChatGroup getChatGroup() {
+        return chatGroup;
+    }
+
+    public void setChatGroup(ChatGroup chatGroup) {
+        this.chatGroup = chatGroup;
+    }
+
     public String getImageURL() {
         return imageURL;
     }
@@ -32,14 +59,6 @@ public class AdminClass {
 
     public void setCsNumber(int csNumber) {
         this.csNumber = csNumber;
-    }
-
-    public ArrayList<Course> getCourse() {
-        return course;
-    }
-
-    public void setCourse(ArrayList<Course> course) {
-        this.course = course;
     }
 
     public ArrayList<Student> getStudents() {

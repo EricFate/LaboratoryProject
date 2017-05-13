@@ -2,6 +2,8 @@ package hl.iss.whu.edu.laboratoryproject.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
@@ -58,6 +60,14 @@ public class LessonSelectionFragment extends BaseFragment<ArrayList<Major>> {
     private RecyclerLessonSelectAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private RecyclerVideosAdapter mVideosAdapter;
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            mSpGrade.setSelection(grades.indexOf(UserInfo.grade));
+        }
+    };
+    private Spinner mSpGrade;
+    private Spinner mSpSubject;
 
     @Override
     public View onCreateSuccessPage() {
@@ -93,7 +103,7 @@ public class LessonSelectionFragment extends BaseFragment<ArrayList<Major>> {
         mAdapter.setOnSubjectClickListener(new OnRecyclerViewItemClickListener<Course>() {
             @Override
             public void onItemClick(View v, Course data) {
-                Toast.makeText(UiUtils.getContext(), data.getName(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(UiUtils.getContext(), data.getName(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), LessonDetailActivity.class);
                 intent.putExtra("cid", data.getId());
                 intent.putExtra("name",data.getName());
@@ -103,18 +113,18 @@ public class LessonSelectionFragment extends BaseFragment<ArrayList<Major>> {
         mRecyclerView.setAdapter(mAdapter);
 
         //初始化筛选匡
-        final Spinner spGrade = ButterKnife.findById(view, R.id.spinner_grade);
-        final Spinner spSubject = ButterKnife.findById(view, R.id.spinner_subject);
+        mSpGrade = ButterKnife.findById(view, R.id.spinner_grade);
+        mSpSubject = ButterKnife.findById(view, R.id.spinner_subject);
         grades = new ArrayList<>(Arrays.asList(mContext.getResources().getStringArray(R.array.grades)) ) ;
         grades.add(0,"全部");
         subjects = new ArrayList<>(Arrays.asList(mContext.getResources().getStringArray(R.array.subjects))) ;
         subjects.add(0,"全部");
-        spGrade.setAdapter(new ArrayAdapter<>(mContext,R.layout.item_spinner, grades));
-        spSubject.setAdapter(new ArrayAdapter<>(mContext,R.layout.item_spinner, subjects));
-        spGrade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mSpGrade.setAdapter(new ArrayAdapter<>(mContext,R.layout.item_spinner, grades));
+        mSpSubject.setAdapter(new ArrayAdapter<>(mContext,R.layout.item_spinner, subjects));
+        mSpGrade.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                filter(grades.get(position),spSubject.getSelectedItem().toString());
+                filter(grades.get(position), mSpSubject.getSelectedItem().toString());
             }
 
             @Override
@@ -122,19 +132,18 @@ public class LessonSelectionFragment extends BaseFragment<ArrayList<Major>> {
 
             }
         });
-        spSubject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        mSpSubject.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                filter(spGrade.getSelectedItem().toString(), subjects.get(position));
+                filter(mSpGrade.getSelectedItem().toString(), subjects.get(position));
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
+
             }
 
         });
-        spGrade.setSelection(grades.indexOf(UserInfo.grade));
-        spSubject.setSelection(subjects.indexOf("全部"));
 //        Object itemGrade = spGrade.getSelectedItem();
 //        Object itemSubject = spSubject.getSelectedItem();
 //        filter(itemGrade ==null?"全部":itemGrade.toString(), itemSubject==null?"全部":itemSubject.toString());
@@ -150,6 +159,7 @@ public class LessonSelectionFragment extends BaseFragment<ArrayList<Major>> {
                 startActivity(intent);
             }
         });
+        handler.sendEmptyMessageDelayed(0,100);
         loadVideos();
         return view;
     }

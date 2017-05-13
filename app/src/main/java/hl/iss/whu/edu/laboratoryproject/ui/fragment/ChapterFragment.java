@@ -5,6 +5,8 @@ import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import butterknife.ButterKnife;
 import hl.iss.whu.edu.laboratoryproject.R;
@@ -31,6 +33,14 @@ public class ChapterFragment extends BaseFragment<ArrayList<Chapter>> {
     public View onCreateSuccessPage() {
         View rootView = UiUtils.inflate(R.layout.fragment_chapter);
         aelvChapter = ButterKnife.findById(rootView,R.id.aelv_chapter);
+        for (Chapter chapter : data) {
+            Collections.sort(chapter.getLessons(), new Comparator<Lesson>() {
+                @Override
+                public int compare(Lesson lhs, Lesson rhs) {
+                    return lhs.getId()-rhs.getId();
+                }
+            });
+        }
         mAdapter = new ExpandableChapterAdapter(data);
         aelvChapter.setAdapter(mAdapter);
         aelvChapter.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {

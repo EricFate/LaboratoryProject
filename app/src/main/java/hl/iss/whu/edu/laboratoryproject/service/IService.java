@@ -1,6 +1,7 @@
 package hl.iss.whu.edu.laboratoryproject.service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import hl.iss.whu.edu.laboratoryproject.entity.AdminClass;
@@ -8,6 +9,7 @@ import hl.iss.whu.edu.laboratoryproject.entity.Answer;
 import hl.iss.whu.edu.laboratoryproject.entity.ChatGroup;
 import hl.iss.whu.edu.laboratoryproject.entity.Course;
 import hl.iss.whu.edu.laboratoryproject.entity.CourseLearning;
+import hl.iss.whu.edu.laboratoryproject.entity.DayStudyInfo;
 import hl.iss.whu.edu.laboratoryproject.entity.Exercise;
 import hl.iss.whu.edu.laboratoryproject.entity.ExerciseCategory;
 import hl.iss.whu.edu.laboratoryproject.entity.Info;
@@ -17,11 +19,15 @@ import hl.iss.whu.edu.laboratoryproject.entity.FriendRequest;
 import hl.iss.whu.edu.laboratoryproject.entity.InfoDetail;
 import hl.iss.whu.edu.laboratoryproject.entity.Issue;
 import hl.iss.whu.edu.laboratoryproject.entity.Lesson;
+import hl.iss.whu.edu.laboratoryproject.entity.MessageRecord;
+import hl.iss.whu.edu.laboratoryproject.entity.Notice;
 import hl.iss.whu.edu.laboratoryproject.entity.QueryItem;
 import hl.iss.whu.edu.laboratoryproject.entity.Question;
 import hl.iss.whu.edu.laboratoryproject.entity.Rank;
 import hl.iss.whu.edu.laboratoryproject.entity.Result;
 import hl.iss.whu.edu.laboratoryproject.entity.RosterGroup;
+import hl.iss.whu.edu.laboratoryproject.entity.TotalCourseLearning;
+import hl.iss.whu.edu.laboratoryproject.entity.TotalMessageRecord;
 import hl.iss.whu.edu.laboratoryproject.entity.VideoInfo;
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -193,5 +199,39 @@ public interface IService {
 
     @GET("GetAdminClassServlet")
     Observable<AdminClass> getAdminClass(@Query("acid")String acid);
+
+
+
+    //获得课程学习情况
+    @GET("servlet/GetCourseLearning")
+    Observable<ArrayList<CourseLearning>> getCourseLearning(@Query("id") int id);
+
+    //获得课程学习总情况
+    @GET("servlet/GetTotalCourseLearning")
+    Observable<ArrayList<TotalCourseLearning>> getTotalCourseLearning(@Query("id") int id);
+
+    //获得消息发送情况
+    @GET("servlet/GetMessageRecord")
+    Observable<ArrayList<MessageRecord>> getMessageRecord(@Query("uid") String uid);
+
+    //获得消息发送总情况
+    @GET("servlet/GetTotalMessageRecord")
+    Observable<ArrayList<TotalMessageRecord>> getTotalMessageRecord(@Query("uid") String uid);
+
+    //获得学习总情况
+    @GET("servlet/GetStudyInfo")
+    Observable<ArrayList<DayStudyInfo>> getStudyInfo(@Query("id") int id);
+
+    //获得单个问题
+    @GET("servlet/GetSingleIssue")
+    Observable<Issue> getSingleIssue(@Query("issueId") int id);
+
+    //获得单个回答
+    @GET("servlet/GetSingleAnswer")
+    Observable<Answer> getSingleAnswer(@Query("answerId") int id);
+
+    //获得单个回答
+    @GET("GetNoticeServlet")
+    Observable<List<Notice>> getNotice(@Query("gid") int gid);
 
 }

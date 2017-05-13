@@ -195,6 +195,10 @@ public class MainActivity extends AppCompatActivity
                 intentExercise.putExtra("title","日常练习");
                 startActivity(intentExercise);
                 break;
+            case R.id.nav_history:
+                Intent intentHistory = new Intent(this, StudyTimeLineActivity.class);
+                startActivity(intentHistory);
+                break;
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

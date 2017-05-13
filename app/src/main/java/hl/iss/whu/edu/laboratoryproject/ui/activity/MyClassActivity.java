@@ -11,7 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,6 +24,8 @@ import com.bumptech.glide.Glide;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,8 +35,11 @@ import hl.iss.whu.edu.laboratoryproject.R;
 import hl.iss.whu.edu.laboratoryproject.adapter.RecyclerSubjectAdapter;
 import hl.iss.whu.edu.laboratoryproject.constant.Constant;
 import hl.iss.whu.edu.laboratoryproject.entity.AdminClass;
+import hl.iss.whu.edu.laboratoryproject.entity.ChatGroup;
 import hl.iss.whu.edu.laboratoryproject.entity.Course;
+import hl.iss.whu.edu.laboratoryproject.entity.Notice;
 import hl.iss.whu.edu.laboratoryproject.entity.Result;
+import hl.iss.whu.edu.laboratoryproject.entity.Teacher;
 import hl.iss.whu.edu.laboratoryproject.listener.OnRecyclerViewItemClickListener;
 import hl.iss.whu.edu.laboratoryproject.manager.SyLinearLayoutManager;
 import hl.iss.whu.edu.laboratoryproject.utils.RetrofitUtils;
@@ -49,7 +54,10 @@ public class MyClassActivity extends AppCompatActivity {
     private static final int STATE_NO_CLASS = 1;
     private static final int STATE_SUCCESS = 2;
     private static final int STATE_ERROR = 3;
-
+    @Bind(R.id.tv_notice_title)
+    TextView mTvNoticeTitle;
+    @Bind(R.id.tv_notice_content)
+    TextView mTvNoticeContent;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({STATE_LOADING, STATE_ERROR, STATE_NO_CLASS, STATE_SUCCESS})
@@ -78,7 +86,9 @@ public class MyClassActivity extends AppCompatActivity {
     NestedScrollView mContentMyClass;
     private RecyclerSubjectAdapter mAdapter;
     private int clid;
-
+    private int tid;
+    private int gid;
+    private List<Notice> mNotices;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,6 +96,7 @@ public class MyClassActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initView();
         initData();
     }
@@ -119,14 +130,27 @@ public class MyClassActivity extends AppCompatActivity {
                     @Override
                     public void accept(AdminClass adminClass) throws Exception {
                         clid = adminClass.getId();
-                        mAdapter.setData(adminClass.getCourse());
+                        ArrayList<Course> courses = adminClass.getCourses();
+                        if (courses != null)
+                            mAdapter.setData(courses);
                         mTvStudents.setText(adminClass.getsNumber() + "位学生");
                         mTvCollegeStudents.setText(adminClass.getCsNumber() + "位大学生志愿者");
-//                        Glide.with(MyClassActivity.this)
-//                                .load(Constant.SERVER_URL + adminClass.getImageURL())
-//                                .placeholder(R.drawable.bg)
-//                                .into(mIvClassImage);
-//                        mToolbarLayout.setTitle(adminClass.getSchool() + adminClass.getGrade());
+                        ChatGroup group = adminClass.getChatGroup();
+                        gid = group.getId();
+                        mNotices = group.getNotices();
+                        if (mNotices.size() == 0) {
+                            mTvNoticeTitle.setText("无新公告");
+                            mTvNoticeContent.setText("无内容");
+                        } else {
+                            Notice notice = mNotices.get(0);
+                            mTvNoticeTitle.setText(notice.getName());
+                            mTvNoticeContent.setText(notice.getContent());
+                        }
+                        Teacher teacher = adminClass.getTeacher();
+                        tid = teacher.getId();
+                        Glide.with(UiUtils.getContext()).load(Constant.SERVER_URL + teacher.getImageURL())
+                                .into(mIvTeacherImage);
+                        mTvName.setText(teacher.getRealname());
                         show(STATE_SUCCESS);
                     }
                 }, new Consumer<Throwable>() {
@@ -142,15 +166,25 @@ public class MyClassActivity extends AppCompatActivity {
     }
 
 
-    @OnClick({R.id.ll_students, R.id.ll_college, R.id.bt_add_class, R.id.bt_retry})
+    @OnClick({R.id.ll_students, R.id.ll_college, R.id.bt_add_class, R.id.bt_retry, R.id.ll_teacher, R.id.ll_notice})
     public void onClick(View view) {
-        if (view.getId() == R.id.bt_retry) {
-            retry();
-            return;
-        }
-        if (view.getId() == R.id.bt_add_class) {
-            joinClass();
-            return;
+        switch (view.getId()) {
+            case R.id.bt_retry:
+                retry();
+                return;
+            case R.id.bt_add_class:
+                joinClass();
+                return;
+            case R.id.ll_teacher:
+                Intent intent = new Intent(MyClassActivity.this,PersonalInfoActivity.class);
+                intent.putExtra("uid","t"+tid);
+                startActivity(intent);
+                return;
+            case R.id.ll_notice:
+                Intent intentNotice = new Intent(MyClassActivity.this,NoticeActivity.class);
+                intentNotice.putExtra("gid",gid);
+                startActivity(intentNotice);
+                return;
         }
         Intent intent = new Intent(this, ClassMemberActivity.class);
         intent.putExtra("clid", clid);
@@ -202,7 +236,7 @@ public class MyClassActivity extends AppCompatActivity {
                                         .setConfirmText("确认");
                                 if (throwable instanceof NullPointerException) {
                                     errorDialog.setContentText("所查询的班级不存在");
-                                }else {
+                                } else {
                                     errorDialog.setContentText("请稍后重试");
                                 }
                                 errorDialog.show();
@@ -257,5 +291,15 @@ public class MyClassActivity extends AppCompatActivity {
 
             }
         }).setNegativeButton("取消", null).show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

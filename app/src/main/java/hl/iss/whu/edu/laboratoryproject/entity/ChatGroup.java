@@ -1,5 +1,7 @@
 package hl.iss.whu.edu.laboratoryproject.entity;
 
+import java.util.List;
+
 /**
  * Created by fate on 2017/3/5.
  */
@@ -7,6 +9,15 @@ public class ChatGroup {
     private int id;
     private String name;
     private String imageURL;
+    private List<Notice> notices;
+
+    public List<Notice> getNotices() {
+        return notices;
+    }
+
+    public void setNotices(List<Notice> notices) {
+        this.notices = notices;
+    }
 
     public int getId() {
         return id;

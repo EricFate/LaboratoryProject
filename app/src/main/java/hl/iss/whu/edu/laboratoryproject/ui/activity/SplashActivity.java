@@ -148,7 +148,7 @@ public class SplashActivity extends AppCompatActivity {
             }
 
         }
-        Toast.makeText(this, "拷贝完成", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "拷贝完成", Toast.LENGTH_SHORT).show();
     }
 
     private void sendRequest() {

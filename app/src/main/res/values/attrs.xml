@@ -8,5 +8,9 @@
         <attr name="metaButtonBarStyle" format="reference"/>
         <attr name="metaButtonBarButtonStyle" format="reference"/>
     </declare-styleable>
+    <attr name="selectionType" format="integer"/>
 
+    <declare-styleable name="SelectionView">
+        <attr name="selectionType"/>
+    </declare-styleable>
 </resources>

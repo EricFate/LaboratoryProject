@@ -40,24 +40,27 @@ public class MyLessonsFragment extends BaseFragment<ArrayList<CourseLearning>> {
 
     @Override
     public View onCreateSuccessPage() {
-        if (data.size()==0){
+        if (data.size() == 0) {
             mLoadingPage.changeState(LoadingPage.STATE_NO_DATA);
             return null;
         }
         View view = UiUtils.inflate(R.layout.fragment_my_lessons);
         //初始化PullToRefreshView
-        final TwinklingRefreshLayout pullToRefreshView = ButterKnife.findById(view,R.id.tkrv_mylesson);
+        final TwinklingRefreshLayout pullToRefreshView = ButterKnife.findById(view, R.id.tkrv_mylesson);
         pullToRefreshView.setHeaderView(new SinaRefreshView(UiUtils.getContext()));
-        pullToRefreshView.setEnableLoadmore(false);
+        if (data.size() < Constant.DATAS_ONCE) {
+            pullToRefreshView.setEnableLoadmore(false);
+        } else
+            pullToRefreshView.setEnableLoadmore(true);
         pullToRefreshView.setOnRefreshListener(new RefreshListenerAdapter() {
             @Override
             public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
-                refresh(refreshLayout);
+                loadMore(refreshLayout);
             }
 
             @Override
             public void onRefresh(TwinklingRefreshLayout refreshLayout) {
-                loadMore(refreshLayout);
+                refresh(refreshLayout);
             }
         });
         //初始化RecyclerView
@@ -70,9 +73,9 @@ public class MyLessonsFragment extends BaseFragment<ArrayList<CourseLearning>> {
             public void onItemClick(View v, CourseLearning data) {
                 Intent intent = new Intent(getActivity(), LessonDetailActivity.class);
                 Course course = data.getCourse();
-                intent.putExtra("cid",course.getId()) ;
-                intent.putExtra("name",course.getName());
-                Toast.makeText(UiUtils.getContext(), course.getName(), Toast.LENGTH_SHORT).show();
+                intent.putExtra("cid", course.getId());
+                intent.putExtra("name", course.getName());
+//                Toast.makeText(UiUtils.getContext(), course.getName(), Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }
         });
@@ -83,10 +86,11 @@ public class MyLessonsFragment extends BaseFragment<ArrayList<CourseLearning>> {
 
     @Override
     public Observable<ArrayList<CourseLearning>> sendRequest() {
-        return RetrofitUtils.getService().loadMyLessons(UserInfo.id,0);
+        return RetrofitUtils.getService().loadMyLessons(UserInfo.id, 0);
     }
+
     private void refresh(final TwinklingRefreshLayout layout) {
-        RetrofitUtils.getService().loadMyLessons(UserInfo.id,0)
+        RetrofitUtils.getService().loadMyLessons(UserInfo.id, 0)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Observer<ArrayList<CourseLearning>>() {
@@ -98,16 +102,17 @@ public class MyLessonsFragment extends BaseFragment<ArrayList<CourseLearning>> {
                     @Override
                     public void onNext(ArrayList<CourseLearning> value) {
 
-                        if (value.size()< Constant.DATAS_ONCE){
+                        if (value.size() < Constant.DATAS_ONCE) {
                             layout.setEnableLoadmore(false);
                         }
                         mAdapter.setData(value);
                         start = value.size();
                         layout.finishRefreshing();
                     }
+
                     @Override
                     public void onError(Throwable e) {
-                        Toast.makeText(MyLessonsFragment.this.getActivity(), "刷新失败"+e, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MyLessonsFragment.this.getActivity(), "刷新失败" + e, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -117,7 +122,7 @@ public class MyLessonsFragment extends BaseFragment<ArrayList<CourseLearning>> {
     }
 
     private void loadMore(final TwinklingRefreshLayout layout) {
-        RetrofitUtils.getService().loadMyLessons(UserInfo.id,start)
+        RetrofitUtils.getService().loadMyLessons(UserInfo.id, start)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new Observer<ArrayList<CourseLearning>>() {
@@ -128,18 +133,18 @@ public class MyLessonsFragment extends BaseFragment<ArrayList<CourseLearning>> {
 
                     @Override
                     public void onNext(ArrayList<CourseLearning> value) {
-                        if (value.size()<Constant.DATAS_ONCE){
+                        if (value.size() < Constant.DATAS_ONCE) {
                             layout.setEnableLoadmore(false);
                             Toast.makeText(MyLessonsFragment.this.getActivity(), "已无更多", Toast.LENGTH_SHORT).show();
                         }
-                        start+=value.size();
+                        start += value.size();
                         mAdapter.addAll(value);
                         layout.finishLoadmore();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Toast.makeText(MyLessonsFragment.this.getActivity(), "加载失败"+e, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(MyLessonsFragment.this.getActivity(), "加载失败" + e, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

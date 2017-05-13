@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +59,8 @@ public class LessonDetailFragment extends Fragment {
             }, new Consumer<Throwable>() {
                 @Override
                 public void accept(Throwable throwable) throws Exception {
-                    MyDialog.showAlertDialgo(getActivity(),"刷新错误"+throwable);
+//                    MyDialog.showAlertDialgo(getActivity(),"刷新错误"+throwable);
+                    Log.e(getClass().getSimpleName(), "accept: "+throwable );
                 }
             });
     }

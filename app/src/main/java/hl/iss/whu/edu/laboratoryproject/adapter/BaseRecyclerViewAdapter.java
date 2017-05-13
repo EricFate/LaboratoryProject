@@ -21,6 +21,10 @@ public abstract class BaseRecyclerViewAdapter<E,VH extends RecyclerView.ViewHold
         size = data.size();
     }
 
+    public List<E> getData() {
+        return data;
+    }
+
     public void setOnRecyclerViewItemClickListener(OnRecyclerViewItemClickListener<E> listener){
         this.mListener = listener;
     }

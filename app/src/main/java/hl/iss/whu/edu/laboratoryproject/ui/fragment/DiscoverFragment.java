@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -206,7 +207,8 @@ public class DiscoverFragment extends BaseFragment<ArrayList<Issue>> {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        MyDialog.showAlertDialgo(getActivity(),"错误"+throwable);
+//                        MyDialog.showAlertDialgo(getActivity(),"错误"+throwable);
+                        Log.e(getClass().getSimpleName(), "accept: "+throwable );
                     }
                 });
     }

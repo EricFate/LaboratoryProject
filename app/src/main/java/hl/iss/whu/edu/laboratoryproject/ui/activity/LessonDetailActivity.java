@@ -19,6 +19,8 @@ import com.bumptech.glide.Glide;
 import com.github.ybq.android.spinkit.style.Wave;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,6 +31,7 @@ import hl.iss.whu.edu.laboratoryproject.constant.Constant;
 import hl.iss.whu.edu.laboratoryproject.entity.Chapter;
 import hl.iss.whu.edu.laboratoryproject.entity.Course;
 import hl.iss.whu.edu.laboratoryproject.entity.ExerciseCategory;
+import hl.iss.whu.edu.laboratoryproject.entity.Lesson;
 import hl.iss.whu.edu.laboratoryproject.entity.Result;
 import hl.iss.whu.edu.laboratoryproject.entity.Teacher;
 import hl.iss.whu.edu.laboratoryproject.glide.GlideRoundTransform;
@@ -122,8 +125,8 @@ public class LessonDetailActivity extends BaseInternetRequestActivity {
                     }, new Consumer<Throwable>() {
                         @Override
                         public void accept(Throwable throwable) throws Exception {
-                            new AlertDialog.Builder(LessonDetailActivity.this).setMessage("错误:" + throwable).setPositiveButton("确定", null)
-                                    .show();
+//                            new AlertDialog.Builder(LessonDetailActivity.this).setMessage("错误:" + throwable).setPositiveButton("确定", null)
+//                                    .show();
                             showError();
 //                            collapsingToolbar.setVisibility(View.GONE);
                             mLlButtonGroup.setVisibility(View.GONE);
@@ -147,8 +150,8 @@ public class LessonDetailActivity extends BaseInternetRequestActivity {
                     }, new Consumer<Throwable>() {
                         @Override
                         public void accept(Throwable throwable) throws Exception {
-                            new AlertDialog.Builder(LessonDetailActivity.this).setMessage("错误" + throwable).setPositiveButton("确定", null)
-                                    .show();
+//                            new AlertDialog.Builder(LessonDetailActivity.this).setMessage("错误" + throwable).setPositiveButton("确定", null)
+//                                    .show();
                             showError();
 //                            collapsingToolbar.setVisibility(View.GONE);
                             mLlButtonGroup.setVisibility(View.GONE);
@@ -160,6 +163,7 @@ public class LessonDetailActivity extends BaseInternetRequestActivity {
     private void setView(Course detail) {
         tvDescription.setText(detail.getDescription());
 //        tvKownledge.setText(detail.getKnowledge());
+        sortChapters(detail);
         mAdapter.setData(detail.getChapters());
         Teacher teacher = detail.getTeacher();
         tvTeacherInfo.setText(teacher.getRealname());
@@ -169,6 +173,23 @@ public class LessonDetailActivity extends BaseInternetRequestActivity {
                 .into(ivTeacherImage);
         ratingRank.setRating(detail.getAvgRank());
         collapsingToolbar.setTitle(detail.getName());
+    }
+
+    private void sortChapters(Course detail) {
+        Collections.sort(detail.getChapters(), new Comparator<Chapter>() {
+            @Override
+            public int compare(Chapter lhs, Chapter rhs) {
+                return lhs.getId() - rhs.getId();
+            }
+        });
+        for (Chapter chapter : detail.getChapters()) {
+            Collections.sort(chapter.getLessons(), new Comparator<Lesson>() {
+                @Override
+                public int compare(Lesson lhs, Lesson rhs) {
+                    return lhs.getId() - rhs.getId();
+                }
+            });
+        }
     }
 
 
@@ -193,7 +214,7 @@ public class LessonDetailActivity extends BaseInternetRequestActivity {
                             }, new Consumer<Throwable>() {
                                 @Override
                                 public void accept(Throwable throwable) throws Exception {
-                                    Toast.makeText(LessonDetailActivity.this, "错误:" + throwable, Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(LessonDetailActivity.this, "错误:" + throwable, Toast.LENGTH_SHORT).show();
                                 }
                             });
                 } else {

@@ -52,20 +52,20 @@ public class ChatMessageRecordService extends Service {
         UiUtils.runInMainThread(new Runnable() {
             @Override
             public void run() {
-        Toast.makeText(ChatMessageRecordService.this, "发送了一次请求"+records, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(ChatMessageRecordService.this, "发送了一次请求"+records, Toast.LENGTH_SHORT).show();
         RetrofitUtils.getService().uploadMessageRecord(gson.toJson(records))
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Result>() {
                     @Override
                     public void accept(Result result) throws Exception {
-                        Toast.makeText(ChatMessageRecordService.this, "成功", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ChatMessageRecordService.this, "成功", Toast.LENGTH_SHORT).show();
                         mRecords.clear();
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(ChatMessageRecordService.this, "错误"+throwable, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(ChatMessageRecordService.this, "错误"+throwable, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -79,7 +79,7 @@ public class ChatMessageRecordService extends Service {
         return new MyBinder();
     }
     public void record(String from,String to){
-        Toast.makeText(this, from+"向"+to+"发送了一条消息", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, from+"向"+to+"发送了一条消息", Toast.LENGTH_SHORT).show();
         for (MessageRecord record : mRecords) {
             if (record.getFromUid().equals(from)&&record.getToUid().equals(to)) {
                 record.increment();

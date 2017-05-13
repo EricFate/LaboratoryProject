@@ -180,12 +180,12 @@
         "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\src\\main\\res\\drawable\\rc_read_receipt_request_button.xml"
     },
     {
-        "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable\\rc_sel_picsel_toolbar_back.xml",
-        "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\src\\main\\res\\drawable\\rc_sel_picsel_toolbar_back.xml"
-    },
-    {
         "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable\\rc_sel_picsel_toolbar_send.xml",
         "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\src\\main\\res\\drawable\\rc_sel_picsel_toolbar_send.xml"
+    },
+    {
+        "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable\\rc_sel_picsel_toolbar_back.xml",
+        "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\src\\main\\res\\drawable\\rc_sel_picsel_toolbar_back.xml"
     },
     {
         "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable\\rc_btn_input.xml",

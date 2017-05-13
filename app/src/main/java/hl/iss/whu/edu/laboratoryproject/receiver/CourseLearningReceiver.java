@@ -28,18 +28,18 @@ public class CourseLearningReceiver extends BroadcastReceiver {
     }
 
     private void uploadCourseLearning(int cid, int sid, long duration, final Context context) {
-        Toast.makeText(context, "发送了一次请求", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "发送了一次请求", Toast.LENGTH_SHORT).show();
         RetrofitUtils.getService().uploadCourseLearning(sid,cid,duration).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Result>() {
                     @Override
                     public void accept(Result result) throws Exception {
-                        Toast.makeText(context, "成功", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context, "成功", Toast.LENGTH_SHORT).show();
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(context, "错误:"+throwable, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(context, "错误:"+throwable, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

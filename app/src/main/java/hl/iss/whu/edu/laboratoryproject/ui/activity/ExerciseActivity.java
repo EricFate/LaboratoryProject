@@ -7,14 +7,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -28,6 +27,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import hl.iss.whu.edu.laboratoryproject.R;
 import hl.iss.whu.edu.laboratoryproject.adapter.RecyclerExerciseAdapter;
+import hl.iss.whu.edu.laboratoryproject.adapter.RecyclerExerciseResultAdapter;
 import hl.iss.whu.edu.laboratoryproject.constant.Constant;
 import hl.iss.whu.edu.laboratoryproject.entity.Exercise;
 import hl.iss.whu.edu.laboratoryproject.entity.Result;
@@ -58,8 +58,7 @@ public class ExerciseActivity extends BaseInternetWithEmptyActivity {
     private int mId;
     private boolean allComplete = false;
     private int mEx_num;
-    private List<RadioGroup> checked = new ArrayList<>();
-
+    private SparseArray<Integer> checked = new SparseArray<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,23 +117,26 @@ public class ExerciseActivity extends BaseInternetWithEmptyActivity {
         mRecyclerExercise.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL_LIST));
         mRecyclerExercise.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerExercise.setAdapter(mAdapter);
-        toolbar.setTitle(getIntent().getStringExtra("title"));
-        mAdapter.setOnAnswerCheckedListener(new RecyclerExerciseAdapter.OnAnswerCheckedListener() {
-
+        mAdapter.setSelectionListener(new RecyclerExerciseAdapter.OnSelectionListener() {
             @Override
-            public void onAnswerChecked(RadioGroup group, int checkedId) {
-                if (checkedId == -1 && checked.contains(group)) {
-                    checked.remove(group);
-                    progress--;
+            public void onSelection(int selection, int position) {
+                if (selection==-1){
+                    progress --;
+                }else {
+                    if (checked.get(position)==null||checked.get(position)==-1)
+                        progress++;
                 }
-                if (checkedId != -1 && !checked.contains(group)) {
-                    checked.add(group);
-                    progress++;
-                }
-                mTvProgress.setText(progress + "");
+                updateProgress();
+                checked.put(position,selection);
             }
         });
+        toolbar.setTitle(getIntent().getStringExtra("title"));
 
+
+    }
+
+    private void updateProgress() {
+        mTvProgress.setText(""+progress);
     }
 
     @Override
@@ -169,78 +171,78 @@ public class ExerciseActivity extends BaseInternetWithEmptyActivity {
         }
     }
 
-    private Map<Integer, Integer> checkAnswers() {
-        Map<Integer, Integer> result = new HashMap<>();
-        for (int i = 0; i < mAdapter.getItemCount(); i++) {
-            View view = mRecyclerExercise.getChildAt(i);
-            RecyclerExerciseAdapter.ExerciseViewHolder holder = (RecyclerExerciseAdapter.ExerciseViewHolder) mRecyclerExercise.getChildViewHolder(view);
-            int checkedRadioButtonId = holder.mRgSelection.getCheckedRadioButtonId();
-            if (checkedRadioButtonId == -1) continue;
-//            switch (holder.mRgSelection.getCheckedRadioButtonId()) {
-//                case R.id.tv_answer_A:
-//                    holder.mTvAnswerA.setTextColor(getResources().getColor(android.R.color.holo_red_light));
-//                    break;
-//                case R.id.tv_answer_B:
-//                    holder.mTvAnswerB.setTextColor(getResources().getColor(android.R.color.holo_red_light));
-//                    break;
-//                case R.id.tv_answer_C:
-//                    holder.mTvAnswerC.setTextColor(getResources().getColor(android.R.color.holo_red_light));
-//                    break;
-//                case R.id.tv_answer_D:
-//                    holder.mTvAnswerD.setTextColor(getResources().getColor(android.R.color.holo_red_light));
-//                    break;
+//    private Map<Integer, Integer> checkAnswers() {
+//        Map<Integer, Integer> result = new HashMap<>();
+//        for (int i = 0; i < mAdapter.getItemCount(); i++) {
+//            View view = mRecyclerExercise.getChildAt(i);
+//            RecyclerExerciseAdapter.ExerciseViewHolder holder = (RecyclerExerciseAdapter.ExerciseViewHolder) mRecyclerExercise.getChildViewHolder(view);
+//            int checkedRadioButtonId = holder.mRgSelection.getCheckedRadioButtonId();
+//            if (checkedRadioButtonId == -1) continue;
+////            switch (holder.mRgSelection.getCheckedRadioButtonId()) {
+////                case R.id.tv_answer_A:
+////                    holder.mTvAnswerA.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+////                    break;
+////                case R.id.tv_answer_B:
+////                    holder.mTvAnswerB.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+////                    break;
+////                case R.id.tv_answer_C:
+////                    holder.mTvAnswerC.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+////                    break;
+////                case R.id.tv_answer_D:
+////                    holder.mTvAnswerD.setTextColor(getResources().getColor(android.R.color.holo_red_light));
+////                    break;
+////            }
+//
+//            Log.e("?????", "checkAnswers: " + checkedRadioButtonId);
+//            ((RadioButton) ButterKnife.findById(holder.itemView, checkedRadioButtonId))
+//                    .setTextColor(getResources().getColor(android.R.color.holo_red_light));
+//            Exercise tag = (Exercise) holder.itemView.getTag();
+//            fillMap(result, tag, checkedRadioButtonId);
+//            showRightAnswer(tag.getAnswer(), holder);
+//            holder.mLlAnalysis.setVisibility(View.VISIBLE);
+//            holder.mRgSelection.clearCheck();
+//            for (int j = 0; j < holder.mRgSelection.getChildCount(); j++) {
+//                holder.mRgSelection.getChildAt(j).setEnabled(false);
 //            }
+//        }
+//        return result;
+//    }
 
-            Log.e("?????", "checkAnswers: " + checkedRadioButtonId);
-            ((RadioButton) ButterKnife.findById(holder.itemView, checkedRadioButtonId))
-                    .setTextColor(getResources().getColor(android.R.color.holo_red_light));
-            Exercise tag = (Exercise) holder.itemView.getTag();
-            fillMap(result, tag, checkedRadioButtonId);
-            showRightAnswer(tag.getAnswer(), holder);
-            holder.mLlAnalysis.setVisibility(View.VISIBLE);
-            holder.mRgSelection.clearCheck();
-            for (int j = 0; j < holder.mRgSelection.getChildCount(); j++) {
-                holder.mRgSelection.getChildAt(j).setEnabled(false);
-            }
-        }
-        return result;
-    }
-
-    private void fillMap(Map<Integer, Integer> result, Exercise tag, int id) {
-        int select = 0;
-        switch (id) {
-            case R.id.tv_answer_A:
-                select = 1;
-                break;
-            case R.id.tv_answer_B:
-                select = 2;
-                break;
-            case R.id.tv_answer_C:
-                select = 3;
-                break;
-            case R.id.tv_answer_D:
-                select = 4;
-                break;
-        }
-        result.put(tag.getId(),tag.getAnswer()==select?1:0);
-    }
-
-    private void showRightAnswer(int answer, RecyclerExerciseAdapter.ExerciseViewHolder holder) {
-        switch (answer) {
-            case 1:
-                holder.mTvAnswerA.setTextColor(getResources().getColor(R.color.colorPrimary));
-                break;
-            case 2:
-                holder.mTvAnswerB.setTextColor(getResources().getColor(R.color.colorPrimary));
-                break;
-            case 3:
-                holder.mTvAnswerC.setTextColor(getResources().getColor(R.color.colorPrimary));
-                break;
-            case 4:
-                holder.mTvAnswerD.setTextColor(getResources().getColor(R.color.colorPrimary));
-                break;
-        }
-    }
+//    private void fillMap(Map<Integer, Integer> result, Exercise tag, int id) {
+//        int select = 0;
+//        switch (id) {
+//            case R.id.tv_answer_A:
+//                select = 1;
+//                break;
+//            case R.id.tv_answer_B:
+//                select = 2;
+//                break;
+//            case R.id.tv_answer_C:
+//                select = 3;
+//                break;
+//            case R.id.tv_answer_D:
+//                select = 4;
+//                break;
+//        }
+//        result.put(tag.getId(),tag.getAnswer()==select?1:0);
+//    }
+//
+//    private void showRightAnswer(int answer, RecyclerExerciseAdapter.ExerciseViewHolder holder) {
+//        switch (answer) {
+//            case 1:
+//                holder.mTvAnswerA.setTextColor(getResources().getColor(R.color.colorPrimary));
+//                break;
+//            case 2:
+//                holder.mTvAnswerB.setTextColor(getResources().getColor(R.color.colorPrimary));
+//                break;
+//            case 3:
+//                holder.mTvAnswerC.setTextColor(getResources().getColor(R.color.colorPrimary));
+//                break;
+//            case 4:
+//                holder.mTvAnswerD.setTextColor(getResources().getColor(R.color.colorPrimary));
+//                break;
+//        }
+//    }
 
 
     @OnClick(R.id.bt_finish)
@@ -248,29 +250,37 @@ public class ExerciseActivity extends BaseInternetWithEmptyActivity {
         Map<Integer, Integer> map = checkAnswers();
         uploadResult(map);
     }
-
     private void uploadResult(Map<Integer, Integer> map) {
-        String ecid = null;
-        if (mType.equals(Constant.INTENT_TYPE_NORMAL)) {
-            ecid = mId + "";
-        }
-        RetrofitUtils.getService().uploadExerciseResult(UserInfo.id,new Gson().toJson(map),ecid)
+        RetrofitUtils.getService().uploadExerciseResult(UserInfo.id,new Gson().toJson(map),null)
                 .unsubscribeOn(Schedulers.io())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Result>() {
                     @Override
                     public void accept(Result result) throws Exception {
-                        Toast.makeText(ExerciseActivity.this, "上传成功", Toast.LENGTH_SHORT).show();
-                        setResult(RESULT_OK);
+//                        Toast.makeText(getActivity(), "上传成功", Toast.LENGTH_SHORT).show();
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(ExerciseActivity.this, "失败:"+throwable, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(), "失败:"+throwable, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+    private Map<Integer, Integer> checkAnswers() {
+        Map<Integer, Integer> result = new HashMap<>();
+        List<Exercise> data = mAdapter.getData();
+        mRecyclerExercise.setAdapter(new RecyclerExerciseResultAdapter(data,checked));
+        for (int i = 0; i < data.size(); i++) {
+            int id = data.get(i).getId();
+            int answer = data.get(i).getAnswer();
+            int check = this.checked.get(i, -1);
+            result.put(id,check==answer-1?1:0);
+        }
+        return result;
+    }
+
+
 
 
     @Override

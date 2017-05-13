@@ -1,81 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical">
+    <RelativeLayout
+
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/tv_difficulty"
+            android:text="难度:"
+            android:padding="2dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/background_tag"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv_accuracy"
+            android:text="正确率:"
+            android:padding="2dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/background_tag"
+            android:textSize="18sp"
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
     <TextView
-        android:layout_marginTop="3dp"
-        android:layout_marginBottom="3dp"
-        android:textSize="20sp"
-        android:textColor="@android:color/black"
-        android:textStyle="bold"
-        android:text="1.question one"
         android:id="@+id/tv_question"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <RadioGroup
-        android:id="@+id/rg_selection"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        android:layout_marginTop="3dp"
+        android:text="1.question one"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
+
+    <hl.iss.whu.edu.laboratoryproject.ui.view.SelectionView
+        android:id="@+id/option_A"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
 
-        <!--<RadioButton-->
-            <!--android:id="@+id/tv_answer_A"-->
-            <!--style="@style/RadioButtonExerciseStyle"-->
-            <!--android:text="A selector"/>-->
+        app:selectionType="0"/>
 
-        <!--<RadioButton-->
-            <!--android:id="@+id/tv_answer_B"-->
-            <!--style="@style/RadioButtonExerciseStyle"-->
-            <!--android:text="B selector"/>-->
+    <hl.iss.whu.edu.laboratoryproject.ui.view.SelectionView
+        android:id="@+id/option_B"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:selectionType="1"/>
 
-        <!--<RadioButton-->
-            <!--android:id="@+id/tv_answer_C"-->
-            <!--style="@style/RadioButtonExerciseStyle"-->
-            <!--android:text="C selector"/>-->
+    <hl.iss.whu.edu.laboratoryproject.ui.view.SelectionView
+        android:id="@+id/option_C"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:selectionType="2"/>
 
-        <!--<RadioButton-->
-            <!--android:id="@+id/tv_answer_D"-->
-            <!--style="@style/RadioButtonExerciseStyle"-->
-            <!--android:text="D selector"/>        -->
-        <RadioButton
-            android:id="@+id/tv_answer_A"
-            style="@style/RadioButtonStyle2"
-            android:text="A selector"/>
+    <hl.iss.whu.edu.laboratoryproject.ui.view.SelectionView
+        android:id="@+id/option_D"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:selectionType="3"/>
 
-        <RadioButton
-            android:id="@+id/tv_answer_B"
-            style="@style/RadioButtonStyle2"
-            android:text="B selector"/>
-
-        <RadioButton
-            android:id="@+id/tv_answer_C"
-            style="@style/RadioButtonStyle2"
-            android:text="C selector"/>
-
-        <RadioButton
-            android:id="@+id/tv_answer_D"
-            style="@style/RadioButtonStyle2"
-            android:text="D selector"/>
-    </RadioGroup>
     <LinearLayout
         android:id="@+id/ll_analysis"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:visibility="gone">
-    <TextView
-        android:textColor="@android:color/black"
-        android:text="解析:"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+
         <TextView
-            android:textColor="@android:color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="解析:"
+            android:textColor="@android:color/black"/>
+
+        <TextView
             android:id="@+id/tv_analysis"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:maxLines="8"
             android:minLines="1"
-            android:maxLines="8"/>
+            android:textColor="@android:color/black"/>
     </LinearLayout>
 </LinearLayout>

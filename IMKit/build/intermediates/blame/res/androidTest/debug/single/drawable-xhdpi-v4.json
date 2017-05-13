@@ -1380,12 +1380,12 @@
         "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_no.png"
     },
     {
-        "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ac_text_file_icon.png",
-        "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ac_text_file_icon.png"
-    },
-    {
         "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_cs_evaluate_plugin.png",
         "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_cs_evaluate_plugin.png"
+    },
+    {
+        "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ac_text_file_icon.png",
+        "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable-xhdpi-v4\\rc_ac_text_file_icon.png"
     },
     {
         "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable-xhdpi-v4\\rc_ic_volume_6.png",
