@@ -1,6 +1,7 @@
 package hl.iss.whu.edu.laboratoryproject.entity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by fate on 2016/12/10.
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 
 public class Major {
     private String title;
-    private ArrayList<Course> courses;
+    private List<Course> courses;
 
     public Major(String title, ArrayList<Course> courses) {
         this.title = title;
@@ -18,11 +19,11 @@ public class Major {
     public Major() {
     }
 
-    public ArrayList<Course> getCourses() {
+    public List<Course> getCourses() {
         return courses;
     }
 
-    public void setCourses(ArrayList<Course> courses) {
+    public void setCourses(List<Course> courses) {
         this.courses = courses;
     }
 

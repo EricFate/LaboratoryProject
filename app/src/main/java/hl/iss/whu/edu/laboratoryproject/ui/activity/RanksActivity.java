@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public class RanksActivity extends AppCompatActivity {
     private void initView() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mAdapter = new RecyclerRanksAdapter(new ArrayList<Rank>());
         recyclerRanks.setLayoutManager(new LinearLayoutManager(this));
         recyclerRanks.setAdapter(mAdapter);
@@ -72,6 +74,16 @@ public class RanksActivity extends AppCompatActivity {
 
                     }
                 });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

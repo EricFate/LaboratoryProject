@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import hl.iss.whu.edu.laboratoryproject.R;
@@ -24,7 +25,7 @@ import hl.iss.whu.edu.laboratoryproject.utils.UiUtils;
 public class RecyclerSubjectAdapter extends BaseRecyclerViewAdapter<Course,RecyclerSubjectAdapter.ViewHolder> {
 
 
-    public RecyclerSubjectAdapter(ArrayList<Course> data) {
+    public RecyclerSubjectAdapter(List<Course> data) {
         super(data);
     }
 

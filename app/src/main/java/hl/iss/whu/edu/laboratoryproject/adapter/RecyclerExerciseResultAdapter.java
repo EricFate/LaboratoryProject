@@ -56,7 +56,7 @@ public class RecyclerExerciseResultAdapter extends BaseRecyclerViewAdapter<Exerc
         else
             holder.mTvAccuracy.setText(String.format("正确率: %.2f",(double) exercise.getCorrect() / exercise.getTotal()*100 )+"%");
         Integer index = checked.get(position);
-        if (index != -1)
+        if (index!=null && index != -1)
             holder.mViews[index].setError();
         holder.mViews[exercise.getAnswer() - 1].check();
     }

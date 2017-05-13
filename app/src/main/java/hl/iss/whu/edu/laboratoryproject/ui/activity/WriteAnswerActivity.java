@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -59,8 +60,12 @@ public class WriteAnswerActivity extends AppCompatActivity {
         boolean anonymous = switchAnonymous.isChecked();
         int iid = getIntent().getIntExtra("iid", -1);
         String content = etContent.getText().toString();
+        if (TextUtils.isEmpty(content)) {
+            new AlertDialog.Builder(WriteAnswerActivity.this).setMessage("内容不能为空").setPositiveButton("确定", null).show();
+            return;
+        }
         if (!content.trim().isEmpty()) {
-            Observable<Result> observable = RetrofitUtils.getService().submitAnswer(content, anonymous, iid,UserInfo.uid);
+            Observable<Result> observable = RetrofitUtils.getService().submitAnswer(content, anonymous, iid, UserInfo.uid);
             observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.newThread()).subscribe(new Observer<Result>() {
                 @Override
                 public void onSubscribe(Disposable d) {
@@ -79,7 +84,7 @@ public class WriteAnswerActivity extends AppCompatActivity {
 
                 @Override
                 public void onError(Throwable e) {
-                        new AlertDialog.Builder(WriteAnswerActivity.this).setMessage("错误:" +e).setPositiveButton("确定", null).show();
+                    new AlertDialog.Builder(WriteAnswerActivity.this).setMessage("错误:" + e).setPositiveButton("确定", null).show();
 
                 }
 

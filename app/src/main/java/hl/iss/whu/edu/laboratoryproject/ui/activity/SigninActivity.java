@@ -151,12 +151,7 @@ public class SigninActivity extends AppCompatActivity {
                 } else {
                     new AlertDialog.Builder(SigninActivity.this)
                             .setMessage("登录失败:" + value.getMessage())
-                            .setNegativeButton("确定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            }).create().show();
+                            .setNegativeButton("确定", null).show();
                     mDialog.dismiss();
                 }
             }

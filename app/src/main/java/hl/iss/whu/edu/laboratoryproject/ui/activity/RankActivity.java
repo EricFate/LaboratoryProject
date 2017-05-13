@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -36,6 +37,7 @@ public class RankActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
         cid = intent.getIntExtra("cid", 0);
     }
@@ -52,12 +54,19 @@ public class RankActivity extends AppCompatActivity {
             case R.id.menu_submit:
                 submitRank();
                 break;
+            case android.R.id.home:
+                finish();
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     private void submitRank() {
         String content = etRankContent.getText().toString();
+        if (TextUtils.isEmpty(content)) {
+            new AlertDialog.Builder(RankActivity.this).setMessage("内容不能为空").setPositiveButton("确定", null).show();
+            return;
+        }
         float rating = ratingRank.getRating();
         RetrofitUtils.getService().submitRank(content, UserInfo.id,rating,cid)
                 .subscribeOn(Schedulers.newThread())
@@ -76,4 +85,5 @@ public class RankActivity extends AppCompatActivity {
                 });
 
     }
+
 }

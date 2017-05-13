@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,6 +61,7 @@ public class PersonalInfoActivity extends BaseInternetRequestActivity {
         ButterKnife.bind(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         uid = getIntent().getStringExtra("uid");
         initData();
     }
@@ -110,6 +112,16 @@ public class PersonalInfoActivity extends BaseInternetRequestActivity {
     public void onClick() {
         Intent intent = new Intent(Intent.ACTION_VIEW, UserInfo.getPrivateChatUri(uid,nickname));
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

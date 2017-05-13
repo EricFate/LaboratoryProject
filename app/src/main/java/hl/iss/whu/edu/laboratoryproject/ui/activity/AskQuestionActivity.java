@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -60,7 +61,15 @@ public class AskQuestionActivity extends AppCompatActivity {
     private void submit() {
         boolean anonymous = switchAnonymous.isChecked();
         String content = etContent.getText().toString();
+        if (TextUtils.isEmpty(content)) {
+            new AlertDialog.Builder(AskQuestionActivity.this).setMessage("内容不能为空").setPositiveButton("确定", null).show();
+            return;
+        }
         String title = etTitle.getText().toString();
+        if (TextUtils.isEmpty(title)) {
+            new AlertDialog.Builder(AskQuestionActivity.this).setMessage("标题不能为空").setPositiveButton("确定", null).show();
+            return;
+        }
         if (!title.trim().isEmpty()) {
             Observable<Result> observable = RetrofitUtils.getService().submitQuestion(title, content, anonymous,UserInfo.id);
             observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.newThread()).subscribe(new Observer<Result>() {

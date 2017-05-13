@@ -52,11 +52,11 @@ public class DiscoverFragment extends BaseFragment<ArrayList<Issue>> {
         start += data.size();
         View rootView = UiUtils.inflate(R.layout.fragment_discover);
 
-        final TwinklingRefreshLayout pullToRefreshView = ButterKnife.findById(rootView,R.id.trl_discover);
+        final TwinklingRefreshLayout pullToRefreshView = ButterKnife.findById(rootView, R.id.trl_discover);
         pullToRefreshView.setHeaderView(new SinaRefreshView(getActivity()));
-        if (start< Constant.DATAS_ONCE)
+        if (start < Constant.DATAS_ONCE)
             pullToRefreshView.setEnableLoadmore(false);
-        pullToRefreshView.setOnRefreshListener(new RefreshListenerAdapter(){
+        pullToRefreshView.setOnRefreshListener(new RefreshListenerAdapter() {
             @Override
             public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
                 loadMore(refreshLayout);
@@ -75,7 +75,7 @@ public class DiscoverFragment extends BaseFragment<ArrayList<Issue>> {
             @Override
             public void onItemClick(View v, Issue data) {
                 Intent intent = new Intent(getActivity(), QuestionActivity.class);
-                intent.putExtra("issue",data);
+                intent.putExtra("issue", data);
                 startActivity(intent);
             }
         });
@@ -83,30 +83,30 @@ public class DiscoverFragment extends BaseFragment<ArrayList<Issue>> {
             @Override
             public void onAnswerClick(int iid) {
                 Intent intent = new Intent(getActivity(), WriteAnswerActivity.class);
-                intent.putExtra("iid",iid);
+                intent.putExtra("iid", iid);
                 startActivity(intent);
             }
         });
         mAdapter.setOnUserInfoClickListener(new OnUserInfoClickListener() {
             @Override
             public void onUserInfoClickListener(String uid) {
-                Intent intent = new Intent(getActivity(),PersonalInfoActivity.class);
-                intent.putExtra("uid",uid);
+                Intent intent = new Intent(getActivity(), PersonalInfoActivity.class);
+                intent.putExtra("uid", uid);
                 startActivity(intent);
             }
         });
         mRecyclerView.setAdapter(mAdapter);
 
 
-        ImageButton fab = ButterKnife.findById(rootView,R.id.fab);
+        ImageButton fab = ButterKnife.findById(rootView, R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), AskQuestionActivity.class);
-                startActivityForResult(intent,Constant.REQURST_ASK);
+                startActivityForResult(intent, Constant.REQURST_ASK);
             }
         });
-        if (data.size()==0){
+        if (data.size() == 0) {
             showEmpty(rootView);
         }
         return rootView;
@@ -129,7 +129,7 @@ public class DiscoverFragment extends BaseFragment<ArrayList<Issue>> {
 
                     @Override
                     public void onNext(ArrayList<Issue> value) {
-                        if (value.size()<Constant.DATAS_ONCE){
+                        if (value.size() < Constant.DATAS_ONCE) {
                             layout.setEnableLoadmore(false);
                         }
                         mAdapter.setData(value);
@@ -139,7 +139,7 @@ public class DiscoverFragment extends BaseFragment<ArrayList<Issue>> {
 
                     @Override
                     public void onError(Throwable e) {
-                            Toast.makeText(DiscoverFragment.this.getActivity(), "刷新失败"+e, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DiscoverFragment.this.getActivity(), "刷新失败" + e, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -161,18 +161,18 @@ public class DiscoverFragment extends BaseFragment<ArrayList<Issue>> {
 
                     @Override
                     public void onNext(ArrayList<Issue> value) {
-                        if (value.size()<Constant.DATAS_ONCE){
+                        if (value.size() < Constant.DATAS_ONCE) {
                             layout.setEnableLoadmore(false);
                             Toast.makeText(DiscoverFragment.this.getActivity(), "已无更多", Toast.LENGTH_SHORT).show();
                         }
-                        start+=value.size();
+                        start += value.size();
                         mAdapter.addAll(value);
                         layout.finishLoadmore();
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                            Toast.makeText(DiscoverFragment.this.getActivity(), "加载失败"+e, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DiscoverFragment.this.getActivity(), "加载失败" + e, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -190,7 +190,7 @@ public class DiscoverFragment extends BaseFragment<ArrayList<Issue>> {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constant.REQURST_ASK&& resultCode== Activity.RESULT_OK)
+        if (requestCode == Constant.REQURST_ASK && resultCode == Activity.RESULT_OK)
             refresh();
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -208,7 +208,7 @@ public class DiscoverFragment extends BaseFragment<ArrayList<Issue>> {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
 //                        MyDialog.showAlertDialgo(getActivity(),"错误"+throwable);
-                        Log.e(getClass().getSimpleName(), "accept: "+throwable );
+                        Log.e(getClass().getSimpleName(), "accept: " + throwable);
                     }
                 });
     }
