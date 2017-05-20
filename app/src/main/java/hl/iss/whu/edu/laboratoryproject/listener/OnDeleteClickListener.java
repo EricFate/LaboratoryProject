@@ -5,5 +5,5 @@ package hl.iss.whu.edu.laboratoryproject.listener;
  */
 
 public interface OnDeleteClickListener {
-    void onDeleteClick(int id);
+    void onDeleteClick(int id,int position);
 }

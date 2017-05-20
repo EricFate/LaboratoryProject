@@ -63,12 +63,12 @@ public class MyAnswersActivity extends BaseInternetWithEmptyActivity {
         });
         mAdapter.setOnDeleteClickListener(new OnDeleteClickListener() {
             @Override
-            public void onDeleteClick(final int id) {
+            public void onDeleteClick(final int id, final int position) {
                 new AlertDialog.Builder(MyAnswersActivity.this).setMessage("确认删除?").setNegativeButton("取消",null)
                         .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                deleteAnswer(id);
+                                deleteAnswer(id,position);
                                 dialog.dismiss();
                             }
                         }).show();
@@ -85,14 +85,14 @@ public class MyAnswersActivity extends BaseInternetWithEmptyActivity {
         });
     }
 
-    private void deleteAnswer(final int id) {
+    private void deleteAnswer(final int id, final int position) {
         RetrofitUtils.getService().deleteAnswer(id).subscribeOn(Schedulers.newThread())
         .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Result>() {
                     @Override
                     public void accept(Result result) throws Exception {
                         Toast.makeText(MyAnswersActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
-                        mAdapter.remove(id);
+                        mAdapter.remove(position);
                     }
                 }, new Consumer<Throwable>() {
                     @Override

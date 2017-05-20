@@ -64,12 +64,12 @@ public class MyIssuesActivity extends BaseInternetWithEmptyActivity {
         });
         mAdapter.setOnDeleteClickListener(new OnDeleteClickListener() {
             @Override
-            public void onDeleteClick(final int id) {
+            public void onDeleteClick(final int id, final int position) {
                 new AlertDialog.Builder(MyIssuesActivity.this).setMessage("确认删除?").setNegativeButton("取消",null)
                         .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                deleteIssue(id);
+                                deleteIssue(id,position);
                                 dialog.dismiss();
                             }
                         }).show();
@@ -77,14 +77,14 @@ public class MyIssuesActivity extends BaseInternetWithEmptyActivity {
         });
     }
 
-    private void deleteIssue(final int id) {
+    private void deleteIssue(final int id, final int position) {
         RetrofitUtils.getService().deleteIssue(id).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Result>() {
                     @Override
                     public void accept(Result result) throws Exception {
                         Toast.makeText(MyIssuesActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
-                        mAdapter.remove(id);
+                        mAdapter.remove(position);
                     }
                 }, new Consumer<Throwable>() {
                     @Override

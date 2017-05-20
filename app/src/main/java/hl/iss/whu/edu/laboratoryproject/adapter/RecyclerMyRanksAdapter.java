@@ -39,7 +39,7 @@ public class RecyclerMyRanksAdapter extends BaseRecyclerViewAdapter<Rank,Recycle
     }
 
     @Override
-    public void onBindViewHolder(MyRanksViewHolder holder, int position) {
+    public void onBindViewHolder(MyRanksViewHolder holder, final int position) {
         final Rank rank = data.get(position);
         holder.tvTime.setText(TimeUtils.format(rank.getTime()) );
         holder.tvContent.setText(rank.getContent());
@@ -49,19 +49,17 @@ public class RecyclerMyRanksAdapter extends BaseRecyclerViewAdapter<Rank,Recycle
             @Override
             public void onClick(View v) {
                 if (mOnDeleteClickListener!=null)
-                    mOnDeleteClickListener.onDeleteClick(rank.getId());
+                    mOnDeleteClickListener.onDeleteClick(rank.getId(),position);
             }
         });
     }
-    public void remove(int id){
-        for (Rank rank : data) {
-            if (rank.getId()==id)
-                data.remove(rank);
-        }
+    public void remove(final int position){
+        data.remove(position);
         UiUtils.runInMainThread(new Runnable() {
             @Override
             public void run() {
-                notifyDataSetChanged();
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(0,data.size());
             }
         });
     }

@@ -36,7 +36,6 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         ButterKnife.bind(this);
         init();
-
     }
 
     public void init() {
@@ -51,6 +50,8 @@ public class ChatActivity extends AppCompatActivity {
         if (title != null)
             tvName.setText(title);
         View window = getLayoutInflater().inflate(R.layout.popup_notification, null);
+        View loading = window.findViewById(R.id.ll_loading);
+        loading.setVisibility(View.GONE);
         TextView tvTitle = (TextView) window.findViewById(R.id.tv_title);
         TextView tvContent = (TextView) window.findViewById(R.id.tv_content);
         popupWindow = new PopupWindow(window,

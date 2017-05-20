@@ -51,12 +51,12 @@ public class MyRanksActivity extends BaseInternetWithEmptyActivity {
 
         mAdapter.setOnDeleteClickListener(new OnDeleteClickListener() {
             @Override
-            public void onDeleteClick(final int id) {
+            public void onDeleteClick(final int id, final int position) {
                 new AlertDialog.Builder(MyRanksActivity.this).setMessage("确认删除?").setNegativeButton("取消", null)
                         .setPositiveButton("确认", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                deleteRank(id);
+                                deleteRank(id,position);
                                 dialog.dismiss();
                             }
                         }).show();
@@ -65,14 +65,14 @@ public class MyRanksActivity extends BaseInternetWithEmptyActivity {
 
     }
 
-    private void deleteRank(final int id) {
+    private void deleteRank(final int id, final int position) {
         RetrofitUtils.getService().deleteRank(id).subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Result>() {
                     @Override
                     public void accept(Result result) throws Exception {
                         Toast.makeText(MyRanksActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
-                        mAdapter.remove(id);
+                        mAdapter.remove(position);
                     }
                 }, new Consumer<Throwable>() {
                     @Override

@@ -52,7 +52,7 @@ public class RecyclerMyAnswersAdapter extends BaseRecyclerViewAdapter<Answer,Rec
     }
 
     @Override
-    public void onBindViewHolder(MyAnswersViewHolder holder, int position) {
+    public void onBindViewHolder(MyAnswersViewHolder holder, final int position) {
         final Answer answer = data.get(position);
         Issue issue = answer.getIssue();
         final Student student = issue.getUser();
@@ -78,7 +78,7 @@ public class RecyclerMyAnswersAdapter extends BaseRecyclerViewAdapter<Answer,Rec
             @Override
             public void onClick(View v) {
                 if (mOnDeleteClickListener!=null)
-                    mOnDeleteClickListener.onDeleteClick(answer.getId());
+                    mOnDeleteClickListener.onDeleteClick(answer.getId(),position);
             }
         });
         holder.llUser.setOnClickListener(new View.OnClickListener() {
@@ -90,15 +90,13 @@ public class RecyclerMyAnswersAdapter extends BaseRecyclerViewAdapter<Answer,Rec
         });
 
     }
-    public void remove(int id){
-        for (Answer answer : data) {
-            if (answer.getId()==id)
-                data.remove(answer);
-        }
+    public void remove(final int position){
+        data.remove(position);
         UiUtils.runInMainThread(new Runnable() {
             @Override
             public void run() {
-                notifyDataSetChanged();
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(0,data.size());
             }
         });
     }

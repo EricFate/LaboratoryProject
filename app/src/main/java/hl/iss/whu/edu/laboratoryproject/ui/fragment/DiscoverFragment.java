@@ -53,7 +53,7 @@ public class DiscoverFragment extends BaseFragment<ArrayList<Issue>> {
         View rootView = UiUtils.inflate(R.layout.fragment_discover);
 
         final TwinklingRefreshLayout pullToRefreshView = ButterKnife.findById(rootView, R.id.trl_discover);
-        pullToRefreshView.setHeaderView(new SinaRefreshView(getActivity()));
+        pullToRefreshView.setHeaderView(new SinaRefreshView(UiUtils.getContext()));
         if (start < Constant.DATAS_ONCE)
             pullToRefreshView.setEnableLoadmore(false);
         pullToRefreshView.setOnRefreshListener(new RefreshListenerAdapter() {

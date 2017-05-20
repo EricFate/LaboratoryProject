@@ -175,7 +175,7 @@ public class InfoSettingActivity extends AppCompatActivity {
                 .subscribe(new Consumer<Result>() {
                     @Override
                     public void accept(Result result) throws Exception {
-                        MyDialog.showAlertDialgo(InfoSettingActivity.this,"上传成功");
+//                        MyDialog.showAlertDialgo(InfoSettingActivity.this,"上传成功");
                         UserInfo.nickname = nickname;
                         UserInfo.signiture = signature;
                         setResult(RESULT_OK);

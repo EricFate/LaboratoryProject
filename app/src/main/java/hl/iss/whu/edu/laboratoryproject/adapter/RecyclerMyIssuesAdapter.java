@@ -39,7 +39,7 @@ public class RecyclerMyIssuesAdapter extends BaseRecyclerViewAdapter<Issue,Recyc
     }
 
     @Override
-    public void onBindViewHolder(MyAnswersViewHolder holder, int position) {
+    public void onBindViewHolder(MyAnswersViewHolder holder, final int position) {
         final Issue issue = data.get(position);
         holder.tvTitle.setText(issue.getTitle());
         holder.itemView.setTag(issue);
@@ -56,19 +56,17 @@ public class RecyclerMyIssuesAdapter extends BaseRecyclerViewAdapter<Issue,Recyc
             @Override
             public void onClick(View v) {
                 if (mOnDeleteClickListener!=null)
-                    mOnDeleteClickListener.onDeleteClick(issue.getId());
+                    mOnDeleteClickListener.onDeleteClick(issue.getId(),position);
             }
         });
     }
-    public void remove(int id){
-        for (Issue issue : data) {
-            if (issue.getId()==id)
-                data.remove(issue);
-        }
+    public void remove(final int position){
+        data.remove(position);
         UiUtils.runInMainThread(new Runnable() {
             @Override
             public void run() {
-                notifyDataSetChanged();
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(0,data.size());
             }
         });
     }
