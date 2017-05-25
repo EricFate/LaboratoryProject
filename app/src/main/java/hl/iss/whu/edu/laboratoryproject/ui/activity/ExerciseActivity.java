@@ -277,6 +277,7 @@ public class ExerciseActivity extends BaseInternetWithEmptyActivity {
             int check = this.checked.get(i, -1);
             result.put(id,check==answer-1?1:0);
         }
+        Log.i(getClass().getSimpleName(), "checkAnswers: "+result);
         return result;
     }
 

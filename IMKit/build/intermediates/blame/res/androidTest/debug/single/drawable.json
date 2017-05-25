@@ -24,12 +24,12 @@
         "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_ext_plugin_image_selector.xml"
     },
     {
-        "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_sel_picsel_toolbar_back.xml",
-        "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_sel_picsel_toolbar_back.xml"
-    },
-    {
         "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_cs_group_dialog_ok_selector.xml",
         "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_cs_group_dialog_ok_selector.xml"
+    },
+    {
+        "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_sel_picsel_toolbar_back.xml",
+        "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\bundles\\debug\\res\\drawable\\rc_sel_picsel_toolbar_back.xml"
     },
     {
         "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\rc_sel_picsel_toolbar_send.xml",

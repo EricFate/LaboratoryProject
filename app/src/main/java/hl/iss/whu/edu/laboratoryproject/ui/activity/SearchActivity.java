@@ -44,7 +44,6 @@ public class SearchActivity extends AppCompatActivity {
 
     @Bind(R.id.recycler_search)
     RecyclerView recyclerSearch;
-
     @Bind(R.id.search_view)
     MaterialSearchView searchView;
     RecyclerQueryContactAdapter mAdapter;
@@ -87,7 +86,6 @@ public class SearchActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        final View dialogView = initDialogView();
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -106,23 +104,24 @@ public class SearchActivity extends AppCompatActivity {
         mAdapter.setOnAddFriendListener(new RecyclerQueryContactAdapter.OnAddFriendListener() {
             @Override
             public void onAddFriend(final Info info, final RecyclerQueryResultAdapter.MyViewHolder holder) {
+                final View dialogView = initDialogView();
                 mEtRemark.setText(info.getNickname());
-                new AlertDialog.Builder(SearchActivity.this).setView(dialogView)
+                final AlertDialog.Builder builder = new AlertDialog.Builder(SearchActivity.this).setView(dialogView)
                         .setTitle("添加好友")
                         .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.dismiss();
                             }
-                        })
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        }).setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 holder.showAdding();
-                                addFriend(info,holder);
+                                addFriend(info, holder);
                                 dialog.dismiss();
                             }
-                        }).show();
+                       });
+                builder.show();
 
             }
         });

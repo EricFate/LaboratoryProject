@@ -40,16 +40,16 @@
         "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\src\\main\\res\\drawable-xhdpi\\u1f4a9.png"
     },
     {
-        "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\rc_btn_pub_service_enter_hover.png",
-        "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\src\\main\\res\\drawable-xhdpi\\rc_btn_pub_service_enter_hover.png"
+        "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\u1f62a.png",
+        "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\src\\main\\res\\drawable-xhdpi\\u1f62a.png"
     },
     {
         "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\u1f635.png",
         "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\src\\main\\res\\drawable-xhdpi\\u1f635.png"
     },
     {
-        "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\u1f62a.png",
-        "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\src\\main\\res\\drawable-xhdpi\\u1f62a.png"
+        "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\rc_btn_pub_service_enter_hover.png",
+        "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\src\\main\\res\\drawable-xhdpi\\rc_btn_pub_service_enter_hover.png"
     },
     {
         "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\u1f319.png",
@@ -656,12 +656,12 @@
         "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\src\\main\\res\\drawable-xhdpi\\rc_grid_image_default.png"
     },
     {
-        "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\rc_cs_leave_message_bg.png",
-        "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\src\\main\\res\\drawable-xhdpi\\rc_cs_leave_message_bg.png"
-    },
-    {
         "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\rc_ic_volume_1.png",
         "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\src\\main\\res\\drawable-xhdpi\\rc_ic_volume_1.png"
+    },
+    {
+        "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\rc_cs_leave_message_bg.png",
+        "source": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\src\\main\\res\\drawable-xhdpi\\rc_cs_leave_message_bg.png"
     },
     {
         "merged": "C:\\backup\\AndroidStudioProjects\\LaboratoryProject\\IMKit\\build\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4\\u1f48a.png",

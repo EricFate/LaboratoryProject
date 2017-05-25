@@ -89,6 +89,7 @@ public class MyClassActivity extends AppCompatActivity {
     private int tid;
     private int gid;
     private List<Notice> mNotices;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,6 +131,10 @@ public class MyClassActivity extends AppCompatActivity {
                     @Override
                     public void accept(AdminClass adminClass) throws Exception {
                         clid = adminClass.getId();
+                        if (clid <= 0) {
+                            show(STATE_NO_CLASS);
+                            return;
+                        }
                         ArrayList<Course> courses = adminClass.getCourses();
                         if (courses != null)
                             mAdapter.setData(courses);
@@ -157,10 +162,7 @@ public class MyClassActivity extends AppCompatActivity {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         Toast.makeText(MyClassActivity.this, "错误:" + throwable, Toast.LENGTH_SHORT).show();
-                        if (throwable instanceof NullPointerException)
-                            show(STATE_NO_CLASS);
-                        else
-                            show(STATE_ERROR);
+                        show(STATE_ERROR);
                     }
                 });
     }
@@ -176,13 +178,13 @@ public class MyClassActivity extends AppCompatActivity {
                 joinClass();
                 return;
             case R.id.ll_teacher:
-                Intent intent = new Intent(MyClassActivity.this,PersonalInfoActivity.class);
-                intent.putExtra("uid","t"+tid);
+                Intent intent = new Intent(MyClassActivity.this, PersonalInfoActivity.class);
+                intent.putExtra("uid", "t" + tid);
                 startActivity(intent);
                 return;
             case R.id.ll_notice:
-                Intent intentNotice = new Intent(MyClassActivity.this,NoticeActivity.class);
-                intentNotice.putExtra("gid",gid);
+                Intent intentNotice = new Intent(MyClassActivity.this, NoticeActivity.class);
+                intentNotice.putExtra("gid", gid);
                 startActivity(intentNotice);
                 return;
         }
@@ -224,6 +226,14 @@ public class MyClassActivity extends AppCompatActivity {
                             @Override
                             public void accept(AdminClass adminClass) throws Exception {
                                 sweetAlertDialog.cancel();
+                                if (adminClass.getId() <= 0) {
+                                    SweetAlertDialog errorDialog = new SweetAlertDialog(MyClassActivity.this, SweetAlertDialog.ERROR_TYPE)
+                                            .setTitleText("失败")
+                                            .setConfirmText("确认");
+                                    errorDialog.setContentText("所查询的班级不存在");
+                                    errorDialog.show();
+                                    return;
+                                }
                                 populateView(adminClass);
                             }
                         }, new Consumer<Throwable>() {
@@ -234,11 +244,7 @@ public class MyClassActivity extends AppCompatActivity {
                                 SweetAlertDialog errorDialog = new SweetAlertDialog(MyClassActivity.this, SweetAlertDialog.ERROR_TYPE)
                                         .setTitleText("失败")
                                         .setConfirmText("确认");
-                                if (throwable instanceof NullPointerException) {
-                                    errorDialog.setContentText("所查询的班级不存在");
-                                } else {
-                                    errorDialog.setContentText("请稍后重试");
-                                }
+                                errorDialog.setContentText("请稍后重试");
                                 errorDialog.show();
                             }
                         });

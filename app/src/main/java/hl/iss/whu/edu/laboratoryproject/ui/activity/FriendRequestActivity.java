@@ -48,7 +48,7 @@ public class FriendRequestActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initView();
-     initData();
+        initData();
     }
 
     private void initData() {
@@ -71,10 +71,10 @@ public class FriendRequestActivity extends AppCompatActivity {
         reFriendRequest.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new RecyclerFriendRequestAdapter(new ArrayList<FriendRequest>());
         reFriendRequest.setAdapter(mAdapter);
-        final View dialogView = initDialogView();
         mAdapter.setOnAddFriendListener(new RecyclerFriendRequestAdapter.OnAddFriendListener() {
             @Override
             public void onAddFriend(final FriendRequest info, final RecyclerFriendRequestAdapter.MyViewHolder holder) {
+                final View dialogView = initDialogView();
                 mEtRemark.setText(info.getNickname());
                 new AlertDialog.Builder(FriendRequestActivity.this).setView(dialogView)
                         .setTitle("添加好友")
@@ -88,38 +88,40 @@ public class FriendRequestActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 holder.showAdding();
-                                addFriend(info,holder);
+                                addFriend(info, holder);
                                 dialog.dismiss();
                             }
                         }).show();
             }
         });
     }
+
     private View initDialogView() {
         View view = View.inflate(this, R.layout.dialog_accept_friend, null);
         mEtRemark = ButterKnife.findById(view, R.id.et_remark);
-        final EditText etGroup = ButterKnife.findById(view,R.id.et_add_group);
+        final EditText etGroup = ButterKnife.findById(view, R.id.et_add_group);
         mSpinner = ButterKnife.findById(view, R.id.spinner_roster);
-        ImageView ivAdd = ButterKnife.findById(view,R.id.iv_add_group);
+        ImageView ivAdd = ButterKnife.findById(view, R.id.iv_add_group);
         mArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, UserInfo.groupNames);
         mSpinner.setAdapter(mArrayAdapter);
-        if (UserInfo.groupNames.size() == 0){
+        if (UserInfo.groupNames.size() == 0) {
             getGroupNames();
         }
         ivAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String str = etGroup.getText().toString();
-                if (!TextUtils.isEmpty(str)){
+                if (!TextUtils.isEmpty(str)) {
                     mArrayAdapter.add(str);
-                    mSpinner.setSelection(mArrayAdapter.getCount()-1);
-                }else {
+                    mSpinner.setSelection(mArrayAdapter.getCount() - 1);
+                } else {
                     Toast.makeText(FriendRequestActivity.this, "请输入组名", Toast.LENGTH_SHORT).show();
                 }
             }
         });
         return view;
     }
+
     private void getGroupNames() {
         RetrofitUtils.getService().getGroupNames(UserInfo.uid)
                 .subscribeOn(Schedulers.newThread())
@@ -133,16 +135,17 @@ public class FriendRequestActivity extends AppCompatActivity {
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
-                        Toast.makeText(FriendRequestActivity.this, "获取组信息失败"+throwable, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(FriendRequestActivity.this, "获取组信息失败" + throwable, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
     private void addFriend(FriendRequest info, final RecyclerFriendRequestAdapter.MyViewHolder holder) {
         String group = mSpinner.getSelectedItem().toString();
         String s = mEtRemark.getText().toString();
         if (TextUtils.isEmpty(s.trim()))
             s = info.getNickname();
-        RetrofitUtils.getService().addFriend(info.getId(),group,s)
+        RetrofitUtils.getService().addFriend(info.getId(), group, s)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Result>() {
@@ -157,8 +160,8 @@ public class FriendRequestActivity extends AppCompatActivity {
                     @Override
                     public void accept(Throwable throwable) throws Exception {
                         new AlertDialog.Builder(FriendRequestActivity.this)
-                                .setMessage("添加失败"+throwable)
-                                .setPositiveButton("确定",null)
+                                .setMessage("添加失败" + throwable)
+                                .setPositiveButton("确定", null)
                                 .show();
                         holder.showAddFriend();
                     }

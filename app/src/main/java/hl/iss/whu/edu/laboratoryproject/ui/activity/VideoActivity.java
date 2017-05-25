@@ -415,7 +415,7 @@ public class VideoActivity extends AppCompatActivity {
         titles.add("课时");
         titles.add("讨论");
         titles.add("详情");
-        titles.add("问答");
+        titles.add("练习");
         mLessonDetailFragment = new LessonDetailFragment();
         mChapterFragment = new ChapterFragment();
         mQuestionFragment = new QuestionFragment();
